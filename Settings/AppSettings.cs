@@ -1,0 +1,52 @@
+using System.Text.Json.Serialization;
+using PulseMonitor.Weather;
+
+namespace PulseMonitor.Settings;
+
+/// <summary>Kalıcı kullanıcı ayarları. Yeni alanlar eklenince eski dosyalar varsayılanla açılır.</summary>
+public sealed class AppSettings
+{
+    public int SchemaVersion { get; set; } = 2;
+
+    /// <summary>Tam ekran uygulama (oyun, video, sunum) açıkken gizlen.</summary>
+    public bool HideInFullscreen { get; set; } = true;
+
+    /// <summary>Pencere ile sistem tepsisi arasındaki boşluk (96 DPI'da piksel).</summary>
+    public int TrayGapPx { get; set; } = 6;
+
+    /// <summary>Ölçülen ağ bağdaştırıcısının GUID'i; boşsa tüm bağlı fiziksel bağdaştırıcılar.</summary>
+    public string? NetworkAdapterId { get; set; }
+
+    /// <summary>
+    /// Görev çubuğu öğeleri: sıra (soldan sağa) ve görünürlük. Değiştirirken liste yerinde değiştirilmez,
+    /// yenisi atanır; arka plan ölçüm döngüsü bu listeyi okur.
+    /// </summary>
+    public List<TaskbarItemSetting> Items { get; set; } = TaskbarItems.Defaults();
+
+    /// <summary>Hava durumu konumu; seçilmemişse hava durumu gösterilmez.</summary>
+    public WeatherLocation? WeatherLocation { get; set; }
+
+    /// <summary>Görünüm (renk, yazı, işaretler, zemin, hava simgeleri…).</summary>
+    public StyleSettings Style { get; set; } = new();
+
+    /// <summary>Ping öğesinin sunucusu (ad ya da IP).</summary>
+    public string PingHost { get; set; } = "1.1.1.1";
+
+    /// <summary>Uyarı bildirimleri.</summary>
+    public AlertSettings Alerts { get; set; } = new();
+
+    public bool IsShown(string id)
+    {
+        List<TaskbarItemSetting> items = Items;
+        return items.Any(i => i.Id == id && i.Visible);
+    }
+
+    // 0.2–0.3 sürümlerinin alanları: yalnızca okunur, TaskbarItems.Normalize ile Items'a taşınıp silinir.
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowNetwork { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowCpu { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowRam { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowGpu { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowDisk { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowKeyboard { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowWeather { get; set; }
+}

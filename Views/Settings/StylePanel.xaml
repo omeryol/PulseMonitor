@@ -1,0 +1,89 @@
+<UserControl x:Class="PulseMonitor.Views.Settings.StylePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- DataContext: StyleSettingsViewModel. Ayarlar → Görünüm sekmesi (tasarım tezgâhının seçenekleri). -->
+    <UserControl.Resources>
+        <Style x:Key="Section" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,14,0,6" />
+        </Style>
+        <Style x:Key="RowLabel" TargetType="TextBlock">
+            <Setter Property="Width" Value="190" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="DockPanel">
+            <Setter Property="Margin" Value="0,3" />
+        </Style>
+        <!-- Açılır liste: DataContext bir Choice -->
+        <DataTemplate x:Key="ChoiceBox">
+            <ComboBox ItemsSource="{Binding Options}" SelectedItem="{Binding Selected}" DisplayMemberPath="Display" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <TextBlock Text="{DynamicResource Style.Section.Color}" Style="{StaticResource Section}" Margin="0,2,0,6" />
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.Theme}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding Theme}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.Palette}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding Palette}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.ColorTarget}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding ColorTarget}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <CheckBox Content="{DynamicResource Style.Label.LoadColors}" IsChecked="{Binding LoadColors}" Margin="0,6" />
+
+        <TextBlock Text="{DynamicResource Style.Label.Colors}" Margin="0,6,0,4" Foreground="#555" TextWrapping="Wrap" />
+        <ItemsControl ItemsSource="{Binding CustomColors}" Focusable="False">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="0,2,12,2">
+                        <Border DockPanel.Dock="Left" Width="18" Height="18" CornerRadius="4" Background="{Binding Preview}"
+                                BorderBrush="#888" BorderThickness="1" Margin="0,0,6,0" />
+                        <TextBox DockPanel.Dock="Right" Width="78" Text="{Binding Hex, UpdateSourceTrigger=PropertyChanged}"
+                                 FontFamily="Consolas" Padding="3,1" MaxLength="7" />
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="{DynamicResource Style.Section.Text}" Style="{StaticResource Section}" />
+        <DockPanel><TextBlock DockPanel.Dock="Right" Width="44" TextAlignment="Right" Text="{Binding FontSize, StringFormat={}{0} pt}" />
+            <TextBlock Text="{DynamicResource Style.Label.FontSize}" Style="{StaticResource RowLabel}" />
+            <Slider Minimum="{Binding MinFont}" Maximum="{Binding MaxFont}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding FontSize}" VerticalAlignment="Center" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.ValueWeight}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding ValueWeight}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.Arrows}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding Arrows}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.Labels}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding Labels}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.Sparkline}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding Sparkline}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.KeyboardStyle}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding KeyboardStyle}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+
+        <TextBlock Text="{DynamicResource Style.Section.Surface}" Style="{StaticResource Section}" />
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.Background}" Style="{StaticResource RowLabel}" />
+            <ContentControl Content="{Binding Background}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock DockPanel.Dock="Right" Width="44" TextAlignment="Right" Text="{Binding BackgroundOpacity, StringFormat=% {0}}" />
+            <TextBlock Text="{DynamicResource Style.Label.Opacity}" Style="{StaticResource RowLabel}" />
+            <Slider Minimum="0" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding BackgroundOpacity}" VerticalAlignment="Center" /></DockPanel>
+        <DockPanel><TextBlock DockPanel.Dock="Right" Width="44" TextAlignment="Right" Text="{Binding ColumnGap, StringFormat={}{0} px}" />
+            <TextBlock Text="{DynamicResource Style.Label.ColumnGap}" Style="{StaticResource RowLabel}" />
+            <Slider Minimum="{Binding MinColumnGap}" Maximum="{Binding MaxColumnGap}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding ColumnGap}" VerticalAlignment="Center" /></DockPanel>
+        <DockPanel><TextBlock DockPanel.Dock="Right" Width="44" TextAlignment="Right" Text="{Binding LabelGap, StringFormat={}{0} px}" />
+            <TextBlock Text="{DynamicResource Style.Label.LabelGap}" Style="{StaticResource RowLabel}" />
+            <Slider Minimum="{Binding MinLabelGap}" Maximum="{Binding MaxLabelGap}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding LabelGap}" VerticalAlignment="Center" /></DockPanel>
+        <DockPanel><TextBlock DockPanel.Dock="Right" Width="44" TextAlignment="Right" Text="{Binding Scale, StringFormat=% {0}}" />
+            <TextBlock Text="{DynamicResource Style.Label.Scale}" Style="{StaticResource RowLabel}" />
+            <Slider Minimum="{Binding MinScale}" Maximum="{Binding MaxScale}" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding Scale}" VerticalAlignment="Center" /></DockPanel>
+        <TextBlock Text="{DynamicResource Style.ScaleHint}" Foreground="#555" FontSize="11" Margin="190,0,0,4" TextWrapping="Wrap" />
+        <CheckBox Content="{DynamicResource Style.Label.Separator}" IsChecked="{Binding Separator}" Margin="0,6" />
+
+        <Button Content="{DynamicResource Style.Reset}" Command="{Binding ResetCommand}" HorizontalAlignment="Left"
+                Padding="12,4" Margin="0,14,0,0" />
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,32 @@
+<UserControl x:Class="PulseMonitor.Views.Settings.WeatherSettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- DataContext: WeatherSettingsViewModel -->
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+            <TextBlock Text="{DynamicResource Weather.Current}" Foreground="#555" Margin="0,0,8,0" />
+            <TextBlock Text="{Binding CurrentText}" FontWeight="SemiBold" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <DockPanel Margin="0,8,0,0"
+                   Visibility="{Binding HasLocation, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Text="{DynamicResource Weather.DisplayName}" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
+        </DockPanel>
+
+        <TextBlock Text="{DynamicResource Weather.SearchHint}" Margin="0,12,0,4" TextWrapping="Wrap" />
+        <DockPanel>
+            <Button DockPanel.Dock="Right" Content="{DynamicResource Weather.Search}" Command="{Binding SearchCommand}"
+                    MinWidth="70" Padding="10,2" Margin="8,0,0,0" IsDefault="True" />
+            <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" />
+        </DockPanel>
+        <TextBlock Text="{Binding Status}" Foreground="#555" Margin="0,4,0,4" />
+        <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}"
+                 DisplayMemberPath="Display" MaxHeight="170" />
+
+        <!-- Lisans gereği kaynak gösterimi: Open-Meteo (CC BY 4.0), OpenStreetMap (ODbL), GeoNames (CC BY 4.0) -->
+        <TextBlock Text="{DynamicResource Weather.Attribution}" Foreground="#777" FontSize="11"
+                   TextWrapping="Wrap" Margin="0,6,0,0" />
+    </StackPanel>
+</UserControl>

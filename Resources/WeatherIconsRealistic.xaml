@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- "Gerçekçi" set: Microsoft Fluent Emoji 3D (MIT, © Microsoft Corporation), Assets/Weather/*.png (64 px).
+         Bulutlu gece için hazır simge yok: ay + bulut üst üste çizilir. -->
+
+    <BitmapImage x:Key="WxImg.Realistic.ClearDay" UriSource="/Assets/Weather/ClearDay.png" />
+    <BitmapImage x:Key="WxImg.Realistic.ClearNight" UriSource="/Assets/Weather/ClearNight.png" />
+    <BitmapImage x:Key="WxImg.Realistic.PartlyDay" UriSource="/Assets/Weather/PartlyDay.png" />
+    <BitmapImage x:Key="WxImg.Realistic.Cloudy" UriSource="/Assets/Weather/Cloudy.png" />
+    <BitmapImage x:Key="WxImg.Realistic.Fog" UriSource="/Assets/Weather/Fog.png" />
+    <BitmapImage x:Key="WxImg.Realistic.Rain" UriSource="/Assets/Weather/Rain.png" />
+    <BitmapImage x:Key="WxImg.Realistic.Thunder" UriSource="/Assets/Weather/Thunder.png" />
+    <BitmapImage x:Key="WxImg.Realistic.Snow" UriSource="/Assets/Weather/Snow.png" />
+
+    <DrawingImage x:Key="WxImg.Realistic.PartlyNight">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <ImageDrawing Rect="0,0,40,40" ImageSource="{StaticResource WxImg.Realistic.ClearNight}" />
+                <ImageDrawing Rect="20,24,44,40" ImageSource="{StaticResource WxImg.Realistic.Cloudy}" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

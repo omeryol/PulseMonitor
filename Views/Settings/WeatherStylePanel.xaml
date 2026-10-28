@@ -1,0 +1,23 @@
+<UserControl x:Class="PulseMonitor.Views.Settings.WeatherStylePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- DataContext: StyleSettingsViewModel. Ayarlar → Hava durumu sekmesinin görünüm kısmı. -->
+    <StackPanel>
+        <DockPanel Margin="0,3">
+            <TextBlock Text="{DynamicResource Style.Label.WeatherIcons}" Width="190" VerticalAlignment="Center" />
+            <ComboBox ItemsSource="{Binding WeatherIcons.Options}" SelectedItem="{Binding WeatherIcons.Selected}" DisplayMemberPath="Display" />
+        </DockPanel>
+        <DockPanel Margin="0,3">
+            <TextBlock Text="{DynamicResource Style.Label.WeatherLabel}" Width="190" VerticalAlignment="Center" />
+            <ComboBox ItemsSource="{Binding WeatherLabel.Options}" SelectedItem="{Binding WeatherLabel.Selected}" DisplayMemberPath="Display" />
+        </DockPanel>
+        <DockPanel Margin="0,3">
+            <TextBlock Text="{DynamicResource Style.Label.TemperatureUnit}" Width="190" VerticalAlignment="Center" />
+            <ComboBox ItemsSource="{Binding TemperatureUnit.Options}" SelectedItem="{Binding TemperatureUnit.Selected}" DisplayMemberPath="Display" />
+        </DockPanel>
+        <CheckBox Content="{DynamicResource Style.Label.FeelsLike}" IsChecked="{Binding ShowFeelsLike}" Margin="0,6,0,3" />
+        <CheckBox Content="{DynamicResource Style.Label.TemperatureColors}" IsChecked="{Binding TemperatureColors}" Margin="0,3" />
+        <CheckBox Content="{DynamicResource Style.Label.Animation}" IsChecked="{Binding WeatherAnimation}" Margin="0,3" />
+    </StackPanel>
+</UserControl>

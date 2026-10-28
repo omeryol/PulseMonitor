@@ -1,0 +1,25 @@
+<Application x:Class="PulseMonitor.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:PulseMonitor.Views.Controls"
+             ShutdownMode="OnExplicitShutdown">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Theme.xaml" />
+                <ResourceDictionary Source="Resources/Palettes.xaml" />
+                <ResourceDictionary Source="Resources/LabelIcons.xaml" />
+                <ResourceDictionary Source="Resources/WeatherIcons.xaml" />
+                <ResourceDictionary Source="Resources/WeatherIconsRealistic.xaml" />
+                <ResourceDictionary Source="Resources/WeatherIconsFluent.xaml" />
+                <ResourceDictionary Source="Resources/Strings.tr.xaml" />
+                <ResourceDictionary Source="Resources/Strings.Style.tr.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+            <controls:IsNotNullConverter x:Key="IsNotNull" />
+            <controls:NegateConverter x:Key="Negate" />
+            <controls:ToGridLengthConverter x:Key="ToGridLength" />
+            <!-- Görünüm kaynakları Core/StyleResources.cs ve Core/ThemeBrushes.cs tarafından açılışta doldurulur. -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

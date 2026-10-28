@@ -1,0 +1,123 @@
+<Window x:Class="PulseMonitor.Views.TaskbarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:PulseMonitor.Views.Controls"
+        xmlns:vm="clr-namespace:PulseMonitor.ViewModels"
+        Title="PulseMonitor"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Topmost="True"
+        SizeToContent="WidthAndHeight"
+        UseLayoutRounding="True"
+        Left="-10000" Top="-10000">
+
+    <!-- Görünüm ayarları (Ayarlar → Görünüm) DynamicResource olarak gelir: Core/StyleResources.cs (boyut, boşluk,
+         görünürlük) ve Core/ThemeBrushes.cs (renkler). Satır renkleri MetricLine'da hesaplanır. -->
+    <Window.Resources>
+        <!-- Ölçüm satırı: etiket/değer sütunları sütun içinde paylaşılır (SharedSizeGroup) → üst ve alt değer hizalı;
+             görünmez yer tutucu değer genişliğini sabitler (değer değişince kayma olmaz). -->
+        <DataTemplate DataType="{x:Type vm:MetricLine}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Value" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Spark" />
+                </Grid.ColumnDefinitions>
+                <Grid Margin="{DynamicResource Thickness.LabelGap}" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding LabelText}" Foreground="{Binding LabelBrush}" />
+                    <Path x:Name="LabelIcon" Data="{Binding LabelIcon}" Stroke="{Binding LabelBrush}" StrokeThickness="1.3"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                          Width="11" Height="11" Stretch="Uniform" Visibility="Collapsed" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <controls:Sparkline Values="{Binding History}" Stroke="{Binding ItemBrush}" Margin="0,1"
+                                        Visibility="{DynamicResource Visibility.SparkBehind}" />
+                    <TextBlock Text="{Binding Placeholder}" FontWeight="{DynamicResource Font.ValueWeight}" Visibility="Hidden" />
+                    <TextBlock Text="{Binding Value}" Foreground="{Binding ValueBrush}"
+                               FontWeight="{DynamicResource Font.ValueWeight}" HorizontalAlignment="Right" />
+                </Grid>
+                <Border Grid.Column="2" Width="30" Margin="5,2,0,2" Visibility="{DynamicResource Visibility.SparkSide}">
+                    <controls:Sparkline x:Name="SideSpark" Values="{Binding History}" Stroke="{Binding ItemBrush}" />
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding LabelIcon, Converter={StaticResource IsNotNull}}" Value="True">
+                    <Setter TargetName="LabelIcon" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <!-- Yandaki grafik yalnızca ağ satırlarında yer kaplasın -->
+                <DataTrigger Binding="{Binding History}" Value="{x:Null}">
+                    <Setter TargetName="SideSpark" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!-- Kilit tuşu: açıkken vurgulu (renkli ya da yazı renginde), kapalıyken soluk. -->
+        <DataTemplate DataType="{x:Type vm:KeyIndicator}">
+            <TextBlock x:Name="Key" Text="{Binding Label}" Opacity="0.32" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsOn}" Value="True">
+                    <Setter TargetName="Key" Property="Opacity" Value="1" />
+                    <Setter TargetName="Key" Property="Foreground" Value="{DynamicResource Brush.Keyboard.On}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!-- Klavye: üç kilit tuşu tek sütunda; sığması için daha küçük yazı ve sabit satır yüksekliği. -->
+        <DataTemplate DataType="{x:Type vm:KeyboardViewModel}">
+            <StackPanel TextElement.FontSize="10" TextElement.FontWeight="SemiBold"
+                        TextBlock.LineHeight="12" TextBlock.LineStackingStrategy="BlockLineHeight">
+                <ContentControl Content="{Binding Caps}" Focusable="False" />
+                <ContentControl Content="{Binding Num}" Focusable="False" />
+                <ContentControl Content="{Binding Scroll}" Focusable="False" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:WeatherViewModel}">
+            <controls:WeatherItem />
+        </DataTemplate>
+    </Window.Resources>
+
+    <!-- Öğeler ayarlardaki sıraya göre sütunlara dizilir (ViewModels/TaskbarLayout.cs). Zemin: Yok / Tek zemin
+         (bu Border) / Sütun kartları (her sütunun Border'ı). -->
+    <Border x:Name="Root" Padding="2,3" CornerRadius="8" Background="{DynamicResource Brush.WindowBg}">
+        <ItemsControl ItemsSource="{Binding Columns}" Focusable="False" AlternationCount="10000"
+                      Margin="{DynamicResource Thickness.ItemsOffset}"
+                      TextElement.Foreground="{DynamicResource Brush.Text}"
+                      TextElement.FontFamily="{DynamicResource Font.Ui}"
+                      TextElement.FontSize="{DynamicResource Font.Size}"
+                      Typography.NumeralAlignment="Tabular">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:TaskbarColumn}">
+                    <Border x:Name="Column" Margin="{DynamicResource Thickness.ColumnGap}" Height="38"
+                            Padding="{DynamicResource Thickness.ColumnPadding}" CornerRadius="7"
+                            Background="{DynamicResource Brush.Card}"
+                            BorderBrush="{DynamicResource Brush.Separator}"
+                            BorderThickness="{DynamicResource Thickness.ColumnSeparator}">
+                        <Grid VerticalAlignment="Center">
+                            <ContentControl Content="{Binding Tall}" Focusable="False" VerticalAlignment="Center" />
+                            <StackPanel Grid.IsSharedSizeScope="True" VerticalAlignment="Center">
+                                <ContentControl Content="{Binding Top}" Focusable="False" />
+                                <ContentControl Content="{Binding Bottom}" Focusable="False" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <!-- İlk sütunun solunda ayırıcı çizgi olmasın -->
+                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}}" Value="0">
+                            <Setter TargetName="Column" Property="BorderThickness" Value="0" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Border>
+</Window>

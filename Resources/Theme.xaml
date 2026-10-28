@@ -1,0 +1,58 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Temaya bağlı renkler: .OnDark (koyu görev çubuğu) ve .OnLight (açık görev çubuğu).
+         Core/ThemeBrushes.cs geçerli hâli "Brush.<anahtar>" olarak atar. Öğe renkleri: Resources/Palettes.xaml -->
+
+    <FontFamily x:Key="Font.Ui">Segoe UI Variable Text, Segoe UI</FontFamily>
+
+    <SolidColorBrush x:Key="Brush.Text.OnDark" Color="#F3F4F6" />
+    <SolidColorBrush x:Key="Brush.Text.OnLight" Color="#111827" />
+    <SolidColorBrush x:Key="Brush.Muted.OnDark" Color="#9CA3AF" />
+    <SolidColorBrush x:Key="Brush.Muted.OnLight" Color="#4B5563" />
+    <SolidColorBrush x:Key="Brush.Separator.OnDark" Color="#33FFFFFF" />
+    <SolidColorBrush x:Key="Brush.Separator.OnLight" Color="#26000000" />
+
+    <!-- Trafik geçmişi penceresi (açık zeminli normal pencere) -->
+    <SolidColorBrush x:Key="Brush.History.Window" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Brush.History.Card" Color="#F4F6F9" />
+    <SolidColorBrush x:Key="Brush.History.Muted" Color="#6B7280" />
+    <SolidColorBrush x:Key="Brush.History.Grid" Color="#EEF0F3" />
+    <SolidColorBrush x:Key="Brush.History.Axis" Color="#D1D5DB" />
+    <SolidColorBrush x:Key="Brush.History.Weekend" Color="#F7F8FA" />
+    <SolidColorBrush x:Key="Brush.History.Hover" Color="#EEF2FF" />
+    <SolidColorBrush x:Key="Brush.History.Average" Color="#6366F1" />
+    <SolidColorBrush x:Key="Brush.History.DownText" Color="#059669" />
+    <SolidColorBrush x:Key="Brush.History.UpText" Color="#D97706" />
+    <LinearGradientBrush x:Key="Brush.History.DownFill" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#34D399" Offset="0" />
+        <GradientStop Color="#059669" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Brush.History.UpFill" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FCD34D" Offset="0" />
+        <GradientStop Color="#F59E0B" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Zemin rengi; saydamlık ayarla çarpılır (koyu: en fazla %25 beyaz, açık: en fazla %12 siyah) -->
+    <Color x:Key="Color.Card.OnDark">#FFFFFF</Color>
+    <Color x:Key="Color.Card.OnLight">#000000</Color>
+
+    <!-- Yüke göre renk: % 50 üstü uyarı, % 80 üstü yüksek -->
+    <SolidColorBrush x:Key="Brush.Load.Warn.OnDark" Color="#FB923C" />
+    <SolidColorBrush x:Key="Brush.Load.Warn.OnLight" Color="#C2410C" />
+    <SolidColorBrush x:Key="Brush.Load.Hot.OnDark" Color="#F87171" />
+    <SolidColorBrush x:Key="Brush.Load.Hot.OnLight" Color="#B91C1C" />
+
+    <!-- Sıcaklığa göre renk: ≤0 · <10 · <20 · <28 · ≥28 °C -->
+    <SolidColorBrush x:Key="Brush.Temp.Freezing.OnDark" Color="#7DD3FC" />
+    <SolidColorBrush x:Key="Brush.Temp.Freezing.OnLight" Color="#0369A1" />
+    <SolidColorBrush x:Key="Brush.Temp.Cold.OnDark" Color="#93C5FD" />
+    <SolidColorBrush x:Key="Brush.Temp.Cold.OnLight" Color="#1D4ED8" />
+    <SolidColorBrush x:Key="Brush.Temp.Mild.OnDark" Color="#A7F3D0" />
+    <SolidColorBrush x:Key="Brush.Temp.Mild.OnLight" Color="#047857" />
+    <SolidColorBrush x:Key="Brush.Temp.Warm.OnDark" Color="#FDE68A" />
+    <SolidColorBrush x:Key="Brush.Temp.Warm.OnLight" Color="#B45309" />
+    <SolidColorBrush x:Key="Brush.Temp.Hot.OnDark" Color="#FCA5A5" />
+    <SolidColorBrush x:Key="Brush.Temp.Hot.OnLight" Color="#B91C1C" />
+
+</ResourceDictionary>
