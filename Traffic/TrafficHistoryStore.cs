@@ -7,7 +7,7 @@ namespace PulseMonitor.Traffic;
 
 /// <summary>
 /// Trafik geçmişini <c>traffic-history.json</c> dosyasına yazar/okur.
-/// Biçim: { "Version": 1, "ImportedTrafficMonitor": true, "Days": { "2026-10-28": [indirme, yükleme] } }
+/// Biçim: { "Version": 1, "Days": { "2026-10-28": [indirme, yükleme] } }
 /// </summary>
 internal static class TrafficHistoryStore
 {
@@ -17,7 +17,6 @@ internal static class TrafficHistoryStore
     private sealed class FileModel
     {
         public int Version { get; set; } = 1;
-        public bool ImportedTrafficMonitor { get; set; }
         public Dictionary<string, ulong[]> Days { get; set; } = new();
     }
 
@@ -31,7 +30,6 @@ internal static class TrafficHistoryStore
         {
             FileModel model;
             lock (FileSync) model = JsonSerializer.Deserialize<FileModel>(File.ReadAllText(path)) ?? new FileModel();
-            history.ImportedTrafficMonitor = model.ImportedTrafficMonitor;
             foreach (var (key, values) in model.Days)
             {
                 if (values.Length < 2 ||
@@ -51,7 +49,7 @@ internal static class TrafficHistoryStore
 
     public static void Save(TrafficHistory history)
     {
-        var model = new FileModel { ImportedTrafficMonitor = history.ImportedTrafficMonitor };
+        var model = new FileModel();
         foreach (var (day, t) in history.Snapshot())
             model.Days[day.ToString(DateFormat, CultureInfo.InvariantCulture)] = [t.Down, t.Up];
 

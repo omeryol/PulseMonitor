@@ -6,3 +6,5 @@
 *.tmp
 *.log
 tools/private-words.txt
+artifacts/
+.vscode/

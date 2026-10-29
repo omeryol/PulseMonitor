@@ -20,6 +20,8 @@ dotnet build -c Debug && powershell -ExecutionPolicy Bypass -File tools\check.ps
 - Derlemenin geçmesi test sayılmaz: program çalıştırılıp senaryolar gerçekten denenir.
 - Kullanıcının kullandığı kopya kurulu olandır: `%LOCALAPPDATA%\Programs\PulseMonitor`.
   Kurulum/güncelleme: `powershell -ExecutionPolicy Bypass -File tools\publish.ps1` (check + Release + düzgün kapatma + başlatma).
+- Sürüm: `tools\build_release.ps1` (kurulum + zip, `artifacts\`); yayın `git tag v<sürüm>` + push → GitHub Actions.
+  README görüntüleri `tools\screenshots.ps1` (demo verisi; gerçek veriye dokunmaz).
 - Debug denemesinden önce çalışan kopya düzgün kapatılır: `PulseMonitor.exe --exit`
   (tek kopya kuralı yüzünden yoksa Debug kopyası hemen kapanır). `Stop-Process -Force` son dakikanın trafiğini kaybettirir.
 - Ölçüm doğruluğu Windows'un kendi sayaçlarıyla karşılaştırılarak test edilir; Türkçe Windows'ta
@@ -48,7 +50,7 @@ dotnet build -c Debug && powershell -ExecutionPolicy Bypass -File tools\check.ps
 
 ## Yol haritası
 1. İskelet (tamam, 0.1.0)
-2. Veriler (tamam, 0.2.0): ağ, geçmiş, içe aktarma, GPU, disk, klavye, ayarlar penceresi, kurulum betiği
+2. Veriler (tamam, 0.2.0): ağ, geçmiş, GPU, disk, klavye, ayarlar penceresi, kurulum betiği
 3. Hava durumu (tamam, 0.3.0): Open-Meteo + Nominatim, köy/mahalle araması, önbellek
 4. Görsel tasarım (0.6.0): tasarım tezgâhı (tarayıcı taslağı) seçenekleri programda ayar;
    Meteocons + Makin-Things animasyonlu simgeleri (tools/render_icons.ps1). Atmosferik kart arka planı istenmedi.

@@ -51,6 +51,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
 
     public bool LoadColors { get => S.LoadColors; set => Update(() => S.LoadColors = value); }
     public bool Separator { get => S.Separator; set => Update(() => S.Separator = value); }
+    public bool DetailCards { get => S.DetailCards; set => Update(() => S.DetailCards = value); }
     public bool TemperatureColors { get => S.TemperatureColors; set => Update(() => S.TemperatureColors = value); }
     public bool ShowFeelsLike { get => S.ShowFeelsLike; set => Update(() => S.ShowFeelsLike = value); }
     public bool WeatherAnimation { get => S.WeatherAnimation; set => Update(() => S.WeatherAnimation = value); }

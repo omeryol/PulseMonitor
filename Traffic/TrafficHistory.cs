@@ -8,9 +8,6 @@ internal sealed class TrafficHistory
     private readonly object _sync = new();
     private readonly SortedDictionary<DateOnly, DayTraffic> _days = new();
 
-    /// <summary>TrafficMonitor geçmişi daha önce içe aktarıldı mı (tekrar aktarılmaz).</summary>
-    public bool ImportedTrafficMonitor { get; set; }
-
     public void Add(DateOnly day, ulong down, ulong up)
     {
         if (down == 0 && up == 0) return;
@@ -21,7 +18,7 @@ internal sealed class TrafficHistory
         }
     }
 
-    /// <summary>İçe aktarmada kullanılır: aynı gün iki kaynakta varsa büyük olan alınır (çift sayım olmaz).</summary>
+    /// <summary>Dosyadan yüklemede kullanılır: aynı gün iki kez geçerse büyük olan alınır (çift sayım olmaz).</summary>
     public void MergeMax(DateOnly day, DayTraffic other)
     {
         lock (_sync)

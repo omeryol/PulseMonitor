@@ -11,7 +11,7 @@
     <sys:String x:Key="Style.Label.Palette">Renk paleti</sys:String>
     <sys:String x:Key="Style.Label.ColorTarget">Renk nerede</sys:String>
     <sys:String x:Key="Style.Label.LoadColors">Yüke göre renk (CPU, RAM, GPU, disk: % 50 üstü turuncu, % 80 üstü kırmızı)</sys:String>
-    <sys:String x:Key="Style.Label.Colors">Öğe renkleri (#RRGGBB). Birini değiştirince palet “Özel” olur; özel renkler iki temada da kullanılır.</sys:String>
+    <sys:String x:Key="Style.Label.Colors">Öğe renkleri: renk kutusuna tıklayıp seçin. Birini değiştirince palet “Özel” olur; özel renkler iki temada da kullanılır.</sys:String>
     <sys:String x:Key="Style.Label.FontSize">Yazı boyutu</sys:String>
     <sys:String x:Key="Style.Label.ValueWeight">Değer kalınlığı</sys:String>
     <sys:String x:Key="Style.Label.Arrows">Ağ okları</sys:String>
@@ -29,7 +29,7 @@
     <sys:String x:Key="Style.Label.TemperatureUnit">Sıcaklık birimi</sys:String>
     <sys:String x:Key="Style.Label.FeelsLike">Derecenin yanında hissedilen sıcaklığı göster</sys:String>
     <sys:String x:Key="Style.Label.TemperatureColors">Sıcaklığa göre renk (soğuk mavi → sıcak kırmızı)</sys:String>
-    <sys:String x:Key="Style.Label.Animation">Hava durumu animasyonu (animasyonlu simgeler oynar; diğer setlerde kartta yağmur, kar, sis, şimşek)</sys:String>
+    <sys:String x:Key="Style.Label.Animation">Hava durumu animasyonu (simgede ya da kartta)</sys:String>
     <sys:String x:Key="Style.Reset">Görünümü varsayılana döndür</sys:String>
     <sys:String x:Key="Style.Theme.Auto">Otomatik (Windows’a göre)</sys:String>
     <sys:String x:Key="Style.Theme.Dark">Koyu</sys:String>
@@ -84,5 +84,14 @@
     <sys:String x:Key="Style.ColorItem.Disk">Disk</sys:String>
     <sys:String x:Key="Style.ColorItem.Keyboard">Klavye</sys:String>
     <sys:String x:Key="Style.ColorItem.Ip">IP</sys:String>
+
+    <sys:String x:Key="ColorPicker.Hint">Renk seçmek için tıklayın</sys:String>
+    <sys:String x:Key="ColorPicker.Presets">Hazır renkler</sys:String>
+    <sys:String x:Key="ColorPicker.Custom">İstediğiniz renk</sys:String>
+    <sys:String x:Key="ColorPicker.Hue">Ton</sys:String>
+    <sys:String x:Key="ColorPicker.Saturation">Doygunluk</sys:String>
+    <sys:String x:Key="ColorPicker.Brightness">Parlaklık</sys:String>
+    <sys:String x:Key="ColorPicker.Code">Renk kodu</sys:String>
+    <sys:String x:Key="ColorPicker.HexHint">İsterseniz #RRGGBB biçiminde yazıp Enter’a basın</sys:String>
 
 </ResourceDictionary>

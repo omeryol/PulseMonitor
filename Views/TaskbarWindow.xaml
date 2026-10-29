@@ -101,7 +101,9 @@
                             Padding="{DynamicResource Thickness.ColumnPadding}" CornerRadius="7"
                             Background="{DynamicResource Brush.Card}"
                             BorderBrush="{DynamicResource Brush.Separator}"
-                            BorderThickness="{DynamicResource Thickness.ColumnSeparator}">
+                            BorderThickness="{DynamicResource Thickness.ColumnSeparator}"
+                            ToolTipService.IsEnabled="{DynamicResource DetailCards.Enabled}"
+                            ToolTipService.InitialShowDelay="400" ToolTipService.ShowDuration="60000">
                         <Grid VerticalAlignment="Center">
                             <ContentControl Content="{Binding Tall}" Focusable="False" VerticalAlignment="Center" />
                             <StackPanel Grid.IsSharedSizeScope="True" VerticalAlignment="Center">
@@ -111,6 +113,15 @@
                         </Grid>
                     </Border>
                     <DataTemplate.Triggers>
+                        <!-- Ayrıntı kartı: yalnızca kartı olan sütunlarda (hava sütununun kendi kartı var) -->
+                        <DataTrigger Binding="{Binding HasCards}" Value="True">
+                            <Setter TargetName="Column" Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip Style="{StaticResource Ui.TooltipCard}" Content="{Binding Cards}"
+                                             ContentTemplate="{StaticResource Ui.DetailCardsTemplate}" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                         <!-- İlk sütunun solunda ayırıcı çizgi olmasın -->
                         <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}}" Value="0">
                             <Setter TargetName="Column" Property="BorderThickness" Value="0" />

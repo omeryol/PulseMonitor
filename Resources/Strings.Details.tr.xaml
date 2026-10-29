@@ -1,0 +1,49 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Ayrıntı kartları (fare üzerine gelince): başlıklar ve satır etiketleri. ViewModels/DetailCards.cs -->
+    <sys:String x:Key="Detail.Title.Upload">Yükleme</sys:String>
+    <sys:String x:Key="Detail.Title.Download">İndirme</sys:String>
+    <sys:String x:Key="Detail.Title.Cpu">İşlemci (CPU)</sys:String>
+    <sys:String x:Key="Detail.Title.Ram">Bellek (RAM)</sys:String>
+    <sys:String x:Key="Detail.Title.Gpu">Ekran kartı (GPU)</sys:String>
+    <sys:String x:Key="Detail.Title.Disk">Disk</sys:String>
+    <sys:String x:Key="Detail.Title.GpuTemp">GPU sıcaklığı</sys:String>
+    <sys:String x:Key="Detail.Title.DiskTemp">Disk sıcaklığı</sys:String>
+    <sys:String x:Key="Detail.Title.Ping">Ping</sys:String>
+    <sys:String x:Key="Detail.Title.LocalIp">IP adresi</sys:String>
+    <sys:String x:Key="Detail.Title.PublicIp">Dış IP adresi</sys:String>
+    <sys:String x:Key="Detail.Title.Keyboard">Kilit tuşları</sys:String>
+
+    <sys:String x:Key="Detail.Now">Şu an</sys:String>
+    <sys:String x:Key="Detail.PeakToday">Bugün en yüksek</sys:String>
+    <sys:String x:Key="Detail.TotalToday">Bugün toplam</sys:String>
+    <sys:String x:Key="Detail.Adapter">Bağdaştırıcı</sys:String>
+    <sys:String x:Key="Detail.Usage">Kullanım</sys:String>
+    <sys:String x:Key="Detail.Cores">Mantıksal işlemci</sys:String>
+    <sys:String x:Key="Detail.Uptime">Açık kalma süresi</sys:String>
+    <sys:String x:Key="Detail.UptimeDays">{0} gün {1} sa {2} dk</sys:String>
+    <sys:String x:Key="Detail.UptimeHours">{0} sa {1} dk</sys:String>
+    <sys:String x:Key="Detail.Used">Kullanılan</sys:String>
+    <sys:String x:Key="Detail.Free">Boş</sys:String>
+    <sys:String x:Key="Detail.Total">Toplam</sys:String>
+    <sys:String x:Key="Detail.Activity">Etkinlik</sys:String>
+    <sys:String x:Key="Detail.Temperature">Sıcaklık</sys:String>
+    <sys:String x:Key="Detail.Thresholds">Uyarı / yüksek</sys:String>
+    <sys:String x:Key="Detail.DiskNote">Kaynak</sys:String>
+    <sys:String x:Key="Detail.Server">Sunucu</sys:String>
+    <sys:String x:Key="Detail.Last">Son</sys:String>
+    <sys:String x:Key="Detail.MinAvgMax">En düşük / ort. / en yüksek (1 dk)</sys:String>
+    <sys:String x:Key="Detail.Loss">Kayıp (1 dk)</sys:String>
+    <sys:String x:Key="Detail.LocalIp">Yerel IP</sys:String>
+    <sys:String x:Key="Detail.PublicIp">Dış IP</sys:String>
+    <sys:String x:Key="Detail.Caps">Caps Lock</sys:String>
+    <sys:String x:Key="Detail.Num">Num Lock</sys:String>
+    <sys:String x:Key="Detail.Scroll">Scroll Lock</sys:String>
+    <sys:String x:Key="Detail.On">Açık</sys:String>
+    <sys:String x:Key="Detail.Off">Kapalı</sys:String>
+
+    <sys:String x:Key="Style.Label.DetailCards">Fare üzerine gelince ayrıntı kartı göster</sys:String>
+
+</ResourceDictionary>

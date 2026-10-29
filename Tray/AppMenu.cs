@@ -15,9 +15,17 @@ internal sealed class AppMenu
     private readonly MenuItem _startup;
     private readonly MenuItem _fullscreen;
 
-    public AppMenu(SettingsStore settings, Action openSettings, Action openHistory, Action refreshWeather, Action exit)
+    public AppMenu(SettingsStore settings, Action openSettings, Action openHistory, Action refreshWeather, Action openAbout, Action exit)
     {
         _settings = settings;
+
+        // Yeni sürüm varsa en üstte görünür (ShowUpdate).
+        _update.FontWeight = FontWeights.SemiBold;
+        _update.Visibility = Visibility.Collapsed;
+        _update.Click += (_, _) => _openUpdate?.Invoke();
+        _menu.Items.Add(_update);
+        _menu.Items.Add(_updateSeparator);
+        _updateSeparator.Visibility = Visibility.Collapsed;
 
         Add("Menu.Settings", openSettings);
         Add("Menu.History", openHistory);
@@ -27,9 +35,23 @@ internal sealed class AppMenu
         _startup = Add("Menu.StartWithWindows", () => StartupRegistration.SetEnabled(!StartupRegistration.IsEnabled()));
         _fullscreen = Add("Menu.HideInFullscreen", ToggleFullscreen);
         _menu.Items.Add(new Separator());
+        Add("Menu.About", openAbout);
         Add("Menu.Exit", exit);
 
         _menu.Opened += OnOpened;
+    }
+
+    private readonly MenuItem _update = new();
+    private readonly Separator _updateSeparator = new();
+    private Action? _openUpdate;
+
+    /// <summary>Yeni sürüm satırını gösterir ("Güncelleme var: 0.9.0").</summary>
+    public void ShowUpdate(string version, Action open)
+    {
+        _update.Header = string.Format(Core.Strings.Get("Menu.Update"), version);
+        _openUpdate = open;
+        _update.Visibility = Visibility.Visible;
+        _updateSeparator.Visibility = Visibility.Visible;
     }
 
     /// <summary>Menü açılmadan önce öne alınacak kendi gizli penceremiz (tepsi penceresi).</summary>

@@ -7,6 +7,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Theme.xaml" />
+                <ResourceDictionary Source="Resources/WindowStyles.xaml" />
+                <ResourceDictionary Source="Resources/TooltipStyles.xaml" />
                 <ResourceDictionary Source="Resources/Palettes.xaml" />
                 <ResourceDictionary Source="Resources/LabelIcons.xaml" />
                 <ResourceDictionary Source="Resources/WeatherIcons.xaml" />
@@ -14,11 +16,14 @@
                 <ResourceDictionary Source="Resources/WeatherIconsFluent.xaml" />
                 <ResourceDictionary Source="Resources/Strings.tr.xaml" />
                 <ResourceDictionary Source="Resources/Strings.Style.tr.xaml" />
+                <ResourceDictionary Source="Resources/Strings.About.tr.xaml" />
+                <ResourceDictionary Source="Resources/Strings.Details.tr.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
             <controls:IsNotNullConverter x:Key="IsNotNull" />
             <controls:NegateConverter x:Key="Negate" />
             <controls:ToGridLengthConverter x:Key="ToGridLength" />
+            <controls:MarkdownDocumentConverter x:Key="MarkdownDocument" />
             <!-- Görünüm kaynakları Core/StyleResources.cs ve Core/ThemeBrushes.cs tarafından açılışta doldurulur. -->
         </ResourceDictionary>
     </Application.Resources>

@@ -3,9 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:PulseMonitor.Views.Controls"
              Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibility}}"
-             ToolTip="{Binding TooltipText}"
+             ToolTipService.IsEnabled="{DynamicResource DetailCards.Enabled}"
              ToolTipService.InitialShowDelay="400"
              ToolTipService.ShowDuration="60000">
+
+    <!-- Renkli ipucu kartı: görev çubuğu temasına uyar (Brush.Tooltip.*). İçerik: WeatherTooltipModel. -->
+    <UserControl.ToolTip>
+        <ToolTip Content="{Binding Tooltip}" Style="{StaticResource Ui.TooltipCard}">
+            <ToolTip.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel TextElement.Foreground="{DynamicResource Brush.Text}" TextElement.FontFamily="{DynamicResource Font.Ui}"
+                                TextElement.FontSize="12" MinWidth="220" Typography.NumeralAlignment="Tabular">
+                        <TextBlock FontSize="13" FontWeight="SemiBold">
+                            <Run Text="{Binding Place, Mode=OneWay}" />
+                            <Run Text="{Binding Context, Mode=OneWay}" FontWeight="Normal" Foreground="{DynamicResource Brush.Muted}" />
+                        </TextBlock>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <Image Source="{Binding Icon}" Width="40" Height="40" Margin="0,0,10,0" DockPanel.Dock="Left" />
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run Text="{Binding Temperature, Mode=OneWay}" FontSize="22" FontWeight="SemiBold" Foreground="{Binding TemperatureBrush}" />
+                                    <Run Text="{Binding Description, Mode=OneWay}" FontSize="13" />
+                                </TextBlock>
+                                <TextBlock Text="{Binding Details}" Foreground="{DynamicResource Brush.Muted}" FontSize="11" />
+                            </StackPanel>
+                        </DockPanel>
+
+                        <Rectangle Height="1" Fill="{DynamicResource Brush.Tooltip.Border}" Margin="0,10,0,6" />
+                        <ItemsControl ItemsSource="{Binding Hours}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="46" />
+                                            <ColumnDefinition Width="28" />
+                                            <ColumnDefinition Width="44" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Time}" Foreground="{DynamicResource Brush.Muted}" VerticalAlignment="Center" />
+                                        <Image Grid.Column="1" Source="{Binding Icon}" Width="20" Height="20" HorizontalAlignment="Left" />
+                                        <TextBlock Grid.Column="2" Text="{Binding Temperature}" FontWeight="SemiBold" Foreground="{Binding TemperatureBrush}"
+                                                   HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center"
+                                                    Visibility="{Binding HasRain, Converter={StaticResource BoolToVisibility}}">
+                                            <TextBlock Text="☂" Foreground="{DynamicResource Brush.Tooltip.Rain}" Margin="0,0,4,0" />
+                                            <TextBlock Text="{Binding Rain}" Foreground="{DynamicResource Brush.Tooltip.Rain}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Margin="0,8,0,0" FontSize="11" Foreground="{DynamicResource Brush.Muted}">
+                            <Run Text="{Binding Updated, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Text="{DynamicResource Weather.Stale}" FontSize="11" Foreground="{DynamicResource Brush.Load.Warn}" TextWrapping="Wrap"
+                                   Visibility="{Binding IsStale, Converter={StaticResource BoolToVisibility}}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ToolTip.ContentTemplate>
+        </ToolTip>
+    </UserControl.ToolTip>
 
     <!-- DataContext: WeatherViewModel. Simge 26×26 sabit: resim (Renkli/Gerçekçi) ya da temanın yazı renginde şekil
          (Çizgi/Dolu). Sıcaklık satırı görünmez yer tutucuyla sabit; hava değişince genişlik değişmez.

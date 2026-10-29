@@ -26,6 +26,7 @@ internal static class StyleResources
         r["Thickness.ColumnPadding"] = s.Background == StyleOptions.BgCards ? new Thickness(8, 0, 8, 0) : new Thickness(2, 0, 2, 0);
         r["Thickness.ColumnSeparator"] = s.Separator ? new Thickness(1, 0, 0, 0) : new Thickness(0);
 
+        r["DetailCards.Enabled"] = s.DetailCards;
         r["Visibility.SparkBehind"] = s.Sparkline == StyleOptions.SparkBehind ? Visibility.Visible : Visibility.Collapsed;
         r["Visibility.SparkSide"] = s.Sparkline == StyleOptions.SparkSide ? Visibility.Visible : Visibility.Collapsed;
     }

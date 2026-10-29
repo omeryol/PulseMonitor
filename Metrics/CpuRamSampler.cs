@@ -9,6 +9,10 @@ internal sealed class CpuRamSampler
     private long _prevIdle;
     private long _prevTotal;
 
+    /// <summary>Son okumada toplam ve kullanılabilir fiziksel bellek (bayt); ayrıntı kartı için.</summary>
+    public ulong RamTotal { get; private set; }
+    public ulong RamAvailable { get; private set; }
+
     public (double Cpu, double Ram) Sample()
     {
         double cpu = 0;
@@ -22,7 +26,13 @@ internal sealed class CpuRamSampler
         }
 
         var mem = new MEMORYSTATUSEX { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
-        double ram = Kernel32.GlobalMemoryStatusEx(ref mem) ? mem.dwMemoryLoad : 0;
+        double ram = 0;
+        if (Kernel32.GlobalMemoryStatusEx(ref mem))
+        {
+            ram = mem.dwMemoryLoad;
+            RamTotal = mem.ullTotalPhys;
+            RamAvailable = mem.ullAvailPhys;
+        }
 
         return (Math.Clamp(cpu, 0, 100), ram);
     }

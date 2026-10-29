@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\PulseMonitor.ico</ApplicationIcon>
-    <Version>0.7.1</Version>
+    <Version>0.9.0</Version>
     <Product>PulseMonitor</Product>
     <SatelliteResourceLanguages>tr</SatelliteResourceLanguages>
   </PropertyGroup>
@@ -19,6 +19,10 @@
     <Resource Include="Assets\Weather\*.png" />
     <!-- Meteocons ve Makin-Things (MIT), tools/render_icons.ps1 ile film şeridine çevrildi -->
     <Resource Include="Assets\WeatherAnim\**\*.png" />
+    <!-- Hakkında penceresinde gösterilen lisans metinleri ve simge -->
+    <Resource Include="Assets\AppIcon.png" />
+    <Resource Include="LICENSE" />
+    <Resource Include="THIRD-PARTY-NOTICES.md" />
   </ItemGroup>
 
 </Project>

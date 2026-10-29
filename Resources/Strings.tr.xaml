@@ -58,6 +58,7 @@
     <sys:String x:Key="Settings.HideFullscreen">Tam ekran uygulamada gizle</sys:String>
     <sys:String x:Key="Settings.Gap">Sistem tepsisine uzaklık</sys:String>
     <sys:String x:Key="Settings.Close">Kapat</sys:String>
+    <sys:String x:Key="Settings.AutoSave">Değişiklikler hemen uygulanır ve kaydedilir.</sys:String>
 
     <!-- Hava durumu -->
     <sys:String x:Key="Weather.Heading">Hava durumu</sys:String>

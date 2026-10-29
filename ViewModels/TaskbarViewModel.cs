@@ -31,6 +31,20 @@ public sealed class TaskbarViewModel
             [TaskbarItemId.DiskTemp] = DiskTemp,
             [TaskbarItemId.Ping] = Ping,
         };
+
+        // Ayrıntı kartları: hava hariç her öğe (havanın kendi renkli kartı var). Başlık rengi öğenin rengi.
+        foreach (var (id, item) in _items.Where(kv => kv.Key != TaskbarItemId.Weather))
+            _cards[id] = new DetailCard(id, Strings.Get($"Detail.Title.{id}"),
+                item is MetricLine line ? line.BrushKey : "Brush.Item.Keyboard");
+    }
+
+    private readonly Dictionary<string, DetailCard> _cards = new();
+
+    /// <summary>Ayrıntı kartlarını yeniler (her ölçümde; kart açık değilse yalnızca birkaç metin üretir).</summary>
+    public void UpdateDetails(DetailContext context)
+    {
+        DetailCards.TrackPeaks(context.Metrics.Network.DownBps, context.Metrics.Network.UpBps);
+        foreach (DetailCard card in _cards.Values) card.Rows = DetailCards.Rows(card.Id, context);
     }
 
     public WeatherViewModel Weather { get; } = new();
@@ -63,10 +77,10 @@ public sealed class TaskbarViewModel
     /// <summary>Sıra/görünürlük değişince sütunları yeniden kurar; değişiklik yoksa dokunmaz (titreme olmaz).</summary>
     internal void Rebuild(AppSettings s)
     {
-        IEnumerable<object> visible = s.Items
+        var visible = s.Items
             .Where(i => i.Visible && _items.ContainsKey(i.Id))
             .Where(i => i.Id != TaskbarItemId.Weather || s.WeatherLocation is not null)
-            .Select(i => _items[i.Id]);
+            .Select(i => (_items[i.Id], _cards.GetValueOrDefault(i.Id)));
 
         List<TaskbarColumn> columns = TaskbarLayout.Build(visible);
         if (columns.SequenceEqual(Columns)) return;
@@ -83,6 +97,7 @@ public sealed class TaskbarViewModel
             var (text, icon) = LabelFor(id, line.DefaultLabel, s);
             line.ApplyStyle(text, icon, s.ColorTarget, s.LoadColors);
         }
+        foreach (DetailCard card in _cards.Values) card.RefreshAccent();
         Weather.RefreshBrush();
     }
 

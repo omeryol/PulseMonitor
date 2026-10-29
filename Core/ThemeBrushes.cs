@@ -14,6 +14,7 @@ internal static class ThemeBrushes
     [
         "Text", "Muted", "Separator", "Load.Warn", "Load.Hot",
         "Temp.Freezing", "Temp.Cold", "Temp.Mild", "Temp.Warm", "Temp.Hot",
+        "Tooltip.Bg", "Tooltip.Border", "Tooltip.Rain",
     ];
 
     private static readonly SolidColorBrush HitTestBrush = Frozen(Color.FromArgb(1, 0, 0, 0));

@@ -13,6 +13,14 @@
     <SolidColorBrush x:Key="Brush.Separator.OnDark" Color="#33FFFFFF" />
     <SolidColorBrush x:Key="Brush.Separator.OnLight" Color="#26000000" />
 
+    <!-- Hava durumu ipucu kartı -->
+    <SolidColorBrush x:Key="Brush.Tooltip.Bg.OnDark" Color="#F21E2430" />
+    <SolidColorBrush x:Key="Brush.Tooltip.Bg.OnLight" Color="#F7FFFFFF" />
+    <SolidColorBrush x:Key="Brush.Tooltip.Border.OnDark" Color="#3A4556" />
+    <SolidColorBrush x:Key="Brush.Tooltip.Border.OnLight" Color="#D6DCE4" />
+    <SolidColorBrush x:Key="Brush.Tooltip.Rain.OnDark" Color="#60A5FA" />
+    <SolidColorBrush x:Key="Brush.Tooltip.Rain.OnLight" Color="#1D4ED8" />
+
     <!-- Trafik geçmişi penceresi (açık zeminli normal pencere) -->
     <SolidColorBrush x:Key="Brush.History.Window" Color="#FFFFFF" />
     <SolidColorBrush x:Key="Brush.History.Card" Color="#F4F6F9" />

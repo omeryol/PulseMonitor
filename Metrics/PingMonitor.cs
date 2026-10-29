@@ -19,6 +19,24 @@ internal sealed class PingMonitor : IDisposable
     private string? _lastError;
 
     public double? LatencyMs { get; private set; }
+
+    private const int HistorySize = 12; // son 1 dakika (5 sn aralıkla)
+    private readonly Queue<double?> _history = new();
+
+    /// <summary>Son 1 dakika: en düşük, ortalama, en yüksek (ms) ve kayıp oranı (%); ayrıntı kartı için.</summary>
+    public (double? Min, double? Avg, double? Max, double LossPercent) Stats
+    {
+        get
+        {
+            lock (_history)
+            {
+                if (_history.Count == 0) return (null, null, null, 0);
+                var ok = _history.Where(v => v.HasValue).Select(v => v!.Value).ToList();
+                double loss = 100.0 * (_history.Count - ok.Count) / _history.Count;
+                return ok.Count == 0 ? (null, null, null, loss) : (ok.Min(), ok.Average(), ok.Max(), loss);
+            }
+        }
+    }
     public event Action? Changed;
 
     public PingMonitor(AppSettings settings)
@@ -48,6 +66,11 @@ internal sealed class PingMonitor : IDisposable
         }
         finally
         {
+            lock (_history)
+            {
+                _history.Enqueue(LatencyMs);
+                while (_history.Count > HistorySize) _history.Dequeue();
+            }
             Interlocked.Exchange(ref _busy, 0);
             Changed?.Invoke();
         }

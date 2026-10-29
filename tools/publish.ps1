@@ -11,7 +11,9 @@ $staging = Join-Path $env:TEMP 'PulseMonitor-publish'
 if ($LASTEXITCODE -ne 0) { exit 1 }
 
 if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
-dotnet publish (Join-Path $root 'PulseMonitor.csproj') -c Release -o $staging --nologo -v q
+# Same layout as the installer (tools/build_release.ps1): single-file exe + Assets.
+dotnet publish (Join-Path $root 'PulseMonitor.csproj') -c Release -r win-x64 --self-contained false `
+  -p:PublishSingleFile=true -p:DebugType=none -o $staging --nologo -v q
 if ($LASTEXITCODE -ne 0) { Write-Host 'publish: build FAILED' -ForegroundColor Red; exit 1 }
 
 # Close the running copy (any install location) gracefully, force only as a last resort.
@@ -24,7 +26,8 @@ if ($running) {
 }
 
 New-Item -ItemType Directory -Force $dest | Out-Null
-robocopy $staging $dest /MIR /NJH /NJS /NFL /NDL /NP | Out-Null
+# /XF: keep the installer's uninstaller (unins000.exe/.dat) when the app was installed with the setup.
+robocopy $staging $dest /MIR /XF unins*.exe unins*.dat /NJH /NJS /NFL /NDL /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Host "publish: copy FAILED ($LASTEXITCODE)" -ForegroundColor Red; exit 1 }
 Remove-Item $staging -Recurse -Force
 

@@ -1,0 +1,47 @@
+# Sürüm yayını: "v0.7.1" gibi bir etiket gönderilince Windows'ta derler, kurulum dosyasını ve taşınabilir zip'i
+# GitHub Releases'a ekler. Elle çalıştırılınca (Actions → Release → Run workflow) yalnızca dosyaları üretir.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer and portable zip
+        shell: pwsh
+        run: |
+          $version = ''
+          if ('${{ github.ref_type }}' -eq 'tag') { $version = '${{ github.ref_name }}'.TrimStart('v') }
+          powershell -ExecutionPolicy Bypass -File tools/build_release.ps1 -Version $version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PulseMonitor
+          path: |
+            artifacts/PulseMonitor-Setup-*.exe
+            artifacts/PulseMonitor-*-portable.zip
+
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            artifacts/PulseMonitor-Setup-*.exe
+            artifacts/PulseMonitor-*-portable.zip
+          generate_release_notes: true

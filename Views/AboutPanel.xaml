@@ -1,0 +1,110 @@
+<UserControl x:Class="PulseMonitor.Views.AboutPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Hyperlink.RequestNavigate="OnRequestNavigate">
+
+    <!-- DataContext: AboutViewModel. Ayarlar → Hakkında sekmesinde ve Hakkında penceresinde kullanılır.
+         Kaynak gösterimi lisans gereğidir (Open-Meteo CC BY 4.0, OSM ODbL, GeoNames CC BY 4.0, simgeler MIT). -->
+    <UserControl.Resources>
+        <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource Ui.Heading}" />
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,2" />
+        </Style>
+        <Style x:Key="Small" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="#555" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        <Style x:Key="DocCard" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource Ui.Card}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Ui.Border}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+            <Image Source="/Assets/AppIcon.png" Width="40" Height="40" Margin="0,0,12,0" />
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock FontSize="20" FontWeight="SemiBold">
+                    <Run Text="PulseMonitor" />
+                    <Run Text="{Binding Version, Mode=OneWay}" FontSize="13" FontWeight="Normal" Foreground="#666" />
+                </TextBlock>
+                <TextBlock Text="{DynamicResource About.Tagline}" Style="{StaticResource Small}" />
+            </StackPanel>
+        </StackPanel>
+        <TextBlock Margin="0,10,0,0">
+            <Run Text="{DynamicResource About.Project}" />
+            <Hyperlink NavigateUri="https://github.com/omeryol/PulseMonitor">github.com/omeryol/PulseMonitor</Hyperlink>
+        </TextBlock>
+        <TextBlock>
+            <Run Text="{DynamicResource About.License}" />
+            <Hyperlink NavigateUri="https://opensource.org/license/mit">MIT</Hyperlink>
+            <Run Text="· © 2026 omeryol" />
+        </TextBlock>
+        <TextBlock Text="{DynamicResource About.Inspired}" Style="{StaticResource Small}" />
+
+        <DockPanel Margin="0,10,0,0">
+            <Button DockPanel.Dock="Right" Content="{DynamicResource Update.CheckNow}" Command="{Binding CheckCommand}" Padding="10,2" />
+            <Button DockPanel.Dock="Right" Content="{DynamicResource Update.Download}" Command="{Binding DownloadCommand}" Padding="10,2"
+                    Margin="0,0,8,0" Visibility="{Binding UpdateAvailable, Converter={StaticResource BoolToVisibility}}" />
+            <TextBlock Text="{Binding UpdateText}" VerticalAlignment="Center" />
+        </DockPanel>
+
+        <TextBlock Text="{DynamicResource About.DataHeading}" Style="{StaticResource Heading}" />
+        <TextBlock>
+            <Hyperlink NavigateUri="https://open-meteo.com">Open-Meteo</Hyperlink>
+            <Run Text="{DynamicResource About.Data.OpenMeteo}" />
+            <Hyperlink NavigateUri="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Hyperlink>
+        </TextBlock>
+        <TextBlock>
+            <Hyperlink NavigateUri="https://www.openstreetmap.org/copyright">© OpenStreetMap</Hyperlink>
+            <Run Text="{DynamicResource About.Data.Osm}" />
+            <Hyperlink NavigateUri="https://opendatacommons.org/licenses/odbl/">ODbL</Hyperlink>
+        </TextBlock>
+        <TextBlock>
+            <Hyperlink NavigateUri="https://www.geonames.org">GeoNames</Hyperlink>
+            <Run Text="{DynamicResource About.Data.GeoNames}" />
+            <Hyperlink NavigateUri="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Hyperlink>
+        </TextBlock>
+        <TextBlock>
+            <Hyperlink NavigateUri="https://www.ipify.org">ipify</Hyperlink>
+            <Run Text="{DynamicResource About.Data.Ipify}" />
+        </TextBlock>
+
+        <TextBlock Text="{DynamicResource About.IconsHeading}" Style="{StaticResource Heading}" />
+        <TextBlock>
+            <Hyperlink NavigateUri="https://github.com/basmilius/meteocons">Meteocons</Hyperlink>
+            <Run Text="— MIT, © 2020-present Bas Milius" />
+        </TextBlock>
+        <TextBlock>
+            <Hyperlink NavigateUri="https://github.com/Makin-Things/weather-icons">Makin-Things weather-icons</Hyperlink>
+            <Run Text="— MIT, © 2019 Custom cards for Home Assistant" />
+        </TextBlock>
+        <TextBlock>
+            <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-emoji">Microsoft Fluent Emoji</Hyperlink>
+            <Run Text="— MIT, © Microsoft Corporation" />
+        </TextBlock>
+        <TextBlock>
+            <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-system-icons">Microsoft Fluent UI System Icons</Hyperlink>
+            <Run Text="— MIT, © 2020 Microsoft Corporation" />
+        </TextBlock>
+
+        <TextBlock Text="{DynamicResource About.PrivacyHeading}" Style="{StaticResource Heading}" />
+        <TextBlock Text="{DynamicResource About.Privacy}" />
+
+        <Expander Header="{DynamicResource About.FullTexts}" Margin="0,16,0,0">
+            <StackPanel Margin="0,8,0,0">
+                <Border Style="{StaticResource DocCard}" Margin="0,0,0,10">
+                    <FlowDocumentScrollViewer Document="{Binding LicenseText, Converter={StaticResource MarkdownDocument}}"
+                                              MaxHeight="260" VerticalScrollBarVisibility="Auto" IsToolBarVisible="False" />
+                </Border>
+                <Border Style="{StaticResource DocCard}">
+                    <FlowDocumentScrollViewer Document="{Binding NoticesText, Converter={StaticResource MarkdownDocument}}"
+                                              MaxHeight="420" VerticalScrollBarVisibility="Auto" IsToolBarVisible="False" />
+                </Border>
+            </StackPanel>
+        </Expander>
+    </StackPanel>
+</UserControl>

@@ -69,7 +69,8 @@ internal sealed class MetricsHub : IDisposable
             _history.Add(DateOnly.FromDateTime(DateTime.Now), net.DownBytes, net.UpBytes);
 
             SampleTemperatures();
-            Sampled?.Invoke(new MetricsSnapshot(cpu, ram, SampleGpu(), SampleDisk(), net, _gpuTemp, _diskTemp));
+            Sampled?.Invoke(new MetricsSnapshot(cpu, ram, SampleGpu(), SampleDisk(), net, _gpuTemp, _diskTemp,
+                _cpuRam.RamTotal, _cpuRam.RamAvailable, _network.AdapterNames));
             _lastError = null;
         }
         catch (Exception ex)

@@ -29,6 +29,8 @@ public sealed class StyleSettings
     public bool Separator { get; set; }
     public int LabelGap { get; set; } = 6;
     public int Scale { get; set; } = 100;
+    /// <summary>Fare üzerine gelince öğenin ayrıntı kartı (hava ipucu dahil).</summary>
+    public bool DetailCards { get; set; } = true;
 
     // Hava durumu
     public string WeatherIcons { get; set; } = StyleOptions.IconColor;

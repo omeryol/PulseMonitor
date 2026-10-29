@@ -13,6 +13,7 @@ internal sealed class TrayIcon : IDisposable
 {
     private const int CallbackMessage = User32.WM_APP + 1;
     private const int IconId = 1;
+    private const int NIN_BALLOONUSERCLICK = 0x0405;
 
     private readonly HwndSource _source;
     private readonly int _taskbarCreatedMsg;
@@ -23,6 +24,9 @@ internal sealed class TrayIcon : IDisposable
     public IntPtr Handle => _source.Handle;
 
     public event Action? RightClick;
+
+    /// <summary>Gösterilen bildirime tıklandı (NIN_BALLOONUSERCLICK).</summary>
+    public event Action? NotificationClicked;
     public event Action? LeftDoubleClick;
 
     public TrayIcon(string iconPath, string tooltip)
@@ -78,6 +82,7 @@ internal sealed class TrayIcon : IDisposable
             int mouse = (int)(lParam.ToInt64() & 0xFFFF);
             if (mouse == User32.WM_RBUTTONUP) RightClick?.Invoke();
             else if (mouse == User32.WM_LBUTTONDBLCLK) LeftDoubleClick?.Invoke();
+            else if (mouse == NIN_BALLOONUSERCLICK) NotificationClicked?.Invoke();
             handled = true;
         }
         else if (msg == _taskbarCreatedMsg)

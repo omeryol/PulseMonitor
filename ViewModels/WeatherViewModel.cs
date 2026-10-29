@@ -28,7 +28,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     private string _placeholder = "-88°";
     private string _feelsPlaceholder = "";
     private string _place = "";
-    private string _tooltip = "";
+    private WeatherTooltipModel? _tooltip;
     private double _opacity = 1;
     private WeatherAnimationKind _animation;
 
@@ -57,7 +57,8 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     public string FeelsLikePlaceholder { get => _feelsPlaceholder; private set => Set(ref _feelsPlaceholder, value); }
 
     public string PlaceName { get => _place; private set => Set(ref _place, value); }
-    public string TooltipText { get => _tooltip; private set => Set(ref _tooltip, value); }
+    /// <summary>Renkli ipucu kartının içeriği (ViewModels/WeatherTooltip.cs).</summary>
+    public WeatherTooltipModel? Tooltip { get => _tooltip; private set => Set(ref _tooltip, value); }
     public WeatherAnimationKind Animation { get => _animation; private set => Set(ref _animation, value); }
 
     /// <summary>Veri eskiyse (internet yok) soluk gösterilir.</summary>
@@ -85,7 +86,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
             Animation = WeatherAnimationKind.None;
             SetTemperatureBrush("Brush.Text");
             Opacity = 1;
-            TooltipText = $"{loc.ShownName} ({loc.Context})\n{Strings.Get("Weather.Loading")}";
+            Tooltip = WeatherTooltip.Loading(loc);
             return;
         }
 
@@ -108,7 +109,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;
         Opacity = stale ? 0.55 : 1;
-        TooltipText = WeatherTooltip.Build(loc, report, f, stale);
+        Tooltip = WeatherTooltip.Build(loc, report, f, stale);
     }
 
     private static string FeelsLike(string degrees) => string.Format(Tr, Strings.Get("Weather.FeelsLikeShort"), degrees);

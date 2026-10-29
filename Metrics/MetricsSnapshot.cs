@@ -8,4 +8,7 @@ public sealed record MetricsSnapshot(
     double? DiskPercent,
     NetworkSample Network,
     double? GpuTempC = null,
-    double? DiskTempC = null);
+    double? DiskTempC = null,
+    ulong RamTotal = 0,
+    ulong RamAvailable = 0,
+    string Adapters = "--");

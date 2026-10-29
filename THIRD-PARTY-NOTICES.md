@@ -8,7 +8,6 @@ lisans gereği gösterilen kaynaklar aşağıdadır. Kaynak satırı ayarlar pen
 | [Open-Meteo](https://open-meteo.com) | Hava tahmini ve konum araması | Veri CC BY 4.0; ücretsiz API ticari olmayan kullanım içindir, günlük 10 000 istek sınırı |
 | [GeoNames](https://www.geonames.org) (Open-Meteo konum araması üzerinden) | Köy / kasaba / ilçe adları | CC BY 4.0 |
 | [OpenStreetMap Nominatim](https://nominatim.org) | Mahalle ve köy araması | Veri © OpenStreetMap katkıcıları, ODbL; kullanım koşulu: en fazla saniyede 1 istek, tanımlayıcı User-Agent, toplu sorgu yok |
-
 | [ipify](https://www.ipify.org) | Dış IP adresi (yalnızca "Dış IP" öğesi açıkken) | Ücretsiz, açık kaynak servis; kayıt tutmadığını beyan eder |
 
 Kullanım hacmi: dış IP 15 dakikada bir ve ağ değişince; hava durumu 15 dakikada bir (günde ~100 istek); konum araması yalnızca kullanıcı "Ara"ya bastığında.
@@ -19,7 +18,6 @@ Kullanım hacmi: dış IP 15 dakikada bir ve ağ değişince; hava durumu 15 dak
 |---|---|---|
 | [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (3D) | `Assets/Weather/*.png` — "Gerçekçi 3D" hava simgeleri, 64 px'e küçültüldü | MIT, Copyright (c) Microsoft Corporation |
 | [Microsoft Fluent UI System Icons](https://github.com/microsoft/fluentui-system-icons) | `Resources/WeatherIconsFluent.xaml` — "Düz çizgi" (regular) ve "Monokrom" (filled) hava simgeleri, SVG yolları XAML'e çevrildi | MIT, Copyright (c) 2020 Microsoft Corporation |
-
 | [Meteocons](https://github.com/basmilius/meteocons) (@meteocons/svg ve svg-static 0.1.0; fill, flat, line) | `Assets/WeatherAnim/Meteocons*/` — animasyonlu SVG'lerden üretilmiş film şeridi PNG'leri ve sabit PNG'ler | MIT, Copyright (c) 2020-present Bas Milius |
 | [Makin-Things weather-icons](https://github.com/Makin-Things/weather-icons) (animated, static) | `Assets/WeatherAnim/MakinThings/` — aynı yöntemle | MIT, Copyright (c) 2019 Custom cards for Home Assistant |
 
@@ -35,4 +33,3 @@ MIT Lisansı (dört proje için aynı metin):
 > THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 TrafficMonitor (MIT, © zhongyang219) yalnızca davranış referansıdır; kodu alınırsa telif ve lisans metni buraya eklenir.
-Kullanıcının TrafficMonitor geçmiş dosyası (`history_traffic.dat`) yalnızca okunur.

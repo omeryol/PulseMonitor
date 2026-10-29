@@ -35,6 +35,12 @@ public sealed class AppSettings
     /// <summary>Uyarı bildirimleri.</summary>
     public AlertSettings Alerts { get; set; } = new();
 
+    /// <summary>GitHub'da yeni sürüm denetimi (günde bir).</summary>
+    public bool CheckForUpdates { get; set; } = true;
+
+    /// <summary>Bildirimi gösterilmiş son sürüm (aynı sürüm için tekrar bildirim yok).</summary>
+    public string? LastNotifiedVersion { get; set; }
+
     public bool IsShown(string id)
     {
         List<TaskbarItemSetting> items = Items;

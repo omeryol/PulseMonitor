@@ -8,7 +8,7 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 |---|---|
 | `App.xaml` | Uygulama kaynakları (tema, metinler, BoolToVisibility) |
 | `App.xaml.cs` | Başlatma: parçaları oluşturur ve bağlar, `--exit`, kapanışta temizler, hata yakalayıcılar |
-| `Core/AppPaths.cs` | Diskteki tüm yollar (`%LOCALAPPDATA%\PulseMonitor`) |
+| `Core/AppPaths.cs` | Diskteki tüm yollar (`%LOCALAPPDATA%\PulseMonitor`; `PULSEMONITOR_DATA_DIR` ile başka klasör — demo/ekran görüntüsü) |
 | `Core/Log.cs` | Dosya günlüğü (`logs/pulsemonitor.log`, 1 MB'ta devreder) |
 | `Core/SingleInstance.cs` | Tek kopya çalışma (mutex) ve `--exit` ile düzgün kapanma isteği (olay) |
 | `Core/Strings.cs` | Koddan arayüz metni okuma |
@@ -43,6 +43,7 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | `Platform/StartupRegistration.cs` | Windows ile başlat (HKCU Run) |
 | `Platform/SystemActions.cs` | Görev Yöneticisi açma vb. |
 | `Platform/SystemTheme.cs` | Görev çubuğu açık/koyu tema algılama |
+| `Platform/UpdateChecker.cs` | GitHub'da yeni sürüm denetimi (1 dk sonra, günde bir; aynı sürüm için tek bildirim) |
 
 ## Ölçümler
 | Dosya | Ne yapar |
@@ -65,7 +66,6 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 |---|---|
 | `Traffic/TrafficHistory.cs` | Günlük toplamlar (bellekte, iş parçacığı güvenli) |
 | `Traffic/TrafficHistoryStore.cs` | `traffic-history.json` okuma/yazma (atomik, bozuksa yedek) |
-| `Traffic/TrafficMonitorImporter.cs` | TrafficMonitor `history_traffic.dat` içe aktarma (ilk açılışta bir kez, yalnızca okur) |
 
 ## Hava durumu
 | Dosya | Ne yapar |
@@ -99,8 +99,13 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | `Views/Controls/Sparkline.cs` | Ağ mini grafiği (doğrudan çizim) |
 | `Views/Controls/SpriteIcon.cs` | Animasyonlu hava simgesi: film şeridi PNG'sini 10 kare/sn oynatır, kapalıysa sabit hâli |
 | `Views/Controls/WeatherAnimation.cs` | Hava kartı animasyonu (yağmur, kar, sis, şimşek; 15 kare/sn) |
+| `Views/Controls/ColorPicker.xaml` | Renk seçici: hazır renkler + ton/doygunluk/parlaklık, isteğe bağlı renk kodu |
+| `Views/Controls/ColorPicker.xaml.cs` | Renk seçici davranışı, hazır renk listesi |
+| `Views/Controls/ColorMath.cs` | RGB ↔ HSV dönüşümü |
 | `Views/Controls/ChartConverters.cs` | Grafik dönüştürücüleri: `Negate`, `ToGridLength` |
 | `Views/Controls/IsNotNullConverter.cs` | Şablon tetikleyicileri için null denetimi |
+| `Views/Controls/MarkdownDocument.cs` | Lisans / bildirim metnini biçimli FlowDocument'e çevirir (başlık, tablo, alıntı, bağlantı) |
+| `Views/Controls/MarkdownDocumentConverter.cs` | Hakkında'daki tam metinler için metin → FlowDocument dönüştürücüsü |
 | `Views/Settings/StylePanel.xaml` | Ayarlar → Görünüm sekmesi |
 | `Views/Settings/StylePanel.xaml.cs` | (boş kod arkası) |
 | `Views/Settings/WeatherStylePanel.xaml` | Ayarlar → Hava durumu görünümü (simge seti, birim, hissedilen, renk, animasyon) |
@@ -111,7 +116,11 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | `Views/Controls/WeatherItem.xaml.cs` | (boş kod arkası) |
 | `Views/Settings/WeatherSettingsPanel.xaml` | Ayarlar: hava durumu bölümü (arama, seçim, görünen ad, kaynak satırı) |
 | `Views/Settings/WeatherSettingsPanel.xaml.cs` | (boş kod arkası) |
-| `Views/AppWindows.cs` | Ayarlar ve trafik geçmişi pencereleri (tek kopya) |
+| `Views/AppWindows.cs` | Ayarlar, trafik geçmişi ve Hakkında pencereleri (tek kopya) |
+| `Views/AboutPanel.xaml` | Hakkında: sürüm, güncelleme, proje, lisans, veri kaynakları, simgeler, gizlilik, lisans metinleri |
+| `Views/AboutPanel.xaml.cs` | Bağlantıları tarayıcıda açma |
+| `Views/AboutWindow.xaml` | Hakkında penceresi (menüden) |
+| `Views/AboutWindow.xaml.cs` | Kapat düğmesi |
 | `Views/HistoryWindow.xaml` | Trafik geçmişi: ay/yıl çubuk grafiği ve özet |
 | `Views/HistoryWindow.xaml.cs` | (boş kod arkası) |
 | `Views/Settings/AlertsPanel.xaml` | Ayarlar → Uyarılar |
@@ -132,6 +141,9 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | `ViewModels/ColorRow.cs` | Özel renk satırı (#RRGGBB + önizleme) |
 | `ViewModels/WeatherSettingsViewModel.cs` | Konum arama/seçme, `LocationOption` |
 | `ViewModels/RelayCommand.cs` | Basit komut |
+| `ViewModels/AboutViewModel.cs` | Hakkında: sürüm, güncelleme durumu, gömülü LICENSE / THIRD-PARTY-NOTICES |
+| `ViewModels/DetailCard.cs` | Ayrıntı kartı modeli (`DetailCard`, `DetailRow`, `DetailContext`) |
+| `ViewModels/DetailCards.cs` | Öğe başına ayrıntı satırları, bugünün en yüksek hızları |
 | `ViewModels/HistoryViewModel.cs` | Geçmiş penceresi: dönem, çubuklar (`HistoryBar`), değer çizgileri (`GridLine`), ortalama, özet kartları |
 | `ViewModels/HistoryRows.cs` | Günlük kayıtlardan ay/yıl satırları (hafta sonu, bugün) |
 | `ViewModels/AlertsSettingsViewModel.cs` | Ayarlar → Uyarılar, deneme bildirimi |
@@ -143,6 +155,10 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | `Resources/WeatherIconsFluent.xaml` | Hava simgeleri: Çizgi ve Dolu (Fluent UI System Icons; `tools/fetch_icons.ps1` üretir) |
 | `Resources/Strings.tr.xaml` | Arayüz metinleri (Türkçe) |
 | `Resources/Strings.Style.tr.xaml` | Görünüm ayarlarının metinleri (`Style.*`) |
+| `Resources/Strings.About.tr.xaml` | Hakkında ve güncelleme metinleri |
+| `Resources/Strings.Details.tr.xaml` | Ayrıntı kartı metinleri (`Detail.*`) |
+| `Resources/WindowStyles.xaml` | Ayarlar/geçmiş/Hakkında pencerelerinin stili: dikey sekmeler, düğmeler, başlıklar (`Ui.*`) |
+| `Resources/TooltipStyles.xaml` | Görev çubuğu ayrıntı kartı ve hava ipucu kart stili |
 
 ## Windows API
 | Dosya | Ne yapar |
@@ -162,6 +178,10 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | `tools/check.ps1` | Bekçi: her dosya haritada mı, satır sınırı, kişisel veri taraması (genel kalıplar + git dışı `tools/private-words.txt`) |
 | `tools/render_icons.ps1` | Meteocons + Makin-Things SVG'lerini görünmez Edge ile film şeridi PNG'ye çevirir (`Assets/WeatherAnim`) |
 | `tools/fetch_icons.ps1` | Microsoft MIT simgelerini indirir, PNG'leri 64 px'e küçültür, SVG'leri XAML şekline çevirir |
+| `tools/build_release.ps1` | Sürüm dosyaları: `artifacts\PulseMonitor-Setup-<sürüm>.exe` (Inno Setup) + taşınabilir zip |
+| `tools/screenshots.ps1` | README görüntüleri (`docs/screenshots`): demo verisiyle, kişisel veri olmadan |
+| `installer/PulseMonitor.iss` | Kurulum: kullanıcı klasörü, Başlat menüsü, açılışta başlat, .NET 10 indirme, güncellemede düzgün kapatma, kaldırma |
+| `.github/workflows/release.yml` | `v*` etiketinde GitHub Actions: derle, kurulumu ve zip'i Releases'a ekle |
 | `tools/publish.ps1` | Release derler, `%LOCALAPPDATA%\Programs\PulseMonitor`'a kurar, çalışanı düzgün kapatıp yenisini başlatır |
 
 ## Veri dosyaları (`%LOCALAPPDATA%\PulseMonitor`)
@@ -183,6 +203,8 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | Yazı açık temada okunmuyor | Ayarlar → Görünüm → tema, `Platform/SystemTheme.cs`, `Core/ThemeBrushes.cs`, `Resources/Theme.xaml` |
 | Görünüm ayarı uygulanmıyor | `App.ApplyAppearance`, `Core/StyleResources.cs` / `ThemeBrushes.cs`, şablondaki DynamicResource anahtarı |
 | Hava simgesi boş | `Weather/WeatherIcons.cs` anahtarı, `Resources/WeatherIcons*.xaml`, `Assets/Weather`, `Assets/WeatherAnim` (csproj Resource), günlükte "Hava simgesi yüklenemedi" |
+| Kurulum .NET bulamıyor / kurmuyor | `installer/PulseMonitor.iss` → `RuntimeInstalled`, `NextButtonClick` (aka.ms adresi) |
+| Kaldırınca kısayol/kayıt kalıyor | `installer/PulseMonitor.iss` → `[Icons]`, `CurUninstallStepChanged` |
 | Açılışta hemen kapanıyor | Günlükte "Beklenmeyen hata" (`App` static ctor), çoğunlukla XAML kaynağında yinelenen anahtar |
 | Ağ hızı sıfır / yanlış | Ayarlarda seçili bağdaştırıcı, `Metrics/NetworkSampler.cs`, günlükte "MIB_IF_ROW2" |
 | Trafik iki kat sayılıyor | `Metrics/NetworkAdapters.cs` (filtre arabirimleri atlanıyor mu), seçili bağdaştırıcı |
@@ -193,6 +215,8 @@ Konu → dosya. Bir sorun olduğunda önce buraya bakılır. Yeni dosya ekleninc
 | Değer değişince yazı kayıyor | `Views/TaskbarWindow.xaml` MetricLine şablonu (yer tutucu, SharedSizeGroup), `ValueFormat.*Placeholder` |
 | Sıcaklık "--" | `Metrics/TemperatureSampler.cs`: GPU WDDM 2.4+ ister; disk yalnızca NVMe (SATA diskler bildirmez) |
 | Ping "--" | Ayarlar → Genel → ping sunucusu, günlükte "Ping başarısız" |
+| Ayrıntı kartı açılmıyor | Ayarlar → Görünüm → ayrıntı kartı; `DetailCards.Enabled` (StyleResources), `TaskbarWindow.xaml` sütun tetikleyicisi |
+| Güncelleme uyarısı gelmiyor | `Platform/UpdateChecker.cs` (GitHub sürüm etiketi `v<sürüm>`), `settings.json` → `LastNotifiedVersion` |
 | Bildirim gelmiyor | Ayarlar → Uyarılar → deneme bildirimi; Windows odaklanma yardımı (rahatsız etmeyin) açık mı; `TrayIcon.ShowNotification` |
 | IP "--" ya da yanlış | `Metrics/IpAddressMonitor.cs` → `FindLocalIp` (seçili bağdaştırıcı), günlükte "Dış IP alınamadı" |
 | Öğe sırası / dizilim yanlış | `ViewModels/TaskbarLayout.cs`, `Settings/TaskbarItems.cs` (Normalize), `settings.json` → `Items` |

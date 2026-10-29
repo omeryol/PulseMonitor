@@ -1,5 +1,39 @@
 # Değişiklik Günlüğü
 
+## [0.9.0] - 2026-10-29
+
+### Eklendi
+- Hakkında (menüde ve Ayarlar → Hakkında): sürüm, proje bağlantısı, lisans, veri kaynakları ve lisansları, simge telifleri, gizlilik özeti, lisans metinlerinin tamamı (programa gömülü).
+- Güncelleme uyarısı: GitHub'da yeni sürüm denetimi (açılıştan 1 dk sonra, günde bir); yeni sürümde bildirim (tıklayınca indirme sayfası) ve menüde satır; Ayarlar → Genel'den kapatılabilir.
+- Ayrıntı kartları: görev çubuğundaki her kartın üzerine gelince öğeye özel bilgi (bugünkü toplam ve en yüksek hız, RAM ayrıntısı, açık kalma süresi, sıcaklık eşikleri, ping istatistikleri, IP, kilit tuşları). Ayarlar → Görünüm'den açılıp kapanır.
+
+### Değişti
+- Hava ipucu renkli kart: simge, sıcaklığa göre renkli dereceler, mavi yağış olasılığı.
+- Ayarlar penceresi yeni görünüm: simgeli dikey sekmeler, beyaz içerik kartı, vurgulu başlıklar ve düğmeler. Geçmiş ve Hakkında pencereleri de aynı stilde.
+- Renk seçici: Görünüm sekmesinde renkler tıklanarak seçilir (hazır renkler + ton / doygunluk / parlaklık); renk kodu isteğe bağlı.
+- Hakkında → tam lisans metinleri ham metin yerine biçimli belge: başlıklar, tablolar, tıklanabilir bağlantılar, rahat satır aralığı.
+
+### Kaldırıldı
+- TrafficMonitor geçmişini içe aktarma (tek seferlik geçişti; önceden aktarılan günler geçmişte kalır).
+
+### Düzeltildi
+- VS Code C# eklentisinin WPF geçici projesini (*_wpftmp.csproj) yüklemeye çalışması: `PulseMonitor.slnx` eklendi, eklenti yalnızca asıl projeyi yükler.
+- THIRD-PARTY-NOTICES.md tablolarında araya giren boş satır tabloları bölüyordu.
+
+## [0.8.0] - 2026-10-29
+
+Dağıtım: normal kullanıcı için kurulum.
+
+### Eklendi
+- Kurulum dosyası (Inno Setup, ~3 MB): yönetici yetkisi istemez, kullanıcı klasörüne kurar; Başlat menüsü, isteğe bağlı masaüstü kısayolu ve "Windows ile başlat"; .NET 10 Masaüstü Çalışma Zamanı yoksa Microsoft'tan indirip kurar; güncellemede çalışan kopyayı veri kaybetmeden kapatır; "Uygulamalar" listesinde kaldırma kaydı, kaldırırken ayar/geçmiş silme sorusu.
+- Taşınabilir zip (tek dosyalık exe, ~1 MB).
+- GitHub Actions sürüm iş akışı: `v*` etiketinde kurulum ve zip Releases'a eklenir.
+- README: kurulum adımları, SmartScreen uyarısı, ekran görüntüleri (`tools/screenshots.ps1`, demo verisiyle).
+- `PULSEMONITOR_DATA_DIR`: başka bir veri klasörüyle çalıştırma (demo).
+
+### Değişti
+- `tools/publish.ps1` kurulumla aynı düzeni (tek dosyalık exe) kurar, kaldırıcıyı silmez.
+
 ## [0.7.1] - 2026-10-29
 
 ### Değişti

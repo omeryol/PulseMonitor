@@ -1,14 +1,11 @@
 <UserControl x:Class="PulseMonitor.Views.Settings.StylePanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:PulseMonitor.Views.Controls">
 
     <!-- DataContext: StyleSettingsViewModel. Ayarlar → Görünüm sekmesi (tasarım tezgâhının seçenekleri). -->
     <UserControl.Resources>
-        <Style x:Key="Section" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Margin" Value="0,14,0,6" />
-        </Style>
+        <Style x:Key="Section" TargetType="TextBlock" BasedOn="{StaticResource Ui.Heading}" />
         <Style x:Key="RowLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="190" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -39,11 +36,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel Margin="0,2,12,2">
-                        <Border DockPanel.Dock="Left" Width="18" Height="18" CornerRadius="4" Background="{Binding Preview}"
-                                BorderBrush="#888" BorderThickness="1" Margin="0,0,6,0" />
-                        <TextBox DockPanel.Dock="Right" Width="78" Text="{Binding Hex, UpdateSourceTrigger=PropertyChanged}"
-                                 FontFamily="Consolas" Padding="3,1" MaxLength="7" />
+                    <DockPanel Margin="0,3,16,3">
+                        <controls:ColorPicker DockPanel.Dock="Left" SelectedColor="{Binding Hex, Mode=TwoWay}" Margin="0,0,10,0" />
                         <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                     </DockPanel>
                 </DataTemplate>
@@ -82,6 +76,7 @@
             <Slider Minimum="{Binding MinScale}" Maximum="{Binding MaxScale}" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding Scale}" VerticalAlignment="Center" /></DockPanel>
         <TextBlock Text="{DynamicResource Style.ScaleHint}" Foreground="#555" FontSize="11" Margin="190,0,0,4" TextWrapping="Wrap" />
         <CheckBox Content="{DynamicResource Style.Label.Separator}" IsChecked="{Binding Separator}" Margin="0,6" />
+        <CheckBox Content="{DynamicResource Style.Label.DetailCards}" IsChecked="{Binding DetailCards}" Margin="0,6" />
 
         <Button Content="{DynamicResource Style.Reset}" Command="{Binding ResetCommand}" HorizontalAlignment="Left"
                 Padding="12,4" Margin="0,14,0,0" />

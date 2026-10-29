@@ -13,9 +13,10 @@ public sealed class SettingsViewModel : ObservableObject
     private readonly SettingsStore _store;
     private AppSettings S => _store.Current;
 
-    internal SettingsViewModel(SettingsStore store, TrafficHistory history, Action testNotification, Action openHistory)
+    internal SettingsViewModel(SettingsStore store, TrafficHistory history, Action testNotification, Action openHistory, AboutViewModel about)
     {
         _store = store;
+        About = about;
         Alerts = new AlertsSettingsViewModel(store, testNotification);
         OpenHistoryCommand = new RelayCommand(openHistory);
         Weather = new WeatherSettingsViewModel(store);
@@ -29,6 +30,9 @@ public sealed class SettingsViewModel : ObservableObject
     public ItemsSettingsViewModel Items { get; }
     public StyleSettingsViewModel Style { get; }
     public AlertsSettingsViewModel Alerts { get; }
+    public AboutViewModel About { get; }
+
+    public bool CheckForUpdates { get => S.CheckForUpdates; set => Update(() => S.CheckForUpdates = value); }
     public System.Windows.Input.ICommand OpenHistoryCommand { get; }
 
     /// <summary>Ping sunucusu; boş bırakılırsa 1.1.1.1.</summary>

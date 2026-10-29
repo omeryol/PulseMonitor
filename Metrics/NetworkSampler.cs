@@ -14,6 +14,9 @@ internal sealed class NetworkSampler
     private Dictionary<Guid, (ulong In, ulong Out)> _previous = new();
     private long _previousTicks;
 
+    /// <summary>Son ölçümde sayılan bağdaştırıcıların adları (ör. "Ethernet"); ayrıntı kartı için.</summary>
+    public string AdapterNames { get; private set; } = "--";
+
     /// <param name="selectedId">Seçili bağdaştırıcı GUID'i; null/boş ise tüm bağlı fiziksel bağdaştırıcılar.</param>
     public NetworkSample Sample(string? selectedId)
     {
@@ -25,11 +28,13 @@ internal sealed class NetworkSampler
         Guid? selected = Guid.TryParse(selectedId, out Guid id) ? id : null;
         ulong down = 0, up = 0;
         var current = new Dictionary<Guid, (ulong In, ulong Out)>(adapters.Count);
+        var names = new List<string>();
 
         foreach (NetworkAdapterInfo a in adapters)
         {
             current[a.Id] = (a.InOctets, a.OutOctets);
             bool counted = selected is { } sel ? a.Id == sel : a.IsPhysical && a.IsUp;
+            if (counted) names.Add(a.Name);
             if (!counted || !_previous.TryGetValue(a.Id, out var prev)) continue;
 
             // Sayaç geriye gittiyse (bağdaştırıcı yeniden başladı) bu aralık sayılmaz.
@@ -38,6 +43,7 @@ internal sealed class NetworkSampler
         }
 
         _previous = current;
+        AdapterNames = names.Count == 0 ? "--" : string.Join(", ", names);
         return seconds > 0
             ? new NetworkSample(down / seconds, up / seconds, down, up)
             : new NetworkSample(0, 0, 0, 0);

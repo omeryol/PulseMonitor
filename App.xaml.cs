@@ -30,6 +30,8 @@ public partial class App : Application
     private TaskbarDocker? _docker;
     private TrayIcon? _tray;
     private PingMonitor? _ping;
+    private UpdateChecker? _updates;
+    private bool _updateNotificationShown;
     private AppWindows? _windows;
     private readonly Alerts.AlertMonitor _alerts = new();
 
@@ -68,7 +70,7 @@ public partial class App : Application
         _theme.Changed += () => Dispatcher.BeginInvoke(ApplyAppearance);
         ApplyAppearance(); // kaynaklar görünüm modellerinden önce hazır olmalı
 
-        _history = LoadHistory();
+        _history = TrafficHistoryStore.Load();
         _viewModel = new TaskbarViewModel();
         _viewModel.Rebuild(_settings.Current);
         _viewModel.ApplyStyle(_settings.Current.Style);
@@ -79,11 +81,14 @@ public partial class App : Application
         _ping = new PingMonitor(_settings.Current);
         _ping.Changed += () => Dispatcher.BeginInvoke(() => _viewModel.UpdatePing(_ping.LatencyMs));
         _alerts.Raised += (title, text) => _tray?.ShowNotification(title, text, warning: true);
-        _windows = new AppWindows(_settings, _history,
+        _updates = new UpdateChecker(_settings.Current);
+        _windows = new AppWindows(_settings, _history, _updates,
             () => _tray?.ShowNotification(Strings.Get("Alert.Title"), Strings.Get("Alert.Test"), warning: false));
         _settings.Changed += OnSettingsChanged;
 
-        var menu = new AppMenu(_settings, _windows.OpenSettings, _windows.OpenHistory, () => _weather.RefreshSoon(), () => Shutdown());
+        var menu = new AppMenu(_settings, _windows.OpenSettings, _windows.OpenHistory, () => _weather.RefreshSoon(),
+            _windows.OpenAbout, () => Shutdown());
+        _updates.Changed += () => Dispatcher.BeginInvoke(() => OnUpdateChecked(menu));
 
         _window = new TaskbarWindow { DataContext = _viewModel };
         _window.MouseRightButtonUp += (_, _) => menu.Show();
@@ -97,17 +102,25 @@ public partial class App : Application
         menu.AnchorWindow = _tray.Handle;
         _tray.RightClick += menu.Show;
         _tray.LeftDoubleClick += _windows.OpenSettings;
+        _tray.NotificationClicked += () =>
+        {
+            if (_updateNotificationShown) SystemActions.OpenUrl(_updates.ReleaseUrl);
+        };
 
         _hub = new MetricsHub(_settings.Current, _history);
         _hub.Sampled += snapshot => Dispatcher.BeginInvoke(() =>
         {
-            _viewModel.Update(snapshot, KeyboardState.Read());
+            KeyboardSnapshot keys = KeyboardState.Read();
+            _viewModel.Update(snapshot, keys);
+            _viewModel.UpdateDetails(new DetailContext(snapshot, keys, _history.Get(DateOnly.FromDateTime(DateTime.Now)),
+                _ip.LocalIp, _ip.PublicIp, _settings.Current.PingHost, _ping.Stats, _ping.LatencyMs));
             _alerts.Check(snapshot, _history, _settings.Current.Alerts);
         });
         _hub.Start();
         _weather.Start();
         _ip.Start();
         _ping.Start();
+        _updates.Start();
 
         SessionEnding += (_, _) => TrafficHistoryStore.Save(_history);
     }
@@ -121,23 +134,21 @@ public partial class App : Application
         _ip?.SettingsChanged();
     }
 
+    /// <summary>Yeni sürüm varsa menüde satır gösterir; o sürüm için ilk kez ise bildirim verir.</summary>
+    private void OnUpdateChecked(AppMenu menu)
+    {
+        if (_updates is null || _settings is null || _updates.State != UpdateState.Available || _updates.LatestVersion is null) return;
+        menu.ShowUpdate(_updates.LatestVersion, () => SystemActions.OpenUrl(_updates.ReleaseUrl));
+        if (!_updates.ShouldNotify(_settings)) return;
+        _updateNotificationShown = true;
+        _tray?.ShowNotification(Strings.Get("Update.NotifyTitle"),
+            string.Format(Strings.Get("Update.NotifyText"), _updates.LatestVersion), warning: false);
+    }
+
     private void UpdateWeather()
     {
         if (_settings is null || _viewModel is null || _weather is null) return;
         _viewModel.Weather.Update(_settings.Current, _weather.Current);
-    }
-
-    private static TrafficHistory LoadHistory()
-    {
-        TrafficHistory history = TrafficHistoryStore.Load();
-        if (!history.ImportedTrafficMonitor)
-        {
-            int days = TrafficMonitorImporter.Import(history, TrafficMonitorImporter.DefaultPath);
-            history.ImportedTrafficMonitor = true;
-            TrafficHistoryStore.Save(history);
-            Log.Info($"TrafficMonitor geçmişinden {days} gün içe aktarıldı.");
-        }
-        return history;
     }
 
     private static void OnWindowLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -177,6 +188,7 @@ public partial class App : Application
         _weather?.Dispose();
         _ip?.Dispose();
         _ping?.Dispose();
+        _updates?.Dispose();
         _tray?.Dispose();
         _docker?.Dispose();
         _theme?.Dispose();

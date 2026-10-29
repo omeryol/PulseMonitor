@@ -4,6 +4,37 @@ Windows 11 görev çubuğu için hafif bir sistem monitörü: ağ hızı, CPU/RA
 klavye kilit tuşları ve köy/mahalle düzeyinde hava durumu. [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)'dan
 esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz Türkçedir.
 
+![Görev çubuğu](docs/screenshots/taskbar.png)
+
+![Görev çubuğu, başka bir görünüm](docs/screenshots/taskbar-alt.png)
+
+## Kurulum
+
+1. [Releases](https://github.com/omeryol/PulseMonitor/releases/latest) sayfasından **`PulseMonitor-Setup-<sürüm>.exe`** dosyasını indirin.
+2. Çalıştırıp "İleri" ile kurun. Yönetici yetkisi istemez; kullanıcı klasörüne kurulur, Başlat menüsüne eklenir.
+   Bilgisayarda .NET 10 Masaüstü Çalışma Zamanı yoksa kurulum onu Microsoft'tan indirip kurar (tek bir onay isteyebilir).
+3. Program görev çubuğunda, saatin solunda belirir. Ayarlar: sağ tık → **Ayarlar…** ya da tepsi simgesine çift tık.
+
+> **"Windows bilgisayarınızı korudu" uyarısı:** kurulum dosyası henüz kod imzalı değildir. **Ek bilgi → Yine de çalıştır**
+> ile devam edin. Dosyanın kaynağı bu depodaki kod ve GitHub'ın kendi derleme sunucusudur (Actions).
+
+Kurmadan denemek için **`PulseMonitor-<sürüm>-portable.zip`**: zip'i bir klasöre açıp `PulseMonitor.exe`'yi çalıştırın
+([.NET 10 Masaüstü Çalışma Zamanı](https://dotnet.microsoft.com/download/dotnet/10.0) gerekir).
+
+Kaldırma: Windows Ayarları → Uygulamalar → PulseMonitor → Kaldır (ayarların ve geçmişin silinip silinmeyeceği sorulur).
+
+## Ekran görüntüleri
+
+| Görünüm ayarları | Hava durumu |
+|---|---|
+| ![Görünüm](docs/screenshots/settings-style.png) | ![Hava durumu](docs/screenshots/settings-weather.png) |
+| **Göstergeler** | **Uyarılar** |
+| ![Göstergeler](docs/screenshots/settings-items.png) | ![Uyarılar](docs/screenshots/settings-alerts.png) |
+
+![Trafik geçmişi](docs/screenshots/history.png)
+
+Görüntüler örnek verilerle `tools/screenshots.ps1` ile üretilir.
+
 ## Özellikler
 
 - **Görev çubuğuna gömülü**: sistem tepsisinin soluna kendiliğinden yerleşir, tepsi genişleyince kayar; tam ekran
@@ -14,8 +45,9 @@ esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz Tü
   sıcaklık, açıklama, °C/°F; 9 simge seti, 4'ü animasyonlu (Meteocons, Makin-Things).
 - **Görünüm**: tema, palet ve öğe başına renk, yüke göre renk, yazı boyutu/kalınlığı, ok ve etiket biçimi, sütun kartları,
   saydamlık, aralıklar, ölçek.
-- **Trafik geçmişi**: günlük kayıt, ay/yıl grafiği; TrafficMonitor geçmişini (`history_traffic.dat`) bir kez içe aktarır.
-- **Uyarılar**: günlük trafik sınırı, CPU, RAM, GPU/disk sıcaklığı için Windows bildirimi.
+- **Trafik geçmişi**: günlük kayıt, ay/yıl grafiği.
+- **Uyarılar**: günlük trafik sınırı, CPU, RAM, GPU/disk sıcaklığı için Windows bildirimi; yeni sürüm bildirimi.
+- **Ayrıntı kartları**: her kartın üzerine gelince öğeye özel bilgiler (açılıp kapatılabilir).
 - **Hafif**: işlemciyle çizim, ~60 MB bellek, tek çekirdeğin ~% 1–4'ü.
 - **Sürücüsüz**: çekirdek sürücüsü yoktur, yönetici yetkisi istemez; antivirüs uyarısına yol açacak bileşen içermez.
   Bu yüzden CPU sıcaklığı gösterilmez (masaüstü işlemcilerde sürücüsüz okunamıyor).
@@ -25,12 +57,16 @@ esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz Tü
 - Windows 10 1809+ / Windows 11
 - [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) (derlemek için .NET 10 SDK)
 
-## Derleme ve kurulum
+## Kaynaktan derleme
 
 ```powershell
 dotnet build -c Debug
-powershell -ExecutionPolicy Bypass -File tools\publish.ps1   # %LOCALAPPDATA%\Programs\PulseMonitor'a kurar ve başlatır
+powershell -ExecutionPolicy Bypass -File tools\publish.ps1        # geliştirici kurulumu: %LOCALAPPDATA%\Programs\PulseMonitor
+powershell -ExecutionPolicy Bypass -File tools\build_release.ps1  # artifacts\: kurulum dosyası + taşınabilir zip (Inno Setup 6 gerekir)
 ```
+
+Sürüm yayını: `git tag v0.7.1 && git push origin v0.7.1` — GitHub Actions (`.github/workflows/release.yml`) kurulum
+dosyasını ve zip'i derleyip Releases'a ekler.
 
 `PulseMonitor.exe --exit` çalışan kopyayı veriyi kaydederek kapatır. Kod düzeni: [docs/KOD-HARITASI.md](docs/KOD-HARITASI.md),
 değişiklikler: [CHANGELOG.md](CHANGELOG.md).
@@ -45,6 +81,7 @@ Ayarlar, trafik geçmişi ve önbellek yalnızca `%LOCALAPPDATA%\PulseMonitor` a
 | Open-Meteo + OpenStreetMap Nominatim (konum araması) | Yalnızca ayarlarda "Ara"ya basınca |
 | api.ipify.org (dış IP) | Yalnızca "Dış IP" öğesi açıkken |
 | Ping sunucusu (varsayılan 1.1.1.1) | Yalnızca "Ping" öğesi açıkken |
+| GitHub (son sürüm numarası) | Günde bir; Ayarlar → Genel'den kapatılabilir |
 
 ## Lisans
 
