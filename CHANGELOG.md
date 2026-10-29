@@ -5,6 +5,9 @@
 ### Değişti
 - Sürüm iş akışı: GitHub eylemleri Node 24 kullanan sürümlere yükseltildi (checkout v7, setup-dotnet v6, upload-artifact v7, action-gh-release v3.0.3 commit ile sabit).
 
+### Kaldırıldı
+- CLAUDE.md depodan çıkarıldı (yalnızca yerel çalışma notu).
+
 ### Düzeltildi
 - LICENSE dosyası standart MIT metnine indirildi (sondaki ek not GitHub’ın lisansı tanımasını engelliyordu; not THIRD-PARTY-NOTICES.md’de).
 
