@@ -43,7 +43,11 @@
             <Hyperlink NavigateUri="https://opensource.org/license/mit">MIT</Hyperlink>
             <Run Text="· © 2026 omeryol" />
         </TextBlock>
-        <TextBlock Text="{DynamicResource About.Inspired}" Style="{StaticResource Small}" />
+        <TextBlock Style="{StaticResource Small}">
+            <Run Text="{DynamicResource About.Inspired}" />
+            <Hyperlink NavigateUri="https://github.com/zhongyang219/TrafficMonitor">TrafficMonitor</Hyperlink>
+            <Run Text="{DynamicResource About.InspiredRest}" />
+        </TextBlock>
 
         <DockPanel Margin="0,10,0,0">
             <Button DockPanel.Dock="Right" Content="{DynamicResource Update.CheckNow}" Command="{Binding CheckCommand}" Padding="10,2" />

@@ -83,6 +83,12 @@ Ayarlar, trafik geçmişi ve önbellek yalnızca `%LOCALAPPDATA%\PulseMonitor` a
 | Ping sunucusu (varsayılan 1.1.1.1) | Yalnızca "Ping" öğesi açıkken |
 | GitHub (son sürüm numarası) | Günde bir; Ayarlar → Genel'den kapatılabilir |
 
+## Teşekkür
+
+Bu proje, [zhongyang219](https://github.com/zhongyang219)'ın açık kaynak [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)
+projesinden (MIT) esinlenmiştir. Özellik seti ve görev çubuğuna yerleşme fikri TrafficMonitor'a dayanır; PulseMonitor
+kendi kodundan oluşur, TrafficMonitor'dan kod kopyalanmamıştır. Emeği için TrafficMonitor geliştiricilerine teşekkürler.
+
 ## Lisans
 
 [MIT](LICENSE). Dahil edilen simgeler ve kullanılan veri servisleri: [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

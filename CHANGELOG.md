@@ -12,6 +12,7 @@
 - Ayarlar penceresi yeni görünüm: simgeli dikey sekmeler, beyaz içerik kartı, vurgulu başlıklar ve düğmeler. Geçmiş ve Hakkında pencereleri de aynı stilde.
 - Renk seçici: Görünüm sekmesinde renkler tıklanarak seçilir (hazır renkler + ton / doygunluk / parlaklık); renk kodu isteğe bağlı.
 - Hakkında → tam lisans metinleri ham metin yerine biçimli belge: başlıklar, tablolar, tıklanabilir bağlantılar, rahat satır aralığı.
+- TrafficMonitor’a atıf: README’de Teşekkür bölümü, Hakkında’da bağlantılı esin kaynağı satırı.
 
 ### Kaldırıldı
 - TrafficMonitor geçmişini içe aktarma (tek seferlik geçişti; önceden aktarılan günler geçmişte kalır).

@@ -7,7 +7,8 @@
     <sys:String x:Key="About.Tagline">Windows 11 görev çubuğu için hafif sistem monitörü</sys:String>
     <sys:String x:Key="About.Project">Proje ve kaynak kod: </sys:String>
     <sys:String x:Key="About.License">Lisans: </sys:String>
-    <sys:String x:Key="About.Inspired">TrafficMonitor’dan (MIT, © zhongyang219) esinlenilmiştir; ondan kod alınmamıştır.</sys:String>
+    <sys:String x:Key="About.Inspired">Esin kaynağı:</sys:String>
+    <sys:String x:Key="About.InspiredRest">(MIT, © zhongyang219) — teşekkürler. PulseMonitor kendi kodundan oluşur; ondan kod alınmamıştır.</sys:String>
 
     <sys:String x:Key="About.DataHeading">Veri kaynakları</sys:String>
     <sys:String x:Key="About.Data.OpenMeteo"> — hava tahmini ve konum araması. Lisans: </sys:String>
