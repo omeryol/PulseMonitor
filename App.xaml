@@ -14,10 +14,6 @@
                 <ResourceDictionary Source="Resources/WeatherIcons.xaml" />
                 <ResourceDictionary Source="Resources/WeatherIconsRealistic.xaml" />
                 <ResourceDictionary Source="Resources/WeatherIconsFluent.xaml" />
-                <ResourceDictionary Source="Resources/Strings.tr.xaml" />
-                <ResourceDictionary Source="Resources/Strings.Style.tr.xaml" />
-                <ResourceDictionary Source="Resources/Strings.About.tr.xaml" />
-                <ResourceDictionary Source="Resources/Strings.Details.tr.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
             <controls:IsNotNullConverter x:Key="IsNotNull" />

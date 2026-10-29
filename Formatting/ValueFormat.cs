@@ -1,11 +1,12 @@
 using System.Globalization;
+using PulseMonitor.Core;
 
 namespace PulseMonitor.Formatting;
 
-/// <summary>Görev çubuğu ve pencerelerdeki sayı biçimleri (Türkçe: ondalık virgül).</summary>
+/// <summary>Görev çubuğu ve pencerelerdeki sayı biçimleri (dilin kültürüne göre; Türkçede ondalık virgül).</summary>
 internal static class ValueFormat
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
 
     /// <summary>En geniş hız metni; sütun genişliğini sabitlemek için (rakamlar sabit genişlikte).</summary>
     public const string SpeedPlaceholder = "888,8 MB/s";
@@ -59,7 +60,7 @@ internal static class ValueFormat
         return string.Format(Tr, "{0:0.##} {1}", v, units[u]);
     }
 
-    /// <summary>% 12 · okunamıyorsa % --</summary>
+    /// <summary>% 12 (İngilizcede 12%) · okunamıyorsa % --. Yazım dil dosyasından: "Format.Percent".</summary>
     public static string Percent(double? value) =>
-        value is { } v ? string.Format(Tr, "% {0:0}", v) : "% --";
+        string.Format(Tr, Strings.Get("Format.Percent"), value is { } v ? v.ToString("0", Tr) : "--");
 }

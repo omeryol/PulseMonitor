@@ -30,6 +30,8 @@ internal sealed class AppWindows
         DataContext = new SettingsViewModel(_settings, _history, _testNotification, OpenHistory, new AboutViewModel(_updates)),
     });
 
+    public bool IsSettingsOpen => _settingsWindow is not null;
+
     public void OpenHistory() => Open(ref _historyWindow, () => new HistoryWindow { DataContext = new HistoryViewModel(_history) });
 
     public void OpenAbout() => Open(ref _aboutWindow, () => new AboutWindow { DataContext = new AboutViewModel(_updates) });

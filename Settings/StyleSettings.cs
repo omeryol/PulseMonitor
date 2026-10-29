@@ -23,17 +23,17 @@ public sealed class StyleSettings
     public string KeyboardStyle { get; set; } = StyleOptions.KeysColor;
 
     // Zemin ve boyut
-    public string Background { get; set; } = StyleOptions.BgCards;
+    public string Background { get; set; } = StyleOptions.BgNone;
     public int BackgroundOpacity { get; set; } = 90;
-    public int ColumnGap { get; set; } = 12;
-    public bool Separator { get; set; }
-    public int LabelGap { get; set; } = 6;
+    public int ColumnGap { get; set; } = 13;
+    public bool Separator { get; set; } = true;
+    public int LabelGap { get; set; } = 1;
     public int Scale { get; set; } = 100;
     /// <summary>Fare üzerine gelince öğenin ayrıntı kartı (hava ipucu dahil).</summary>
     public bool DetailCards { get; set; } = true;
 
     // Hava durumu
-    public string WeatherIcons { get; set; } = StyleOptions.IconColor;
+    public string WeatherIcons { get; set; } = StyleOptions.IconMakinThings;
     /// <summary>Hava açıklaması (Güneşli, Sisli…): yer adının yanında / yerine / gösterme.</summary>
     public string WeatherLabel { get; set; } = StyleOptions.WxLabelWithPlace;
     public bool TemperatureColors { get; set; } = true;

@@ -2,7 +2,7 @@ using System.Windows.Media;
 
 namespace PulseMonitor.Settings;
 
-/// <summary>Görünüm seçeneklerinin kimlikleri, sınırları ve doğrulaması. Ekrandaki adlar: Strings.tr.xaml → "Style.&lt;grup&gt;.&lt;kimlik&gt;".</summary>
+/// <summary>Görünüm seçeneklerinin kimlikleri, sınırları ve doğrulaması. Ekrandaki adlar: lang/tr.json → "Style.&lt;grup&gt;.&lt;kimlik&gt;".</summary>
 public static class StyleOptions
 {
     public const string ThemeAuto = "Auto", ThemeDark = "Dark", ThemeLight = "Light";

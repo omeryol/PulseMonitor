@@ -14,7 +14,7 @@ namespace PulseMonitor.Alerts;
 /// </summary>
 internal sealed class AlertMonitor
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
     private static readonly TimeSpan Cooldown = TimeSpan.FromMinutes(30);
     private static readonly TimeSpan CpuSustain = TimeSpan.FromSeconds(30);
     private const double BytesPerGb = 1024.0 * 1024 * 1024;

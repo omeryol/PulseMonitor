@@ -17,7 +17,7 @@ public sealed record HourRow(string Time, ImageSource? Icon, string Temperature,
 
 internal static class WeatherTooltip
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
     private const int Hours = 6;
 
     public static WeatherTooltipModel Loading(WeatherLocation loc) =>
@@ -35,7 +35,7 @@ internal static class WeatherTooltip
                 Icon(h.WeatherCode, h.IsDay),
                 Deg(h.Temperature),
                 TemperatureBrush(h.Temperature),
-                h.PrecipitationProbability is > 0 and var p ? string.Format(Tr, "% {0}", p) : "",
+                h.PrecipitationProbability is > 0 and var p ? ValueFormat.Percent(p) : "",
                 h.PrecipitationProbability is > 0))
             .ToList();
 

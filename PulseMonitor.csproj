@@ -8,13 +8,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\PulseMonitor.ico</ApplicationIcon>
-    <Version>0.9.0</Version>
+    <Version>0.10.0</Version>
     <Product>PulseMonitor</Product>
     <SatelliteResourceLanguages>tr</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Include="Assets\PulseMonitor.ico" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Dil dosyaları: yeni dil = lang klasörüne yeni .json. Türkçe ayrıca gömülür (klasör silinse de çalışsın). -->
+    <Content Include="lang\*.json" CopyToOutputDirectory="PreserveNewest" />
+    <EmbeddedResource Include="lang\tr.json" LogicalName="PulseMonitor.lang.tr.json" />
     <!-- Fluent Emoji 3D (MIT), tools/fetch_icons.ps1 ile 64 px'e küçültüldü -->
     <Resource Include="Assets\Weather\*.png" />
     <!-- Meteocons ve Makin-Things (MIT), tools/render_icons.ps1 ile film şeridine çevrildi -->

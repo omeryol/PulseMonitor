@@ -11,7 +11,7 @@ namespace PulseMonitor.ViewModels;
 /// <summary>Görev çubuğundaki hava durumu öğesi: simge, sıcaklık (+ hissedilen), yer adı, animasyon, ipucu.</summary>
 public sealed class WeatherViewModel : ObservableObject, ITallItem
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
     private static readonly TimeSpan StaleAfter = TimeSpan.FromHours(1);
     private static readonly TimeSpan DiscardAfter = TimeSpan.FromHours(12);
 

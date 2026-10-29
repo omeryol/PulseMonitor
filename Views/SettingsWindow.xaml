@@ -79,6 +79,11 @@
                         </DockPanel>
 
                         <TextBlock Text="{DynamicResource Settings.General}" Style="{StaticResource Heading}" />
+                        <DockPanel Margin="0,0,0,4">
+                            <TextBlock Text="{DynamicResource Settings.Language}" Margin="0,0,12,0" VerticalAlignment="Center" />
+                            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Display" />
+                        </DockPanel>
+                        <TextBlock Text="{DynamicResource Settings.LanguageHint}" Foreground="#555" TextWrapping="Wrap" Margin="0,0,0,8" />
                         <CheckBox Content="{DynamicResource Settings.Startup}" IsChecked="{Binding StartWithWindows}" />
                         <CheckBox Content="{DynamicResource Settings.HideFullscreen}" IsChecked="{Binding HideInFullscreen}" />
                         <CheckBox Content="{DynamicResource Settings.CheckUpdates}" IsChecked="{Binding CheckForUpdates}" />

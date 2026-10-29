@@ -12,7 +12,7 @@ internal static class Http
         var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
         string version = typeof(Http).Assembly.GetName().Version?.ToString(3) ?? "0";
         client.DefaultRequestHeaders.UserAgent.ParseAdd($"PulseMonitor/{version} (personal desktop app)");
-        client.DefaultRequestHeaders.AcceptLanguage.ParseAdd("tr");
+        client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(UiLanguage.Code);
         return client;
     }
 }

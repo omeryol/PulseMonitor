@@ -10,7 +10,7 @@ namespace PulseMonitor.ViewModels;
 /// <summary>Hakkında: sürüm, güncelleme durumu ve programa gömülü lisans metinleri (LICENSE, THIRD-PARTY-NOTICES.md).</summary>
 public sealed class AboutViewModel : ObservableObject
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
     private readonly UpdateChecker _updates;
     private string _updateText = "";
     private bool _updateAvailable;

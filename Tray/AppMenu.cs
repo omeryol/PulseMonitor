@@ -34,6 +34,14 @@ internal sealed class AppMenu
         _menu.Items.Add(new Separator());
         _startup = Add("Menu.StartWithWindows", () => StartupRegistration.SetEnabled(!StartupRegistration.IsEnabled()));
         _fullscreen = Add("Menu.HideInFullscreen", ToggleFullscreen);
+        _menu.Items.Add(_language);
+        _language.SetResourceReference(HeaderedItemsControl.HeaderProperty, "Menu.Language");
+        foreach (Core.LanguageOption option in Core.UiLanguage.Options())
+        {
+            var item = new MenuItem { Header = option.Display, Tag = option.Code };
+            item.Click += (_, _) => SetLanguage(option.Code);
+            _language.Items.Add(item);
+        }
         _menu.Items.Add(new Separator());
         Add("Menu.About", openAbout);
         Add("Menu.Exit", exit);
@@ -41,6 +49,7 @@ internal sealed class AppMenu
         _menu.Opened += OnOpened;
     }
 
+    private readonly MenuItem _language = new();
     private readonly MenuItem _update = new();
     private readonly Separator _updateSeparator = new();
     private Action? _openUpdate;
@@ -81,8 +90,18 @@ internal sealed class AppMenu
         _settings.Save();
     }
 
+    /// <summary>Dil seçilince kaydedilir; program yeniden başlar (App.OnSettingsChanged).</summary>
+    private void SetLanguage(string code)
+    {
+        if (_settings.Current.Language == code) return;
+        _settings.Current.Language = code;
+        _settings.Save();
+    }
+
     private void OnOpened(object sender, RoutedEventArgs e)
     {
+        foreach (MenuItem item in _language.Items.OfType<MenuItem>())
+            item.IsChecked = (string)item.Tag == _settings.Current.Language;
         _startup.IsChecked = StartupRegistration.IsEnabled();
         _fullscreen.IsChecked = _settings.Current.HideInFullscreen;
     }

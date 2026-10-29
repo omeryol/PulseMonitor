@@ -25,12 +25,12 @@ public static class TaskbarItemId
     public const string Ping = "Ping";
 
     public static readonly string[] DefaultOrder =
-        [Weather, Keyboard, Upload, Download, Cpu, Ram, Gpu, Disk, LocalIp, PublicIp, GpuTemp, DiskTemp, Ping];
+        [Upload, Download, Cpu, Ram, Gpu, Disk, Keyboard, Weather, LocalIp, PublicIp, GpuTemp, DiskTemp, Ping];
 
     /// <summary>0.4.0'daki ayrı kilit tuşu öğeleri; <see cref="Keyboard"/>'a taşınır.</summary>
     public static readonly string[] LegacyLockKeys = ["CapsLock", "NumLock", "ScrollLock"];
 
-    public static bool DefaultVisible(string id) => id is Weather or Upload or Download or Cpu or Ram or LocalIp;
+    public static bool DefaultVisible(string id) => id is Upload or Download or Cpu or Ram or Gpu or Disk or Keyboard or Weather;
 }
 
 internal static class TaskbarItems

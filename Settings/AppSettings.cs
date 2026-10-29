@@ -8,11 +8,14 @@ public sealed class AppSettings
 {
     public int SchemaVersion { get; set; } = 2;
 
+    /// <summary>Arayüz dili: "auto" (Windows diline göre) ya da lang klasöründeki bir dosyanın kodu ("tr", "en"…).</summary>
+    public string Language { get; set; } = "auto";
+
     /// <summary>Tam ekran uygulama (oyun, video, sunum) açıkken gizlen.</summary>
     public bool HideInFullscreen { get; set; } = true;
 
     /// <summary>Pencere ile sistem tepsisi arasındaki boşluk (96 DPI'da piksel).</summary>
-    public int TrayGapPx { get; set; } = 6;
+    public int TrayGapPx { get; set; } = 0;
 
     /// <summary>Ölçülen ağ bağdaştırıcısının GUID'i; boşsa tüm bağlı fiziksel bağdaştırıcılar.</summary>
     public string? NetworkAdapterId { get; set; }

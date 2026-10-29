@@ -66,6 +66,7 @@ public partial class App : Application
         Log.Info($"Başladı. Sürüm {typeof(App).Assembly.GetName().Version}, {Environment.ProcessPath}");
 
         _settings = SettingsStore.Load();
+        UiLanguage.Apply(this, _settings.Current.Language); // metinler her şeyden önce hazır olmalı
         _theme = new SystemTheme();
         _theme.Changed += () => Dispatcher.BeginInvoke(ApplyAppearance);
         ApplyAppearance(); // kaynaklar görünüm modellerinden önce hazır olmalı
@@ -118,6 +119,7 @@ public partial class App : Application
         });
         _hub.Start();
         _weather.Start();
+        if (e.Args.Contains("--settings")) _windows.OpenSettings(); // dil değişince yeniden başlatıldı
         _ip.Start();
         _ping.Start();
         _updates.Start();
@@ -128,10 +130,29 @@ public partial class App : Application
     private void OnSettingsChanged()
     {
         if (_settings is null || _viewModel is null || _weather is null) return;
+        if (_settings.Current.Language != UiLanguage.Setting)
+        {
+            RestartForLanguage();
+            return;
+        }
         _viewModel.Rebuild(_settings.Current);
         ApplyAppearance();
         _weather.SettingsChanged();
         _ip?.SettingsChanged();
+    }
+
+    private string? _restartArgs;
+
+    /// <summary>
+    /// Dil değişince program kendini yeniden başlatır: metinlerin bir kısmı (etiketler, kart başlıkları, listeler)
+    /// açılışta kurulur. Ayarlar penceresi açıksa yeni kopyada yeniden açılır.
+    /// </summary>
+    private void RestartForLanguage()
+    {
+        if (_restartArgs is not null) return;
+        _restartArgs = _windows?.IsSettingsOpen == true ? "--settings" : "";
+        Log.Info($"Dil değişti ({UiLanguage.Setting} → {_settings?.Current.Language}); yeniden başlatılıyor.");
+        Dispatcher.BeginInvoke(() => Shutdown());
     }
 
     /// <summary>Yeni sürüm varsa menüde satır gösterir; o sürüm için ilk kez ise bildirim verir.</summary>
@@ -196,6 +217,7 @@ public partial class App : Application
         {
             Log.Info("Kapandı.");
             _instance.Dispose();
+            if (_restartArgs is not null) SystemActions.StartSelf(_restartArgs); // kilit bırakıldı, yeni kopya açılabilir
         }
         base.OnExit(e);
     }

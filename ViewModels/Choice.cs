@@ -8,7 +8,7 @@ public sealed record Option(string Id, string Display);
 
 /// <summary>
 /// Bir görünüm seçeneği grubu (ör. "Arrows"): seçenekler StyleOptions.Groups'tan, adlar
-/// Strings.tr.xaml → "Style.&lt;grup&gt;.&lt;kimlik&gt;"dan gelir. Seçim değişince ayar yazılır.
+/// lang/tr.json → "Style.&lt;grup&gt;.&lt;kimlik&gt;"dan gelir. Seçim değişince ayar yazılır.
 /// </summary>
 public sealed class Choice : ObservableObject
 {

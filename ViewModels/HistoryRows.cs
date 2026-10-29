@@ -1,4 +1,5 @@
 using System.Globalization;
+using PulseMonitor.Core;
 using PulseMonitor.Traffic;
 
 namespace PulseMonitor.ViewModels;
@@ -12,7 +13,7 @@ internal readonly record struct HistoryRow(string Label, string Name, DayTraffic
 /// <summary>Günlük kayıtlardan ay (günler) ve yıl (aylar) satırlarını üretir.</summary>
 internal static class HistoryRows
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
 
     public static List<HistoryRow> Days(Dictionary<DateOnly, DayTraffic> days, DateOnly month)
     {

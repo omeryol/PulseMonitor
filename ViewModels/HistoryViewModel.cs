@@ -14,7 +14,7 @@ namespace PulseMonitor.ViewModels;
 /// </summary>
 public sealed class HistoryViewModel : ObservableObject
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
     public const double ChartHeight = 220;
     private static readonly CornerRadius TopRounded = new(4, 4, 0, 0);
 

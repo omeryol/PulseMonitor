@@ -5,10 +5,10 @@ using PulseMonitor.Settings;
 
 namespace PulseMonitor.ViewModels;
 
-/// <summary>Her öğenin ayrıntı kartı satırları (metinler: Resources/Strings.Details.tr.xaml).</summary>
+/// <summary>Her öğenin ayrıntı kartı satırları (metinler: lang/*.json → Detail.*).</summary>
 internal static class DetailCards
 {
-    private static readonly CultureInfo Tr = CultureInfo.GetCultureInfo("tr-TR");
+    private static CultureInfo Tr => UiLanguage.Culture;
 
     /// <summary>Bugünün en yüksek hızları (gece yarısı sıfırlanır).</summary>
     private static DateOnly _peakDay;
@@ -61,7 +61,7 @@ internal static class DetailCards
             [
                 R("Server", c.PingHost), R("Last", ValueFormat.Milliseconds(c.PingLast)),
                 R("MinAvgMax", $"{ValueFormat.Milliseconds(c.Ping.Min)} / {ValueFormat.Milliseconds(c.Ping.Avg)} / {ValueFormat.Milliseconds(c.Ping.Max)}"),
-                R("Loss", string.Format(Tr, "% {0:0}", c.Ping.LossPercent)),
+                R("Loss", ValueFormat.Percent(c.Ping.LossPercent)),
             ],
             TaskbarItemId.LocalIp or TaskbarItemId.PublicIp =>
             [

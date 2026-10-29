@@ -56,6 +56,19 @@ public sealed class SettingsViewModel : ObservableObject
         set => StartupRegistration.SetEnabled(value);
     }
 
+    /// <summary>Arayüz dili; değişince program yeniden başlar (App.OnSettingsChanged).</summary>
+    public IReadOnlyList<LanguageOption> Languages { get; } = UiLanguage.Options();
+
+    public LanguageOption? SelectedLanguage
+    {
+        get => Languages.FirstOrDefault(l => l.Code == S.Language) ?? Languages[0];
+        set
+        {
+            if (value is null || value.Code == S.Language) return;
+            Update(() => S.Language = value.Code);
+        }
+    }
+
     public IReadOnlyList<AdapterOption> Adapters { get; }
 
     public AdapterOption? SelectedAdapter
