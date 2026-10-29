@@ -33,7 +33,7 @@ Kaldırma: Windows Ayarları → Uygulamalar → PulseMonitor → Kaldır (ayarl
 
 ![Trafik geçmişi](docs/screenshots/history.png)
 
-Görüntüler örnek verilerle `tools/screenshots.ps1` ile üretilir.
+Görüntüler örnek verilerle üretilmiştir.
 
 ## Özellikler
 
@@ -61,15 +61,13 @@ Görüntüler örnek verilerle `tools/screenshots.ps1` ile üretilir.
 
 ```powershell
 dotnet build -c Debug
-powershell -ExecutionPolicy Bypass -File tools\publish.ps1        # geliştirici kurulumu: %LOCALAPPDATA%\Programs\PulseMonitor
 powershell -ExecutionPolicy Bypass -File tools\build_release.ps1  # artifacts\: kurulum dosyası + taşınabilir zip (Inno Setup 6 gerekir)
 ```
 
-Sürüm yayını: `git tag v0.7.1 && git push origin v0.7.1` — GitHub Actions (`.github/workflows/release.yml`) kurulum
-dosyasını ve zip'i derleyip Releases'a ekler.
+Sürüm yayını: `v<sürüm>` etiketi gönderilince GitHub Actions (`.github/workflows/release.yml`) kurulum dosyasını ve
+zip'i derleyip Releases'a ekler.
 
-`PulseMonitor.exe --exit` çalışan kopyayı veriyi kaydederek kapatır. Kod düzeni: [docs/KOD-HARITASI.md](docs/KOD-HARITASI.md),
-değişiklikler: [CHANGELOG.md](CHANGELOG.md).
+`PulseMonitor.exe --exit` çalışan kopyayı veriyi kaydederek kapatır.
 
 ## Gizlilik ve ağ istekleri
 

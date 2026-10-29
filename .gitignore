@@ -9,3 +9,8 @@ tools/private-words.txt
 artifacts/
 .vscode/
 CLAUDE.md
+# Yerel calisma dosyalari (depoya girmez)
+CHANGELOG.md
+docs/KOD-HARITASI.md
+tools/publish.ps1
+tools/screenshots.ps1

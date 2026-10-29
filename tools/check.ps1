@@ -1,9 +1,12 @@
 # Project guard: every source file must be listed in docs/KOD-HARITASI.md
 # and must stay within the size limit (warn > 200 lines, fail > 300 lines).
+# The map is a local, git-ignored file; when it is absent (CI, fresh clone) the map check is skipped.
 # Usage: powershell -ExecutionPolicy Bypass -File tools\check.ps1
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$map = Get-Content (Join-Path $root 'docs\KOD-HARITASI.md') -Raw -Encoding UTF8
+$mapFile = Join-Path $root 'docs\KOD-HARITASI.md'
+$map = if (Test-Path $mapFile) { Get-Content $mapFile -Raw -Encoding UTF8 } else { $null }
+if (-not $map) { Write-Host 'map not found: map check skipped' -ForegroundColor Yellow }
 $failed = $false
 
 $files = Get-ChildItem $root -Recurse -File -Include *.cs, *.xaml |
@@ -13,7 +16,7 @@ foreach ($f in $files) {
     $rel = $f.FullName.Substring($root.Length + 1).Replace('\', '/')
     $lines = (Get-Content $f.FullName -Encoding UTF8 | Measure-Object -Line).Lines
 
-    if (-not $map.Contains($rel)) {
+    if ($map -and -not $map.Contains($rel)) {
         Write-Host "MISSING IN MAP: $rel" -ForegroundColor Red
         $failed = $true
     }
