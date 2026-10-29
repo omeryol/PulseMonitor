@@ -6,7 +6,7 @@ using PulseMonitor.ViewModels;
 
 namespace PulseMonitor.Views;
 
-/// <summary>Ayarlar, trafik geçmişi ve Hakkında pencereleri: her biri tek kopya açılır, açıksa öne getirilir.</summary>
+/// <summary>Ayarlar, trafik geçmişi, Hakkında ve güncelleme pencereleri: her biri tek kopya açılır, açıksa öne getirilir.</summary>
 internal sealed class AppWindows
 {
     private readonly SettingsStore _settings;
@@ -16,6 +16,7 @@ internal sealed class AppWindows
     private SettingsWindow? _settingsWindow;
     private HistoryWindow? _historyWindow;
     private AboutWindow? _aboutWindow;
+    private UpdateWindow? _updateWindow;
 
     public AppWindows(SettingsStore settings, TrafficHistory history, UpdateChecker updates, Action testNotification)
     {
@@ -27,14 +28,21 @@ internal sealed class AppWindows
 
     public void OpenSettings() => Open(ref _settingsWindow, () => new SettingsWindow
     {
-        DataContext = new SettingsViewModel(_settings, _history, _testNotification, OpenHistory, new AboutViewModel(_updates)),
+        DataContext = new SettingsViewModel(_settings, _history, _testNotification, OpenHistory, new AboutViewModel(_updates, OpenUpdate)),
     });
 
     public bool IsSettingsOpen => _settingsWindow is not null;
 
     public void OpenHistory() => Open(ref _historyWindow, () => new HistoryWindow { DataContext = new HistoryViewModel(_history) });
 
-    public void OpenAbout() => Open(ref _aboutWindow, () => new AboutWindow { DataContext = new AboutViewModel(_updates) });
+    public void OpenAbout() => Open(ref _aboutWindow, () => new AboutWindow { DataContext = new AboutViewModel(_updates, OpenUpdate) });
+
+    /// <summary>Yeni sürüm penceresi (yenilikler + indir); denetim henüz sürüm bulmadıysa sürüm sayfası açılır.</summary>
+    public void OpenUpdate()
+    {
+        if (_updates.State != UpdateState.Available) { SystemActions.OpenUrl(_updates.ReleaseUrl); return; }
+        Open(ref _updateWindow, () => new UpdateWindow { DataContext = new UpdateViewModel(_updates) });
+    }
 
     /// <summary>Pencere açıksa öne getirir; değilse oluşturur ve kapanınca alanı boşaltır.</summary>
     private void Open<T>(ref T? field, Func<T> create) where T : Window
@@ -56,5 +64,6 @@ internal sealed class AppWindows
         if (ReferenceEquals(window, _settingsWindow)) _settingsWindow = null;
         if (ReferenceEquals(window, _historyWindow)) _historyWindow = null;
         if (ReferenceEquals(window, _aboutWindow)) _aboutWindow = null;
+        if (ReferenceEquals(window, _updateWindow)) _updateWindow = null;
     }
 }

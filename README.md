@@ -5,7 +5,7 @@
 A lightweight system monitor for the Windows 11 taskbar: network speed, CPU/RAM/GPU/disk, temperatures, ping, IP,
 keyboard lock keys and weather down to village/neighbourhood level. Inspired by
 [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor); written from scratch in C# / WPF (.NET 10).
-The interface is available in 12 languages.
+The interface is available in 22 languages.
 
 ![Taskbar, left of the clock](docs/screenshots/en/taskbar.png)
 
@@ -49,8 +49,8 @@ Screenshots are generated with sample data.
   9 icon sets, 4 of them animated (Meteocons, Makin-Things).
 - **Appearance**: theme, palette and per-item colors, color by load, font size/weight, arrow and label style, column cards,
   opacity, spacing, scale.
-- **Languages**: English, Turkish, German, Spanish, French, Italian, Portuguese, Russian, Ukrainian, Polish, Dutch and
-  Simplified Chinese; picked automatically from the Windows language, changeable from the menu. Adding a
+- **Languages**: English, Turkish, German, Spanish, French, Italian, Portuguese, Russian, Ukrainian, Polish, Dutch, Japanese, Korean,
+  Indonesian, Vietnamese, Thai, Czech, Swedish, Hungarian, Romanian, Greek and Simplified Chinese; picked automatically from the Windows language, changeable from the menu. Adding a
   language needs no code: copy `lang/tr.json`, translate the values, save it as e.g. `lang/de.json` and put it into the
   `lang` folder next to `PulseMonitor.exe`. Missing texts fall back to English.
 - **Traffic history**: daily records, month/year chart.

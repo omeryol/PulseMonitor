@@ -15,7 +15,7 @@ public sealed class AboutViewModel : ObservableObject
     private string _updateText = "";
     private bool _updateAvailable;
 
-    internal AboutViewModel(UpdateChecker updates)
+    internal AboutViewModel(UpdateChecker updates, Action openUpdate)
     {
         _updates = updates;
         CheckCommand = new RelayCommand(async () =>
@@ -24,7 +24,7 @@ public sealed class AboutViewModel : ObservableObject
             await _updates.CheckAsync();
             Application.Current?.Dispatcher.BeginInvoke(Refresh);
         });
-        DownloadCommand = new RelayCommand(() => SystemActions.OpenUrl(_updates.ReleaseUrl));
+        DownloadCommand = new RelayCommand(openUpdate); // yenilikler penceresi, oradan indirilir
         Refresh();
     }
 

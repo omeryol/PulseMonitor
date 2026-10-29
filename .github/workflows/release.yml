@@ -23,6 +23,13 @@ jobs:
       - name: Inno Setup
         run: choco install innosetup --no-progress -y
 
+      - name: Release notes present
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          # The app's update window shows these notes (release-notes/v<version>.md, sections <!-- lang:xx -->).
+          if (-not (Test-Path 'release-notes/${{ github.ref_name }}.md')) { Write-Error 'release-notes/${{ github.ref_name }}.md is missing'; exit 1 }
+
       - name: Build installer and portable zip
         shell: pwsh
         run: |
@@ -44,4 +51,4 @@ jobs:
           files: |
             artifacts/PulseMonitor-Setup-*.exe
             artifacts/PulseMonitor-*-portable.zip
-          generate_release_notes: true
+          body_path: release-notes/${{ github.ref_name }}.md

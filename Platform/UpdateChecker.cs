@@ -10,7 +10,7 @@ public enum UpdateState { Unknown, UpToDate, Available, Failed }
 
 /// <summary>
 /// GitHub'daki son sürümü denetler (açılıştan 1 dk sonra, sonra günde bir; ayardan kapatılabilir).
-/// Yalnızca sürüm etiketi okunur; hiçbir veri gönderilmez. <see cref="Changed"/> arka planda çağrılır.
+/// Sürüm etiketi, sürüm notları ve kurulum dosyasının bağlantısı okunur; hiçbir veri gönderilmez. <see cref="Changed"/> arka planda çağrılır.
 /// </summary>
 internal sealed class UpdateChecker : IDisposable
 {
@@ -26,6 +26,10 @@ internal sealed class UpdateChecker : IDisposable
     public UpdateState State { get; private set; }
     public string? LatestVersion { get; private set; }
     public string ReleaseUrl { get; private set; } = ReleasesPage;
+    /// <summary>Kurulum dosyasının doğrudan indirme bağlantısı; bulunamazsa sürüm sayfası.</summary>
+    public string DownloadUrl { get; private set; } = ReleasesPage;
+    /// <summary>Sürüm notları (GitHub sürüm metni, Markdown; dillere göre bölümlü: <see cref="ReleaseNotes"/>).</summary>
+    public string Notes { get; private set; } = "";
     public DateTime? LastChecked { get; private set; }
     public static Version Current { get; } = typeof(UpdateChecker).Assembly.GetName().Version ?? new Version(0, 0, 0);
 
@@ -54,6 +58,8 @@ internal sealed class UpdateChecker : IDisposable
             using JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStreamAsync());
             string tag = doc.RootElement.GetProperty("tag_name").GetString() ?? "";
             if (doc.RootElement.TryGetProperty("html_url", out JsonElement url) && url.GetString() is { } u) ReleaseUrl = u;
+            Notes = doc.RootElement.TryGetProperty("body", out JsonElement body) ? body.GetString() ?? "" : "";
+            DownloadUrl = SetupAssetUrl(doc.RootElement) ?? ReleaseUrl;
 
             if (Version.TryParse(tag.TrimStart('v', 'V'), out Version? latest) && Normalize(latest) > Normalize(Current))
             {
@@ -85,6 +91,20 @@ internal sealed class UpdateChecker : IDisposable
         store.Current.LastNotifiedVersion = LatestVersion;
         store.Save();
         return true;
+    }
+
+    /// <summary>Sürüm dosyaları arasında "PulseMonitor-Setup-x.y.z.exe".</summary>
+    private static string? SetupAssetUrl(JsonElement release)
+    {
+        if (!release.TryGetProperty("assets", out JsonElement assets) || assets.ValueKind != JsonValueKind.Array) return null;
+        foreach (JsonElement a in assets.EnumerateArray())
+        {
+            string name = a.TryGetProperty("name", out JsonElement n) ? n.GetString() ?? "" : "";
+            if (name.StartsWith("PulseMonitor-Setup-", StringComparison.OrdinalIgnoreCase) && name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)
+                && a.TryGetProperty("browser_download_url", out JsonElement d))
+                return d.GetString();
+        }
+        return null;
     }
 
     private static Version Normalize(Version v) => new(v.Major, v.Minor, Math.Max(0, v.Build));

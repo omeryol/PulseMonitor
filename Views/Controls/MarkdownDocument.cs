@@ -6,12 +6,12 @@ using System.Windows.Media;
 namespace PulseMonitor.Views.Controls;
 
 /// <summary>
-/// Lisans ve üçüncü taraf bildirimlerini okunur bir FlowDocument'e çevirir. Yalnızca bu dosyalarda geçen
-/// Markdown parçaları desteklenir: başlık, paragraf, tablo, alıntı, [bağlantı](url) ve `kod`.
+/// Lisans, üçüncü taraf bildirimleri ve sürüm notlarını okunur bir FlowDocument'e çevirir. Yalnızca bu metinlerde
+/// geçen Markdown parçaları desteklenir: başlık, paragraf, madde listesi (- …), tablo, alıntı, [bağlantı](url), `kod` ve **kalın**.
 /// </summary>
 internal static partial class MarkdownDocument
 {
-    [GeneratedRegex(@"\[([^\]]+)\]\((https?://[^)\s]+)\)|`([^`]+)`")]
+    [GeneratedRegex(@"\[([^\]]+)\]\((https?://[^)\s]+)\)|`([^`]+)`|\*\*([^*]+)\*\*")]
     private static partial Regex InlinePattern();
 
     public static FlowDocument Build(string text)
@@ -28,12 +28,27 @@ internal static partial class MarkdownDocument
             if (line.StartsWith('#')) { doc.Blocks.Add(Heading(line)); i++; }
             else if (line.StartsWith('|')) doc.Blocks.Add(Table(Collect(lines, ref i, l => l.StartsWith('|'))));
             else if (line.StartsWith('>')) doc.Blocks.Add(Quote(Collect(lines, ref i, l => l.StartsWith('>'))));
+            else if (IsBullet(line)) doc.Blocks.Add(Bullets(Collect(lines, ref i, IsBullet)));
             else doc.Blocks.Add(Paragraph(string.Join(" ", Collect(lines, ref i, IsPlain))));
         }
         return doc;
     }
 
-    private static bool IsPlain(string l) => l.Length > 0 && !l.StartsWith('#') && !l.StartsWith('|') && !l.StartsWith('>');
+    private static bool IsPlain(string l) => l.Length > 0 && !l.StartsWith('#') && !l.StartsWith('|') && !l.StartsWith('>') && !IsBullet(l);
+
+    private static bool IsBullet(string l) => l.StartsWith("- ") || l.StartsWith("* ");
+
+    private static List Bullets(List<string> lines)
+    {
+        var list = new List { MarkerStyle = TextMarkerStyle.Disc, Margin = new Thickness(0, 0, 0, 10), Padding = new Thickness(20, 0, 0, 0) };
+        foreach (string line in lines)
+        {
+            var p = new Paragraph { Margin = new Thickness(0, 0, 0, 4), LineHeight = 20 };
+            AddInlines(p.Inlines, line[2..].Trim());
+            list.ListItems.Add(new ListItem(p));
+        }
+        return list;
+    }
 
     private static List<string> Collect(string[] lines, ref int i, Func<string, bool> match)
     {
@@ -120,6 +135,10 @@ internal static partial class MarkdownDocument
                 var link = new Hyperlink(new Run(m.Groups[1].Value)) { NavigateUri = new Uri(m.Groups[2].Value), ToolTip = m.Groups[2].Value };
                 link.SetResourceReference(Hyperlink.ForegroundProperty, "Ui.Accent");
                 target.Add(link);
+            }
+            else if (m.Groups[4].Success)
+            {
+                target.Add(new Run(m.Groups[4].Value) { FontWeight = FontWeights.SemiBold });
             }
             else
             {

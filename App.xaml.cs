@@ -105,7 +105,7 @@ public partial class App : Application
         _tray.LeftDoubleClick += _windows.OpenSettings;
         _tray.NotificationClicked += () =>
         {
-            if (_updateNotificationShown) SystemActions.OpenUrl(_updates.ReleaseUrl);
+            if (_updateNotificationShown) _windows.OpenUpdate();
         };
 
         _hub = new MetricsHub(_settings.Current, _history);
@@ -159,7 +159,7 @@ public partial class App : Application
     private void OnUpdateChecked(AppMenu menu)
     {
         if (_updates is null || _settings is null || _updates.State != UpdateState.Available || _updates.LatestVersion is null) return;
-        menu.ShowUpdate(_updates.LatestVersion, () => SystemActions.OpenUrl(_updates.ReleaseUrl));
+        menu.ShowUpdate(_updates.LatestVersion, () => _windows?.OpenUpdate());
         if (!_updates.ShouldNotify(_settings)) return;
         _updateNotificationShown = true;
         _tray?.ShowNotification(Strings.Get("Update.NotifyTitle"),
