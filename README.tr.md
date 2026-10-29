@@ -4,7 +4,7 @@
 
 Windows 11 görev çubuğu için hafif bir sistem monitörü: ağ hızı, CPU/RAM/GPU/disk, sıcaklıklar, ping, IP,
 klavye kilit tuşları ve köy/mahalle düzeyinde hava durumu. [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)'dan
-esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz Türkçe ve İngilizcedir.
+esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz 12 dildedir.
 
 ![Görev çubuğu, saatin solunda](docs/screenshots/tr/taskbar.png)
 
@@ -47,7 +47,8 @@ Görüntüler örnek verilerle üretilmiştir.
   önce); seçilen noktanın tahmini, saatlik şerit; hissedilen sıcaklık, açıklama, °C/°F; 9 simge seti, 4'ü animasyonlu (Meteocons, Makin-Things).
 - **Görünüm**: tema, palet ve öğe başına renk, yüke göre renk, yazı boyutu/kalınlığı, ok ve etiket biçimi, sütun kartları,
   saydamlık, aralıklar, ölçek.
-- **Dil**: Türkçe ve İngilizce; Windows diline göre kendiliğinden seçilir, menüden değiştirilir. Yeni dil için kod
+- **Dil**: Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, İtalyanca, Portekizce, Rusça, Ukraynaca, Lehçe,
+  Felemenkçe ve basitleştirilmiş Çince; Windows diline göre kendiliğinden seçilir, menüden değiştirilir. Yeni dil için kod
   gerekmez: `lang/tr.json` kopyalanıp çevrilir (`lang/de.json` gibi), program klasöründeki `lang` klasörüne konur.
 - **Trafik geçmişi**: günlük kayıt, ay/yıl grafiği.
 - **Uyarılar**: günlük trafik sınırı, CPU, RAM, GPU/disk sıcaklığı için Windows bildirimi; yeni sürüm bildirimi.
