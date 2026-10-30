@@ -2,6 +2,8 @@
 
 [English](README.md) · **Türkçe**
 
+[![sürüm](https://img.shields.io/github/v/release/omeryol/PulseMonitor?label=s%C3%BCr%C3%BCm&color=2ea44f)](https://github.com/omeryol/PulseMonitor/releases/latest) [![indirme](https://img.shields.io/github/downloads/omeryol/PulseMonitor/total?label=indirme&color=0078d6)](https://github.com/omeryol/PulseMonitor/releases) [![yıldız](https://img.shields.io/github/stars/omeryol/PulseMonitor?label=y%C4%B1ld%C4%B1z&color=e3b341)](https://github.com/omeryol/PulseMonitor/stargazers) [![lisans](https://img.shields.io/github/license/omeryol/PulseMonitor?label=lisans&color=blue)](LICENSE) ![Windows 11](https://img.shields.io/badge/Windows-11-0078D6) ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4) ![dil](https://img.shields.io/badge/dil-22-8a63d2)
+
 Windows 11 görev çubuğu için hafif bir sistem monitörü: ağ hızı, CPU/RAM/GPU/disk, sıcaklıklar, ping, IP,
 klavye kilit tuşları ve köy/mahalle düzeyinde hava durumu. [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)'dan
 esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz 22 dildedir.

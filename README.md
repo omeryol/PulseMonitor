@@ -2,6 +2,8 @@
 
 **English** · [Türkçe](README.tr.md)
 
+[![release](https://img.shields.io/github/v/release/omeryol/PulseMonitor?label=release&color=2ea44f)](https://github.com/omeryol/PulseMonitor/releases/latest) [![downloads](https://img.shields.io/github/downloads/omeryol/PulseMonitor/total?label=downloads&color=0078d6)](https://github.com/omeryol/PulseMonitor/releases) [![stars](https://img.shields.io/github/stars/omeryol/PulseMonitor?label=stars&color=e3b341)](https://github.com/omeryol/PulseMonitor/stargazers) [![license](https://img.shields.io/github/license/omeryol/PulseMonitor?label=license&color=blue)](LICENSE) ![Windows 11](https://img.shields.io/badge/Windows-11-0078D6) ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4) ![languages](https://img.shields.io/badge/languages-22-8a63d2)
+
 A lightweight system monitor for the Windows 11 taskbar: network speed, CPU/RAM/GPU/disk, temperatures, ping, IP,
 keyboard lock keys and weather down to village/neighbourhood level. Inspired by
 [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor); written from scratch in C# / WPF (.NET 10).
