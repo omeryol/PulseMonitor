@@ -23,6 +23,7 @@ internal sealed class SettingsStore
         {
             TaskbarItems.Normalize(store.Current);
             StyleOptions.Normalize(store.Current);
+            WeatherSettings.Normalize(store.Current);
             return store;
         }
 
@@ -39,6 +40,7 @@ internal sealed class SettingsStore
         }
         TaskbarItems.Normalize(store.Current);
         StyleOptions.Normalize(store.Current);
+        WeatherSettings.Normalize(store.Current);
         return store;
     }
 

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using PulseMonitor.Core;
@@ -10,29 +11,37 @@ internal static class OpenMeteoClient
 {
     private const int HoursAhead = 12;
 
-    public static async Task<WeatherReport> FetchAsync(double lat, double lon, CancellationToken token)
+    public static async Task<WeatherReport> FetchAsync(double lat, double lon, string model, CancellationToken token)
     {
         string url = FormattableString.Invariant(
             $"https://api.open-meteo.com/v1/forecast?latitude={lat:0.####}&longitude={lon:0.####}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,weather_code,precipitation_probability,is_day&forecast_hours={HoursAhead + 1}&timezone=auto");
+        if (model != OpenMeteoModels.Auto) url += "&models=" + Uri.EscapeDataString(model);
 
         using HttpResponseMessage response = await Http.Client.GetAsync(url, token);
         response.EnsureSuccessStatusCode();
         using JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStreamAsync(token));
-        return Parse(doc.RootElement, lat, lon);
+        return Parse(doc.RootElement, lat, lon, model);
     }
 
-    private static WeatherReport Parse(JsonElement root, double lat, double lon)
+    private static WeatherReport Parse(JsonElement root, double lat, double lon, string model)
     {
         JsonElement current = root.GetProperty("current");
+        // Bazı modeller her yerde veri vermez; boş gelen değer hata sayılır (eski rapor korunur, yeniden denenir).
+        if (current.GetProperty("temperature_2m").ValueKind != JsonValueKind.Number ||
+            current.GetProperty("weather_code").ValueKind != JsonValueKind.Number)
+            throw new InvalidDataException($"Open-Meteo bu konum için veri vermedi (model: {model}).");
+
         var report = new WeatherReport
         {
             FetchedAtUtc = DateTime.UtcNow,
             Latitude = lat,
             Longitude = lon,
+            Model = model,
+            UtcOffsetSeconds = root.TryGetProperty("utc_offset_seconds", out JsonElement off) ? off.GetInt32() : null,
             Temperature = current.GetProperty("temperature_2m").GetDouble(),
-            ApparentTemperature = current.GetProperty("apparent_temperature").GetDouble(),
-            Humidity = (int)Math.Round(current.GetProperty("relative_humidity_2m").GetDouble()),
-            WindKmh = current.GetProperty("wind_speed_10m").GetDouble(),
+            ApparentTemperature = Number(current, "apparent_temperature") ?? current.GetProperty("temperature_2m").GetDouble(),
+            Humidity = (int)Math.Round(Number(current, "relative_humidity_2m") ?? 0),
+            WindKmh = Number(current, "wind_speed_10m") ?? 0,
             WeatherCode = current.GetProperty("weather_code").GetInt32(),
             IsDay = current.GetProperty("is_day").GetInt32() == 1,
         };
@@ -58,4 +67,7 @@ internal static class OpenMeteoClient
         }
         return report;
     }
+
+    private static double? Number(JsonElement e, string name) =>
+        e.GetProperty(name) is { ValueKind: JsonValueKind.Number } v ? v.GetDouble() : null;
 }

@@ -5,21 +5,15 @@
         xmlns:views="clr-namespace:PulseMonitor.Views"
         Title="{DynamicResource Settings.Title}"
         Width="780" Height="720" MinWidth="640" MinHeight="460" ResizeMode="CanResize"
-        WindowStartupLocation="CenterScreen" Background="{StaticResource Ui.Window}"
-        Foreground="{StaticResource Ui.Text}" FontFamily="{DynamicResource Font.Ui}" FontSize="13"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource Ui.Window}"
+        Foreground="{DynamicResource Ui.Text}" FontFamily="{DynamicResource Font.Ui}" FontSize="13"
         UseLayoutRounding="True">
 
-    <!-- Solda simgeli dikey sekmeler, sağda beyaz içerik kartı (Resources/WindowStyles.xaml).
+    <!-- Solda simgeli dikey sekmeler, sağda içerik kartı (Resources/WindowStyles.xaml).
          Her değişiklik hemen uygulanır ve kaydedilir. Sekme simgeleri: Segoe Fluent Icons. -->
     <Window.Resources>
         <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource Ui.Heading}" />
-        <Style TargetType="CheckBox">
-            <Setter Property="Margin" Value="0,4" />
-        </Style>
-        <Style TargetType="ScrollViewer">
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="Padding" Value="22,10,22,20" />
-        </Style>
+        <!-- Standart denetimlerin (Fluent) sıkılaştırılması: Core/WindowTheme.cs -->
     </Window.Resources>
 
     <DockPanel Margin="14">
@@ -28,26 +22,26 @@
             <TextBlock Text="{DynamicResource Settings.Title}" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
-            <TextBlock Text="{DynamicResource Settings.AutoSave}" Foreground="{StaticResource Ui.Muted}" FontSize="12" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Settings.AutoSave}" Foreground="{DynamicResource Ui.Muted}" FontSize="12" VerticalAlignment="Center" />
             <Button Content="{DynamicResource Settings.Close}" HorizontalAlignment="Right" MinWidth="100" Tag="Primary"
                     IsCancel="True" Click="Close_Click" />
         </DockPanel>
 
         <TabControl Style="{StaticResource Ui.SideTabs}">
             <TabItem Header="{DynamicResource Settings.Tab.Items}" Tag="&#xE8FD;">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <settings:ItemsSettingsPanel DataContext="{Binding Items}" />
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{DynamicResource Settings.Tab.Style}" Tag="&#xE790;">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <settings:StylePanel DataContext="{Binding Style}" />
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{DynamicResource Settings.Tab.Weather}" Tag="&#xE753;">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <StackPanel>
                         <settings:WeatherSettingsPanel DataContext="{Binding Weather}" />
                         <TextBlock Text="{DynamicResource Style.Section.Weather}" Style="{StaticResource Heading}" />
@@ -57,20 +51,20 @@
             </TabItem>
 
             <TabItem Header="{DynamicResource Settings.Tab.Alerts}" Tag="&#xEA8F;">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <settings:AlertsPanel DataContext="{Binding Alerts}" />
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{DynamicResource Settings.Tab.General}" Tag="&#xE713;">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <StackPanel>
                         <TextBlock Text="{DynamicResource Settings.Network}" Style="{StaticResource Heading}" Margin="0,2,0,6" />
                         <TextBlock Text="{DynamicResource Settings.Adapter}" Margin="0,0,0,4" />
                         <ComboBox ItemsSource="{Binding Adapters}" SelectedItem="{Binding SelectedAdapter}" DisplayMemberPath="Display" />
                         <DockPanel Margin="0,8,0,0">
                             <Button DockPanel.Dock="Right" Content="{DynamicResource Settings.OpenHistory}" Command="{Binding OpenHistoryCommand}" Padding="10,2" />
-                            <TextBlock Text="{DynamicResource Settings.Today}" Margin="0,0,8,0" Foreground="#555" VerticalAlignment="Center" />
+                            <TextBlock Text="{DynamicResource Settings.Today}" Margin="0,0,8,0" Foreground="{DynamicResource Ui.Muted}" VerticalAlignment="Center" />
                             <TextBlock Text="{Binding TodayText}" VerticalAlignment="Center" />
                         </DockPanel>
                         <DockPanel Margin="0,10,0,0">
@@ -83,7 +77,7 @@
                             <TextBlock Text="{DynamicResource Settings.Language}" Margin="0,0,12,0" VerticalAlignment="Center" />
                             <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Display" />
                         </DockPanel>
-                        <TextBlock Text="{DynamicResource Settings.LanguageHint}" Foreground="#555" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <TextBlock Text="{DynamicResource Settings.LanguageHint}" Foreground="{DynamicResource Ui.Muted}" TextWrapping="Wrap" Margin="0,0,0,8" />
                         <CheckBox Content="{DynamicResource Settings.Startup}" IsChecked="{Binding StartWithWindows}" />
                         <CheckBox Content="{DynamicResource Settings.HideFullscreen}" IsChecked="{Binding HideInFullscreen}" />
                         <CheckBox Content="{DynamicResource Settings.CheckUpdates}" IsChecked="{Binding CheckForUpdates}" />
@@ -98,7 +92,7 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{DynamicResource Settings.Tab.About}" Tag="&#xE946;">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <views:AboutPanel DataContext="{Binding About}" />
                 </ScrollViewer>
             </TabItem>

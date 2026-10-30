@@ -21,6 +21,29 @@
     <SolidColorBrush x:Key="Brush.Tooltip.Rain.OnDark" Color="#60A5FA" />
     <SolidColorBrush x:Key="Brush.Tooltip.Rain.OnLight" Color="#1D4ED8" />
 
+    <!-- Ayarlar / Hakkında / Güncelleme pencereleri: Windows uygulama temasına göre (Core/WindowTheme.cs → "Ui.<anahtar>").
+         Açık temada saf beyaz yerine yumuşak gri; ikincil yazı okunur kalacak kadar koyu. -->
+    <SolidColorBrush x:Key="Ui.Window.OnLight" Color="#E9ECF1" />
+    <SolidColorBrush x:Key="Ui.Window.OnDark" Color="#16181D" />
+    <SolidColorBrush x:Key="Ui.Card.OnLight" Color="#F8F9FB" />
+    <SolidColorBrush x:Key="Ui.Card.OnDark" Color="#21242B" />
+    <SolidColorBrush x:Key="Ui.Border.OnLight" Color="#D9DDE4" />
+    <SolidColorBrush x:Key="Ui.Border.OnDark" Color="#323743" />
+    <SolidColorBrush x:Key="Ui.Text.OnLight" Color="#1F2937" />
+    <SolidColorBrush x:Key="Ui.Text.OnDark" Color="#E6E8EC" />
+    <SolidColorBrush x:Key="Ui.Muted.OnLight" Color="#4B5563" />
+    <SolidColorBrush x:Key="Ui.Muted.OnDark" Color="#A9AFBB" />
+    <SolidColorBrush x:Key="Ui.Hover.OnLight" Color="#E3E6EE" />
+    <SolidColorBrush x:Key="Ui.Hover.OnDark" Color="#2C3039" />
+    <SolidColorBrush x:Key="Ui.Accent.OnLight" Color="#5B5FE0" />
+    <SolidColorBrush x:Key="Ui.Accent.OnDark" Color="#8B93F8" />
+    <SolidColorBrush x:Key="Ui.AccentHover.OnLight" Color="#4F46E5" />
+    <SolidColorBrush x:Key="Ui.AccentHover.OnDark" Color="#A5ACFA" />
+    <SolidColorBrush x:Key="Ui.AccentSoft.OnLight" Color="#E4E6FB" />
+    <SolidColorBrush x:Key="Ui.AccentSoft.OnDark" Color="#2B2E4A" />
+    <SolidColorBrush x:Key="Ui.OnAccent.OnLight" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Ui.OnAccent.OnDark" Color="#14151F" />
+
     <!-- Trafik geçmişi penceresi (açık zeminli normal pencere) -->
     <SolidColorBrush x:Key="Brush.History.Window" Color="#FFFFFF" />
     <SolidColorBrush x:Key="Brush.History.Card" Color="#F4F6F9" />

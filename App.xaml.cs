@@ -77,6 +77,7 @@ public partial class App : Application
         _viewModel.ApplyStyle(_settings.Current.Style);
         _weather = new WeatherService(_settings.Current);
         _weather.Updated += () => Dispatcher.BeginInvoke(UpdateWeather);
+        _viewModel.Weather.SwitchRequested += () => { if (_settings.Current.Weather.SelectNext()) _settings.Save(); };
         _ip = new IpAddressMonitor(_settings.Current);
         _ip.Changed += () => Dispatcher.BeginInvoke(() => _viewModel.UpdateIp(_ip.LocalIp, _ip.PublicIp));
         _ping = new PingMonitor(_settings.Current);
@@ -169,7 +170,7 @@ public partial class App : Application
     private void UpdateWeather()
     {
         if (_settings is null || _viewModel is null || _weather is null) return;
-        _viewModel.Weather.Update(_settings.Current, _weather.Current);
+        _viewModel.Weather.Update(_settings.Current, _weather.ReportFor);
     }
 
     private static void OnWindowLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -183,6 +184,7 @@ public partial class App : Application
         if (_settings is null) return;
         StyleSettings style = _settings.Current.Style;
         StyleResources.Apply(this, style);
+        WindowTheme.Apply(this);
         ThemeBrushes.Apply(this, ThemeBrushes.IsLight(style, SystemTheme.IsTaskbarLight()), style);
         _viewModel?.ApplyStyle(style);
         UpdateWeather();

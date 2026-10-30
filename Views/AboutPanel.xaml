@@ -12,12 +12,12 @@
             <Setter Property="Margin" Value="0,2" />
         </Style>
         <Style x:Key="Small" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Foreground" Value="#555" />
+            <Setter Property="Foreground" Value="{DynamicResource Ui.Muted}" />
             <Setter Property="FontSize" Value="12" />
         </Style>
         <Style x:Key="DocCard" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource Ui.Card}" />
-            <Setter Property="BorderBrush" Value="{StaticResource Ui.Border}" />
+            <Setter Property="Background" Value="{DynamicResource Ui.Card}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Ui.Border}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="8" />
         </Style>
@@ -29,7 +29,7 @@
             <StackPanel VerticalAlignment="Center">
                 <TextBlock FontSize="20" FontWeight="SemiBold">
                     <Run Text="PulseMonitor" />
-                    <Run Text="{Binding Version, Mode=OneWay}" FontSize="13" FontWeight="Normal" Foreground="#666" />
+                    <Run Text="{Binding Version, Mode=OneWay}" FontSize="13" FontWeight="Normal" Foreground="{DynamicResource Ui.Muted}" />
                 </TextBlock>
                 <TextBlock Text="{DynamicResource About.Tagline}" Style="{StaticResource Small}" />
             </StackPanel>

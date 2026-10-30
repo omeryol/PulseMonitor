@@ -3,15 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{DynamicResource Update.WindowTitle}"
         Width="540" Height="520" MinWidth="420" MinHeight="340"
-        WindowStartupLocation="CenterScreen" Background="{StaticResource Ui.Window}"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource Ui.Window}"
         FontFamily="{DynamicResource Font.Ui}" FontSize="13" UseLayoutRounding="True"
         Hyperlink.RequestNavigate="OnRequestNavigate">
 
     <!-- DataContext: UpdateViewModel. Menüdeki güncelleme satırı, bildirim ve Hakkında → İndir bu pencereyi açar. -->
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Top" Margin="6,4,6,10">
-            <TextBlock Text="{Binding Heading}" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource Ui.Text}" />
-            <TextBlock Text="{Binding CurrentVersion}" Foreground="{StaticResource Ui.Muted}" Margin="0,2,0,0" />
+            <TextBlock Text="{Binding Heading}" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource Ui.Text}" />
+            <TextBlock Text="{Binding CurrentVersion}" Foreground="{DynamicResource Ui.Muted}" Margin="0,2,0,0" />
         </StackPanel>
 
         <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0" LastChildFill="False">
@@ -21,9 +21,9 @@
             <Button DockPanel.Dock="Right" Content="{DynamicResource Update.Later}" Click="Close_Click" IsCancel="True" MinWidth="90" Padding="12,4" />
         </DockPanel>
 
-        <Border Background="{StaticResource Ui.Card}" BorderBrush="{StaticResource Ui.Border}" BorderThickness="1" CornerRadius="10">
+        <Border Background="{DynamicResource Ui.Card}" BorderBrush="{DynamicResource Ui.Border}" BorderThickness="1" CornerRadius="10">
             <DockPanel>
-                <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Update.WhatsNew}" FontWeight="SemiBold" Foreground="{StaticResource Ui.Accent}"
+                <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Update.WhatsNew}" FontWeight="SemiBold" Foreground="{DynamicResource Ui.Accent}"
                            Margin="16,12,16,0" />
                 <FlowDocumentScrollViewer Document="{Binding Notes, Converter={StaticResource MarkdownDocument}}"
                                           VerticalScrollBarVisibility="Auto" IsToolBarVisible="False" />

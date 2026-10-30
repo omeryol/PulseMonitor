@@ -79,7 +79,7 @@ public sealed class TaskbarViewModel
     {
         var visible = s.Items
             .Where(i => i.Visible && _items.ContainsKey(i.Id))
-            .Where(i => i.Id != TaskbarItemId.Weather || s.WeatherLocation is not null)
+            .Where(i => i.Id != TaskbarItemId.Weather || s.Weather.Active is not null)
             .Select(i => (_items[i.Id], _cards.GetValueOrDefault(i.Id)));
 
         List<TaskbarColumn> columns = TaskbarLayout.Build(visible);

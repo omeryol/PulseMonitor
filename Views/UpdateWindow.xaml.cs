@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Navigation;
+using PulseMonitor.Core;
 using PulseMonitor.Platform;
 
 namespace PulseMonitor.Views;
@@ -8,6 +9,7 @@ public partial class UpdateWindow : Window
 {
     public UpdateWindow()
     {
+        WindowTheme.Prepare(this);
         InitializeComponent();
     }
 

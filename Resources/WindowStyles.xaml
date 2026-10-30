@@ -1,33 +1,25 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Ayarlar / geçmiş / Hakkında pencerelerinin görünümü (görev çubuğu penceresi kullanmaz).
-         Pencereler bu sözlüğü kendi Resources'larına ekler. Vurgu rengi geçmiş grafiğiyle aynı (mor). -->
+    <!-- Ayarlar / Hakkında / Güncelleme pencerelerinin görünümü (görev çubuğu penceresi kullanmaz).
+         Pencereler bu sözlüğü Fluent temasının üstüne kendi Resources'larına ekler (Core/WindowTheme.cs).
+         Renkler temaya göre değişir: Resources/Theme.xaml → Ui.*.OnLight / OnDark, burada DynamicResource ile. -->
 
-    <SolidColorBrush x:Key="Ui.Window" Color="#F3F4F8" />
-    <SolidColorBrush x:Key="Ui.Card" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="Ui.Border" Color="#E3E6EC" />
-    <SolidColorBrush x:Key="Ui.Text" Color="#1F2937" />
-    <SolidColorBrush x:Key="Ui.Muted" Color="#6B7280" />
-    <SolidColorBrush x:Key="Ui.Hover" Color="#ECEEF3" />
-    <SolidColorBrush x:Key="Ui.Accent" Color="#6366F1" />
-    <SolidColorBrush x:Key="Ui.AccentHover" Color="#4F46E5" />
-    <SolidColorBrush x:Key="Ui.AccentSoft" Color="#EEF0FF" />
     <FontFamily x:Key="Ui.Icons">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
 
     <!-- Bölüm başlığı: mor yazı, solda vurgu çizgisi (panellerdeki Heading/Section stilleri bunu temel alır) -->
     <Style x:Key="Ui.Heading" TargetType="TextBlock">
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{StaticResource Ui.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Ui.Accent}" />
         <Setter Property="Margin" Value="0,18,0,8" />
     </Style>
 
     <!-- Düğmeler: yuvarlak köşeli, açık zemin; Tag="Primary" ise ana renk -->
     <Style TargetType="Button">
-        <Setter Property="Foreground" Value="{StaticResource Ui.Text}" />
-        <Setter Property="Background" Value="{StaticResource Ui.Card}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Ui.Border}" />
+        <Setter Property="Foreground" Value="{DynamicResource Ui.Text}" />
+        <Setter Property="Background" Value="{DynamicResource Ui.Card}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Ui.Border}" />
         <Setter Property="Padding" Value="12,5" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
@@ -39,10 +31,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Box" Property="Background" Value="{StaticResource Ui.Hover}" />
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource Ui.Hover}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource Ui.Accent}" />
+                            <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Ui.Accent}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5" />
@@ -51,16 +43,16 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="Tag" Value="Primary" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Box" Property="Background" Value="{StaticResource Ui.Accent}" />
-                            <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource Ui.Accent}" />
-                            <Setter Property="Foreground" Value="White" />
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource Ui.Accent}" />
+                            <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Ui.Accent}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Ui.OnAccent}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="Tag" Value="Primary" />
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Box" Property="Background" Value="{StaticResource Ui.AccentHover}" />
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource Ui.AccentHover}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -68,8 +60,19 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Slider">
-        <Setter Property="Foreground" Value="{StaticResource Ui.Accent}" />
+    <!-- Bağlantılar: tema vurgu rengiyle (koyu temada da okunur) -->
+    <Style TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="{DynamicResource Ui.Accent}" />
+    </Style>
+
+    <!-- 3. taraf kaynak / lisans notu: belirgin kutu, okunur yazı -->
+    <Style x:Key="Ui.Notice" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource Ui.AccentSoft}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="0,10,0,0" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource Ui.Text}" />
+        <Setter Property="TextElement.FontSize" Value="12" />
     </Style>
 
     <!-- Sekmeler: solda dikey menü, sağda beyaz kart -->
@@ -84,10 +87,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel IsItemsHost="True" Margin="0,4,10,0" />
-                        <Border Grid.Column="1" Background="{StaticResource Ui.Card}" BorderBrush="{StaticResource Ui.Border}"
+                        <Border Grid.Column="1" Background="{DynamicResource Ui.Card}" BorderBrush="{DynamicResource Ui.Border}"
                                 BorderThickness="1" CornerRadius="10">
                             <!-- Bu ad gerekli: sekme içeriği ekran okuyuculara ve UI otomasyonuna görünür olsun -->
-                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="2" />
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="2"
+                                              TextElement.Foreground="{DynamicResource Ui.Text}" />
                         </Border>
                     </Grid>
                 </ControlTemplate>
@@ -98,6 +102,8 @@
     <!-- Sekme düğmesi: Tag = Segoe Fluent Icons karakteri -->
     <Style TargetType="TabItem">
         <Setter Property="Cursor" Value="Hand" />
+        <!-- Sekme içeriği yazı rengini buradan alır (mantıksal üst öğe sekmedir) -->
+        <Setter Property="Foreground" Value="{DynamicResource Ui.Text}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
@@ -110,20 +116,20 @@
                             </Grid.ColumnDefinitions>
                             <Border x:Name="Bar" Width="3" Height="16" CornerRadius="2" Background="Transparent" HorizontalAlignment="Left" />
                             <TextBlock x:Name="Icon" Grid.Column="1" Text="{TemplateBinding Tag}" FontFamily="{StaticResource Ui.Icons}"
-                                       FontSize="15" VerticalAlignment="Center" Foreground="{StaticResource Ui.Muted}" />
+                                       FontSize="15" VerticalAlignment="Center" Foreground="{DynamicResource Ui.Muted}" />
                             <ContentPresenter x:Name="Text" Grid.Column="2" ContentSource="Header" VerticalAlignment="Center"
-                                              TextElement.Foreground="{StaticResource Ui.Text}" />
+                                              TextElement.Foreground="{DynamicResource Ui.Text}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Box" Property="Background" Value="{StaticResource Ui.Hover}" />
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource Ui.Hover}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Box" Property="Background" Value="{StaticResource Ui.AccentSoft}" />
-                            <Setter TargetName="Bar" Property="Background" Value="{StaticResource Ui.Accent}" />
-                            <Setter TargetName="Icon" Property="Foreground" Value="{StaticResource Ui.Accent}" />
-                            <Setter TargetName="Text" Property="TextElement.Foreground" Value="{StaticResource Ui.Accent}" />
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource Ui.AccentSoft}" />
+                            <Setter TargetName="Bar" Property="Background" Value="{DynamicResource Ui.Accent}" />
+                            <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource Ui.Accent}" />
+                            <Setter TargetName="Text" Property="TextElement.Foreground" Value="{DynamicResource Ui.Accent}" />
                             <Setter TargetName="Text" Property="TextElement.FontWeight" Value="SemiBold" />
                         </Trigger>
                     </ControlTemplate.Triggers>

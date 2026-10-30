@@ -64,11 +64,19 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     /// <summary>Veri eskiyse (internet yok) soluk gösterilir.</summary>
     public double Opacity { get => _opacity; private set => Set(ref _opacity, value); }
 
-    internal void Update(AppSettings s, WeatherReport? report)
+    /// <summary>Öğeye tıklandı ve birden fazla konum var: App sıradaki konuma geçer.</summary>
+    public event Action? SwitchRequested;
+    public void RequestSwitch() => SwitchRequested?.Invoke();
+    public bool CanSwitch { get; private set; }
+
+    internal void Update(AppSettings s, Func<WeatherLocation, WeatherReport?> reportFor)
     {
-        WeatherLocation? loc = s.WeatherLocation;
+        WeatherLocation? loc = s.Weather.Active;
         IsVisible = s.IsShown(TaskbarItemId.Weather) && loc is not null;
+        CanSwitch = s.Weather.Locations.Count > 1;
         if (loc is null) return;
+        WeatherReport? report = reportFor(loc);
+        var others = s.Weather.Locations.Where(l => !ReferenceEquals(l, loc)).Select(l => (l, reportFor(l))).ToList();
 
         StyleSettings st = s.Style;
         bool f = st.TemperatureUnit == StyleOptions.Fahrenheit;
@@ -86,7 +94,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
             Animation = WeatherAnimationKind.None;
             SetTemperatureBrush("Brush.Text");
             Opacity = 1;
-            Tooltip = WeatherTooltip.Loading(loc);
+            Tooltip = WeatherTooltip.Loading(loc, others, f);
             return;
         }
 
@@ -109,7 +117,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;
         Opacity = stale ? 0.55 : 1;
-        Tooltip = WeatherTooltip.Build(loc, report, f, stale);
+        Tooltip = WeatherTooltip.Build(loc, report, others, f, stale);
     }
 
     private static string FeelsLike(string degrees) => string.Format(Tr, Strings.Get("Weather.FeelsLikeShort"), degrees);

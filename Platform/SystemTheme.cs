@@ -18,6 +18,13 @@ internal sealed class SystemTheme : IDisposable
         return key?.GetValue("SystemUsesLightTheme") is int value && value == 1;
     }
 
+    /// <summary>Uygulamalar açık temadaysa true (AppsUseLightTheme); ayarlar penceresi bunu izler.</summary>
+    public static bool IsAppsLight()
+    {
+        using RegistryKey? key = Registry.CurrentUser.OpenSubKey(PersonalizeKey);
+        return key?.GetValue("AppsUseLightTheme") is not int value || value == 1;
+    }
+
     private void OnPreferenceChanged(object? sender, UserPreferenceChangedEventArgs e)
     {
         if (e.Category == UserPreferenceCategory.General) Changed?.Invoke();

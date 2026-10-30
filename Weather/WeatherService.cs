@@ -6,8 +6,9 @@ using PulseMonitor.Settings;
 namespace PulseMonitor.Weather;
 
 /// <summary>
-/// Seçili konumun hava durumunu 15 dakikada bir yeniler. Hata olursa 2 dakika sonra yeniden dener;
-/// uykudan uyanınca ve internet geri gelince hemen yeniler. <see cref="Updated"/> arka planda çağrılır.
+/// Takip edilen tüm konumların hava durumunu 15 dakikada bir yeniler (sırayla, tek tek). Bir konum alınamazsa
+/// eski raporu korunur ve 2 dakika sonra yeniden denenir; uykudan uyanınca ve internet geri gelince hemen yeniler.
+/// <see cref="Updated"/> arka planda çağrılır.
 /// </summary>
 internal sealed class WeatherService : IDisposable
 {
@@ -18,11 +19,12 @@ internal sealed class WeatherService : IDisposable
     private readonly Timer _timer;
     private readonly SemaphoreSlim _gate = new(1, 1);
     private readonly CancellationTokenSource _cts = new();
+    private volatile List<WeatherReport> _reports = new();
     private bool _lastFailed;
-    private (double Lat, double Lon)? _lastPlace;
+    private string _lastPlaces = "";
+    private string _lastModel = "";
     private bool _lastShow;
 
-    public WeatherReport? Current { get; private set; }
     public event Action? Updated;
 
     public WeatherService(AppSettings settings)
@@ -33,34 +35,49 @@ internal sealed class WeatherService : IDisposable
         NetworkChange.NetworkAvailabilityChanged += OnNetworkAvailabilityChanged;
     }
 
+    /// <summary>Konumun son raporu (seçili modelden ya da önbellekten); yoksa null.</summary>
+    public WeatherReport? ReportFor(WeatherLocation loc) =>
+        _reports.FirstOrDefault(r => loc.SamePlace(r.Latitude, r.Longitude));
+
     public void Start()
     {
         RememberSettings();
-        if (_settings.WeatherLocation is { } loc) Current = WeatherCache.Load(loc);
+        _reports = WeatherCache.Load();
         Updated?.Invoke();
-        TimeSpan due = Current is null ? TimeSpan.Zero : RefreshInterval - Current.Age;
-        _timer.Change(due < TimeSpan.Zero ? TimeSpan.Zero : due, Timeout.InfiniteTimeSpan);
+        _timer.Change(DueTime(), Timeout.InfiniteTimeSpan);
+    }
+
+    /// <summary>En eski (ya da eksik) rapor yenileme zamanını belirler.</summary>
+    private TimeSpan DueTime()
+    {
+        WeatherSettings w = _settings.Weather;
+        var reports = w.Locations.Select(ReportFor).ToList();
+        if (reports.Count == 0 || reports.Any(r => r is null || r.Model != w.Model)) return TimeSpan.Zero;
+        TimeSpan due = RefreshInterval - reports.Max(r => r!.Age);
+        return due < TimeSpan.Zero ? TimeSpan.Zero : due;
     }
 
     /// <summary>Kullanıcı yenileme istedi ya da bir olay (uyanma, ağ) yenilemeyi gerektiriyor.</summary>
     public void RefreshSoon(TimeSpan? delay = null) => _timer.Change(delay ?? TimeSpan.Zero, Timeout.InfiniteTimeSpan);
 
-    /// <summary>Ayarlar kaydedildi: konum değiştiyse ya da hava durumu yeniden açıldıysa hemen yenile.</summary>
+    /// <summary>
+    /// Ayarlar kaydedildi: konum eklendi/çıktı, model değişti ya da hava durumu yeniden açıldıysa hemen yenile.
+    /// Yalnızca gösterilen konum değiştiyse eldeki raporla hemen güncellenir.
+    /// </summary>
     public void SettingsChanged()
     {
-        var oldPlace = _lastPlace;
-        bool wasShown = _lastShow;
+        (string places, string model, bool wasShown) = (_lastPlaces, _lastModel, _lastShow);
         RememberSettings();
-        if (_lastPlace == oldPlace && !(_lastShow && !wasShown)) return;
-
-        if (_lastPlace is null) Current = null;
+        Updated?.Invoke();
+        if (_lastPlaces == places && _lastModel == model && !(_lastShow && !wasShown)) return;
         RefreshSoon();
     }
 
     private void RememberSettings()
     {
-        WeatherLocation? loc = _settings.WeatherLocation;
-        _lastPlace = loc is null ? null : (loc.Latitude, loc.Longitude);
+        WeatherSettings w = _settings.Weather;
+        _lastPlaces = string.Join(";", w.Locations.Select(l => FormattableString.Invariant($"{l.Latitude:0.####},{l.Longitude:0.####}")));
+        _lastModel = w.Model;
         _lastShow = _settings.IsShown(TaskbarItemId.Weather);
     }
 
@@ -70,29 +87,43 @@ internal sealed class WeatherService : IDisposable
         TimeSpan next = RefreshInterval;
         try
         {
-            WeatherLocation? loc = _settings.WeatherLocation;
-            if (loc is null || !_settings.IsShown(TaskbarItemId.Weather))
-            {
-                if (loc is null) Current = null;
-                return;
-            }
-            if (Current is not null && !loc.SamePlace(Current.Latitude, Current.Longitude)) Current = null;
+            WeatherSettings w = _settings.Weather;
+            List<WeatherLocation> locations = w.Locations;
+            if (locations.Count == 0 || !_settings.IsShown(TaskbarItemId.Weather)) return;
 
-            WeatherReport report = await OpenMeteoClient.FetchAsync(loc.Latitude, loc.Longitude, _cts.Token);
-            Current = report;
-            WeatherCache.Save(report);
-            if (_lastFailed) Log.Info("Hava durumu yeniden alınabildi.");
-            _lastFailed = false;
+            string model = w.Model;
+            var fresh = new List<WeatherReport>();
+            Exception? error = null;
+            foreach (WeatherLocation loc in locations)
+            {
+                try
+                {
+                    fresh.Add(await OpenMeteoClient.FetchAsync(loc.Latitude, loc.Longitude, model, _cts.Token));
+                }
+                catch (Exception ex) when (ex is not OperationCanceledException || !_cts.IsCancellationRequested)
+                {
+                    error ??= ex;
+                    if (ReportFor(loc) is { } old) fresh.Add(old); // eski veri soluk gösterilir
+                }
+            }
+            _reports = fresh; // listeden çıkan konumların raporu da böylece silinir
+            WeatherCache.Save(fresh);
+
+            if (error is not null)
+            {
+                if (!_lastFailed) Log.Warn("Hava durumu alınamadı; 2 dakika sonra yeniden denenecek.", error);
+                _lastFailed = true;
+                next = RetryInterval;
+            }
+            else
+            {
+                if (_lastFailed) Log.Info("Hava durumu yeniden alınabildi.");
+                _lastFailed = false;
+            }
         }
         catch (OperationCanceledException) when (_cts.IsCancellationRequested)
         {
             return;
-        }
-        catch (Exception ex)
-        {
-            if (!_lastFailed) Log.Warn("Hava durumu alınamadı; 2 dakika sonra yeniden denenecek.", ex);
-            _lastFailed = true;
-            next = RetryInterval;
         }
         finally
         {

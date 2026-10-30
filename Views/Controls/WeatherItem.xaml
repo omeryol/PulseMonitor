@@ -5,7 +5,8 @@
              Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibility}}"
              ToolTipService.IsEnabled="{DynamicResource DetailCards.Enabled}"
              ToolTipService.InitialShowDelay="400"
-             ToolTipService.ShowDuration="60000">
+             ToolTipService.ShowDuration="60000"
+             MouseLeftButtonDown="OnMouseLeftButtonDown">
 
     <!-- Renkli ipucu kartı: görev çubuğu temasına uyar (Brush.Tooltip.*). İçerik: WeatherTooltipModel. -->
     <UserControl.ToolTip>
@@ -61,6 +62,24 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+
+                        <!-- Diğer takip edilen konumlar: ad solda, simge + sıcaklık sağda. -->
+                        <StackPanel Visibility="{Binding HasOthers, Converter={StaticResource BoolToVisibility}}">
+                            <Rectangle Height="1" Fill="{DynamicResource Brush.Tooltip.Border}" Margin="0,8,0,6" />
+                            <ItemsControl ItemsSource="{Binding Others}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="0,1">
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Temperature}" FontWeight="SemiBold" MinWidth="34"
+                                                       TextAlignment="Right" Foreground="{Binding TemperatureBrush}" VerticalAlignment="Center" />
+                                            <Image DockPanel.Dock="Right" Source="{Binding Icon}" Width="20" Height="20" Margin="8,0,4,0" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="{DynamicResource Weather.ClickToSwitch}" FontSize="11" Foreground="{DynamicResource Brush.Muted}" Margin="0,4,0,0" />
+                        </StackPanel>
 
                         <TextBlock Margin="0,8,0,0" FontSize="11" Foreground="{DynamicResource Brush.Muted}">
                             <Run Text="{Binding Updated, Mode=OneWay}" />

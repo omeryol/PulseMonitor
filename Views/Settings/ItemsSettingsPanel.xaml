@@ -4,7 +4,7 @@
 
     <!-- DataContext: ItemsSettingsViewModel -->
     <StackPanel>
-        <TextBlock Text="{DynamicResource Items.Hint}" TextWrapping="Wrap" Foreground="#555" Margin="0,0,0,6" />
+        <TextBlock Text="{DynamicResource Items.Hint}" TextWrapping="Wrap" Foreground="{DynamicResource Ui.Muted}" Margin="0,0,0,6" />
         <DockPanel>
             <StackPanel DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Top">
                 <Button Content="{DynamicResource Items.MoveUp}" Command="{Binding MoveUpCommand}"

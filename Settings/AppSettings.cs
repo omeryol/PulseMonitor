@@ -26,8 +26,8 @@ public sealed class AppSettings
     /// </summary>
     public List<TaskbarItemSetting> Items { get; set; } = TaskbarItems.Defaults();
 
-    /// <summary>Hava durumu konumu; seçilmemişse hava durumu gösterilmez.</summary>
-    public WeatherLocation? WeatherLocation { get; set; }
+    /// <summary>Hava durumu: kaynak, model, konumlar; konum yoksa hava durumu gösterilmez.</summary>
+    public WeatherSettings Weather { get; set; } = new();
 
     /// <summary>Görünüm (renk, yazı, işaretler, zemin, hava simgeleri…).</summary>
     public StyleSettings Style { get; set; } = new();
@@ -58,4 +58,7 @@ public sealed class AppSettings
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowDisk { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowKeyboard { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public bool? ShowWeather { get; set; }
+
+    // 0.3–0.12 sürümlerinin tek konumu: WeatherSettings.Normalize ile Weather.Locations'a taşınıp silinir.
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public WeatherLocation? WeatherLocation { get; set; }
 }

@@ -29,7 +29,7 @@
             <ContentControl Content="{Binding ColorTarget}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
         <CheckBox Content="{DynamicResource Style.Label.LoadColors}" IsChecked="{Binding LoadColors}" Margin="0,6" />
 
-        <TextBlock Text="{DynamicResource Style.Label.Colors}" Margin="0,6,0,4" Foreground="#555" TextWrapping="Wrap" />
+        <TextBlock Text="{DynamicResource Style.Label.Colors}" Margin="0,6,0,4" Foreground="{DynamicResource Ui.Muted}" TextWrapping="Wrap" />
         <ItemsControl ItemsSource="{Binding CustomColors}" Focusable="False">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate>
@@ -74,7 +74,7 @@
         <DockPanel><TextBlock DockPanel.Dock="Right" Width="44" TextAlignment="Right" Text="{Binding Scale, StringFormat=% {0}}" />
             <TextBlock Text="{DynamicResource Style.Label.Scale}" Style="{StaticResource RowLabel}" />
             <Slider Minimum="{Binding MinScale}" Maximum="{Binding MaxScale}" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding Scale}" VerticalAlignment="Center" /></DockPanel>
-        <TextBlock Text="{DynamicResource Style.ScaleHint}" Foreground="#555" FontSize="11" Margin="190,0,0,4" TextWrapping="Wrap" />
+        <TextBlock Text="{DynamicResource Style.ScaleHint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" Margin="190,0,0,4" TextWrapping="Wrap" />
         <CheckBox Content="{DynamicResource Style.Label.Separator}" IsChecked="{Binding Separator}" Margin="0,6" />
         <CheckBox Content="{DynamicResource Style.Label.DetailCards}" IsChecked="{Binding DetailCards}" Margin="0,6" />
 

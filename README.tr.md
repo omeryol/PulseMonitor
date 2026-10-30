@@ -46,9 +46,11 @@ Görüntüler örnek verilerle üretilmiştir.
 - **Göstergeler** (her biri ayrı açılır/kapanır, sırası ayarlanır): yükleme/indirme hızı (değerin arkasında mini grafik),
   CPU, RAM, GPU, disk etkinliği, GPU ve NVMe sıcaklığı, ping, yerel/dış IP, Caps/Num/Scroll Lock, hava durumu.
 - **Hava durumu**: dünyanın her yerinde köy, mahalle, kasaba araması (Open-Meteo + OpenStreetMap; kendi ülkendeki yerler
-  önce); seçilen noktanın tahmini, saatlik şerit; hissedilen sıcaklık, açıklama, °C/°F; 9 simge seti, 4'ü animasyonlu (Meteocons, Makin-Things).
+  önce); seçilen noktanın tahmini, saatlik şerit; hissedilen sıcaklık, açıklama, °C/°F; en çok 8 konum (hava öğesine
+  tıklayınca sıradaki, kartta diğerleri); tahmin modeli seçimi (ECMWF, DWD ICON, NOAA GFS, Météo-France, UK Met Office…);
+  9 simge seti, 4'ü animasyonlu (Meteocons, Makin-Things).
 - **Görünüm**: tema, palet ve öğe başına renk, yüke göre renk, yazı boyutu/kalınlığı, ok ve etiket biçimi, sütun kartları,
-  saydamlık, aralıklar, ölçek.
+  saydamlık, aralıklar, ölçek. Ayarlar penceresi Windows’un açık/koyu uygulama temasını izler.
 - **Dil**: Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, İtalyanca, Portekizce, Rusça, Ukraynaca, Lehçe,
   Felemenkçe, Japonca, Korece, Endonezce, Vietnamca, Tayca, Çekçe, İsveççe, Macarca, Rumence, Yunanca ve basitleştirilmiş
   Çince; Windows diline göre kendiliğinden seçilir, menüden değiştirilir. Yeni dil için kod
@@ -83,7 +85,7 @@ Ayarlar, trafik geçmişi ve önbellek yalnızca `%LOCALAPPDATA%\PulseMonitor` a
 
 | Servis | Ne zaman |
 |---|---|
-| Open-Meteo (tahmin) | Hava durumu açıkken 15 dakikada bir |
+| Open-Meteo (tahmin) | Hava durumu açıkken her konum için 15 dakikada bir |
 | Open-Meteo + OpenStreetMap Nominatim (konum araması) | Yalnızca ayarlarda "Ara"ya basınca |
 | api.ipify.org (dış IP) | Yalnızca "Dış IP" öğesi açıkken |
 | Ping sunucusu (varsayılan 1.1.1.1) | Yalnızca "Ping" öğesi açıkken |

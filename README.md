@@ -48,9 +48,10 @@ Screenshots are generated with sample data.
   CPU, RAM, GPU, disk activity, GPU and NVMe temperature, ping, local/external IP, Caps/Num/Scroll Lock, weather.
 - **Weather**: search villages, neighbourhoods and towns anywhere in the world (Open-Meteo + OpenStreetMap; places in
   your own country first); forecast for the chosen spot with an hourly strip; feels-like temperature, description, °C/°F;
-  9 icon sets, 4 of them animated (Meteocons, Makin-Things).
+  up to 8 locations (click the weather item to switch, the card lists the others); choice of forecast model (ECMWF,
+  DWD ICON, NOAA GFS, Météo-France, UK Met Office, …); 9 icon sets, 4 of them animated (Meteocons, Makin-Things).
 - **Appearance**: theme, palette and per-item colors, color by load, font size/weight, arrow and label style, column cards,
-  opacity, spacing, scale.
+  opacity, spacing, scale. The settings window follows the Windows light/dark app theme.
 - **Languages**: English, Turkish, German, Spanish, French, Italian, Portuguese, Russian, Ukrainian, Polish, Dutch, Japanese, Korean,
   Indonesian, Vietnamese, Thai, Czech, Swedish, Hungarian, Romanian, Greek and Simplified Chinese; picked automatically from the Windows language, changeable from the menu. Adding a
   language needs no code: copy `lang/tr.json`, translate the values, save it as e.g. `lang/de.json` and put it into the
@@ -85,7 +86,7 @@ Settings, traffic history and cache are kept only under `%LOCALAPPDATA%\PulseMon
 
 | Service | When |
 |---|---|
-| Open-Meteo (forecast) | Every 15 minutes while weather is on |
+| Open-Meteo (forecast) | Every 15 minutes per location while weather is on |
 | Open-Meteo + OpenStreetMap Nominatim (location search) | Only when you press "Search" in the settings |
 | api.ipify.org (external IP) | Only while the "External IP" item is on |
 | Ping server (default 1.1.1.1) | Only while the "Ping" item is on |

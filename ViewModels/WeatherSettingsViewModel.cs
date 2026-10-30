@@ -7,7 +7,7 @@ using PulseMonitor.Weather;
 
 namespace PulseMonitor.ViewModels;
 
-/// <summary>Ayarlar penceresindeki hava durumu bölümü: konum arama, seçme, görünen adı değiştirme.</summary>
+/// <summary>Ayarlar penceresindeki hava durumu bölümü: tahmin modeli, konum arama ve takip edilen konumlar.</summary>
 public sealed class WeatherSettingsViewModel : ObservableObject
 {
     private readonly SettingsStore _store;
@@ -20,50 +20,58 @@ public sealed class WeatherSettingsViewModel : ObservableObject
     {
         _store = store;
         SearchCommand = new RelayCommand(Search);
+        Results.CollectionChanged += (_, _) => Raise(nameof(HasResults));
+        Locations = new WeatherLocationsViewModel(store);
+        Models = OpenMeteoModels.All
+            .Select(m => new Option(m.Id, m.Id == OpenMeteoModels.Auto ? Strings.Get("Weather.Model.Auto") : m.Name))
+            .ToList();
     }
 
-    private WeatherLocation? Location => _store.Current.WeatherLocation;
-
+    public WeatherLocationsViewModel Locations { get; }
     public ObservableCollection<LocationOption> Results { get; } = new();
     public ICommand SearchCommand { get; }
+    public bool HasResults => Results.Count > 0;
 
     public string Query { get => _query; set => Set(ref _query, value); }
-    public string Status { get => _status; private set => Set(ref _status, value); }
-    public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
-
-    public bool HasLocation => Location is not null;
-
-    public string CurrentText => Location is { } l
-        ? (l.Context.Length > 0 ? $"{l.Name} ({l.Context})" : l.Name)
-        : Strings.Get("Weather.NoLocation");
-
-    public string DisplayName
+    public string Status
     {
-        get => Location?.DisplayName ?? string.Empty;
-        set
+        get => _status;
+        private set
         {
-            if (Location is null) return;
-            Location.DisplayName = value.Trim();
-            _store.Save();
+            if (Set(ref _status, value)) Raise(nameof(HasStatus));
         }
     }
 
-    /// <summary>Listeden seçilen sonuç hemen konum olarak kaydedilir.</summary>
+    public bool HasStatus => _status.Length > 0;
+    public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
+
+    public IReadOnlyList<Option> Models { get; }
+
+    public Option? SelectedModel
+    {
+        get => Models.FirstOrDefault(m => m.Id == _store.Current.Weather.Model);
+        set
+        {
+            if (value is null || value.Id == _store.Current.Weather.Model) return;
+            _store.Current.Weather.Model = value.Id;
+            _store.Save();
+            Log.Info($"Hava durumu modeli: {value.Id}");
+            Raise(nameof(SelectedModel));
+        }
+    }
+
+    /// <summary>Listeden seçilen sonuç konumlara eklenir ve görev çubuğunda gösterilir.</summary>
     public LocationOption? SelectedResult
     {
         get => null;
         set
         {
             if (value is null) return;
-            WeatherLocation l = value.Location;
-            _store.Current.WeatherLocation = new WeatherLocation
+            Status = Locations.Add(value.Location) switch
             {
-                Name = l.Name, DisplayName = l.Name, Context = l.Context,
-                Latitude = l.Latitude, Longitude = l.Longitude, Source = l.Source,
+                AddResult.Full => string.Format(Strings.Get("Weather.Limit"), WeatherSettings.MaxLocations),
+                _ => string.Format(Strings.Get("Weather.Added"), value.Location.Name),
             };
-            _store.Save();
-            Log.Info($"Hava durumu konumu: {l.Name} ({l.Context}) {l.Latitude:0.####},{l.Longitude:0.####} [{l.Source}]");
-            OnLocationChanged();
         }
     }
 
@@ -100,13 +108,6 @@ public sealed class WeatherSettingsViewModel : ObservableObject
         {
             if (ReferenceEquals(_search, cts)) IsBusy = false;
         }
-    }
-
-    private void OnLocationChanged()
-    {
-        Raise(nameof(HasLocation));
-        Raise(nameof(CurrentText));
-        Raise(nameof(DisplayName));
     }
 }
 

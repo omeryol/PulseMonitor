@@ -4,16 +4,40 @@
 
     <!-- DataContext: WeatherSettingsViewModel -->
     <StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-            <TextBlock Text="{DynamicResource Weather.Current}" Foreground="#555" Margin="0,0,8,0" />
-            <TextBlock Text="{Binding CurrentText}" FontWeight="SemiBold" TextWrapping="Wrap" />
-        </StackPanel>
-
-        <DockPanel Margin="0,8,0,0"
-                   Visibility="{Binding HasLocation, Converter={StaticResource BoolToVisibility}}">
-            <TextBlock Text="{DynamicResource Weather.DisplayName}" VerticalAlignment="Center" Margin="0,0,8,0" />
-            <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
+        <DockPanel Margin="0,2,0,0">
+            <TextBlock Text="{DynamicResource Weather.Model}" Width="190" VerticalAlignment="Center" />
+            <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="Display" />
         </DockPanel>
+        <TextBlock Text="{DynamicResource Weather.Model.Hint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" />
+
+        <!-- Takip edilen konumlar: ● görev çubuğunda gösterilen. DataContext: WeatherLocationsViewModel -->
+        <StackPanel DataContext="{Binding Locations}" Margin="0,12,0,0">
+            <TextBlock Text="{DynamicResource Weather.Locations}" FontWeight="SemiBold" />
+            <TextBlock Text="{DynamicResource Weather.NoLocation}" Foreground="{DynamicResource Ui.Muted}" Margin="0,4,0,0"
+                       Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility}}" />
+            <DockPanel Margin="0,4,0,0" Visibility="{Binding HasLocations, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel DockPanel.Dock="Right" Margin="8,0,0,0" IsEnabled="{Binding HasSelection}">
+                    <Button Content="{DynamicResource Weather.Show}" Command="{Binding ShowCommand}" Padding="10,2" Margin="0,0,0,4" />
+                    <Button Content="{DynamicResource Weather.MoveUp}" Command="{Binding MoveUpCommand}" Padding="10,2" Margin="0,0,0,4" />
+                    <Button Content="{DynamicResource Weather.Remove}" Command="{Binding RemoveCommand}" Padding="10,2" />
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" MaxHeight="150">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <TextBlock Text="{Binding Marker}" Width="16" Foreground="{DynamicResource Ui.Accent}" />
+                                <TextBlock Text="{Binding Display}" TextTrimming="CharacterEllipsis" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+            <DockPanel Margin="0,6,0,0" Visibility="{Binding HasSelection, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{DynamicResource Weather.DisplayName}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
+            </DockPanel>
+            <TextBlock Text="{DynamicResource Weather.ClickToSwitch}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" Margin="0,4,0,0" />
+        </StackPanel>
 
         <TextBlock Text="{DynamicResource Weather.SearchHint}" Margin="0,12,0,4" TextWrapping="Wrap" />
         <DockPanel>
@@ -21,12 +45,15 @@
                     MinWidth="70" Padding="10,2" Margin="8,0,0,0" IsDefault="True" />
             <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" />
         </DockPanel>
-        <TextBlock Text="{Binding Status}" Foreground="#555" Margin="0,4,0,4" />
+        <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Ui.Muted}" Margin="0,4,0,4" TextWrapping="Wrap"
+                   Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}" />
         <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}"
-                 DisplayMemberPath="Display" MaxHeight="170" />
+                 DisplayMemberPath="Display" MaxHeight="170"
+                 Visibility="{Binding HasResults, Converter={StaticResource BoolToVisibility}}" />
 
         <!-- Lisans gereği kaynak gösterimi: Open-Meteo (CC BY 4.0), OpenStreetMap (ODbL), GeoNames (CC BY 4.0) -->
-        <TextBlock Text="{DynamicResource Weather.Attribution}" Foreground="#777" FontSize="11"
-                   TextWrapping="Wrap" Margin="0,6,0,0" />
+        <Border Style="{StaticResource Ui.Notice}">
+            <TextBlock Text="{DynamicResource Weather.Attribution}" TextWrapping="Wrap" />
+        </Border>
     </StackPanel>
 </UserControl>

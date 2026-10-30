@@ -1,4 +1,5 @@
 using System.Windows;
+using PulseMonitor.Core;
 
 namespace PulseMonitor.Views;
 
@@ -6,6 +7,7 @@ public partial class SettingsWindow : Window
 {
     public SettingsWindow()
     {
+        WindowTheme.Prepare(this);
         InitializeComponent();
     }
 
