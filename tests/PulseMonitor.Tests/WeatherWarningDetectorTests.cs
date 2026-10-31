@@ -29,11 +29,13 @@ public class WeatherWarningDetectorTests
     [Fact]
     public void Thunderstorm_is_found_once_at_its_first_hour()
     {
-        var r = WithHours((i, h) => { if (i is 4 or 5) { h.WeatherCode = 95; h.PrecipitationProbability = 70; } });
+        // İki ardışık saat aynı günde olmalı (olay gün başına bir kez aranır); gece yarısını kesen çifti seçmeyiz.
+        int first = Enumerable.Range(4, 6).First(i => ReportBuilder.Now.AddHours(i).Date == ReportBuilder.Now.AddHours(i + 1).Date);
+        var r = WithHours((i, h) => { if (i == first || i == first + 1) { h.WeatherCode = 95; h.PrecipitationProbability = 70; } });
         var found = WeatherWarningDetector.Detect(r, 1);
         Assert.Single(found);
         Assert.Equal(WarningKind.Thunder, found[0].Kind);
-        Assert.Equal(ReportBuilder.Now.AddHours(4), found[0].At);
+        Assert.Equal(ReportBuilder.Now.AddHours(first), found[0].At);
     }
 
     [Fact]

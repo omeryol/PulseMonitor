@@ -98,18 +98,22 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type vm:TaskbarColumn}">
                     <Border x:Name="Column" Margin="{DynamicResource Thickness.ColumnGap}" Height="38"
-                            Padding="{DynamicResource Thickness.ColumnPadding}" CornerRadius="7"
+                            CornerRadius="7"
                             Background="{DynamicResource Brush.Card}"
                             BorderBrush="{DynamicResource Brush.Separator}"
                             BorderThickness="{DynamicResource Thickness.ColumnSeparator}"
                             ToolTipService.IsEnabled="{DynamicResource DetailCards.Enabled}"
                             ToolTipService.InitialShowDelay="400" ToolTipService.ShowDuration="60000">
-                        <Grid VerticalAlignment="Center">
-                            <ContentControl Content="{Binding Tall}" Focusable="False" VerticalAlignment="Center" />
-                            <StackPanel Grid.IsSharedSizeScope="True" VerticalAlignment="Center">
-                                <ContentControl Content="{Binding Top}" Focusable="False" />
-                                <ContentControl Content="{Binding Bottom}" Focusable="False" />
-                            </StackPanel>
+                        <Grid>
+                            <Grid VerticalAlignment="Center" Margin="{DynamicResource Thickness.ColumnPadding}">
+                                <ContentControl Content="{Binding Tall}" Focusable="False" VerticalAlignment="Center" />
+                                <StackPanel Grid.IsSharedSizeScope="True" VerticalAlignment="Center">
+                                    <ContentControl Content="{Binding Top}" Focusable="False" />
+                                    <ContentControl Content="{Binding Bottom}" Focusable="False" />
+                                </StackPanel>
+                            </Grid>
+                            <!-- Hava animasyonu tüm sütun boyunca, içeriğin önünde (hava sütunu değilse Kind boş, çalışmaz) -->
+                            <controls:WeatherAnimation Kind="{Binding Weather.Animation}" CornerRadius="6" />
                         </Grid>
                     </Border>
                     <DataTemplate.Triggers>

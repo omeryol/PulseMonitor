@@ -64,7 +64,7 @@ public partial class App : Application
             return;
         }
         _instance.ExitRequested += () => Dispatcher.BeginInvoke(() => Shutdown());
-        Log.Info($"Başladı. Sürüm {typeof(App).Assembly.GetName().Version}, {Environment.ProcessPath}");
+        Log.Info($"Başladı. Sürüm {typeof(App).Assembly.GetName().Version} ({ReleaseInfo.Name}), {Environment.ProcessPath}");
 
         _settings = SettingsStore.Load();
         UiLanguage.Apply(this, _settings.Current.Language); // metinler her şeyden önce hazır olmalı

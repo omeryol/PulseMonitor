@@ -12,9 +12,12 @@ internal static class WeatherCodes
 
     private static readonly int[] SampleCodes = [0, 1, 2, 3, 45, 51, 56, 61, 71, 80, 85, 95, 96, -1];
 
-    /// <summary>Seçili dildeki en uzun hava açıklaması; görev çubuğundaki yer adı satırının en geniş hâlini ölçmek için.</summary>
-    public static string LongestDescription() =>
-        SampleCodes.Select(Describe).MaxBy(d => d.Length) ?? "";
+    /// <summary>Ortalama uzunluktaki hava açıklaması (uzunluğa göre sıralıyken dörtte üçüncü sıradaki; yaygın açıklamalar sığar, çok uzun olan küçülür); yer adı satırı genişliği bunu baz alır.</summary>
+    public static string TypicalDescription()
+    {
+        List<string> all = SampleCodes.Select(Describe).OrderBy(d => d.Length).ToList();
+        return all[all.Count * 3 / 4];
+    }
 
     /// <summary>Simge adı (ClearDay, Rain…); her sette aynı adlar kullanılır (Weather/WeatherIcons.cs).</summary>
     public static string IconKey(int code, bool isDay) => Group(code) switch
@@ -29,8 +32,11 @@ internal static class WeatherCodes
     };
 
     /// <summary>Hava kartındaki animasyon türü (Views/Controls/WeatherAnimation.cs).</summary>
-    public static WeatherAnimationKind Animation(int code) => Group(code) switch
+    public static WeatherAnimationKind Animation(int code, bool isDay) => Group(code) switch
     {
+        "Clear" => isDay ? WeatherAnimationKind.Sun : WeatherAnimationKind.Stars,
+        "MainlyClear" or "PartlyCloudy" => WeatherAnimationKind.Clouds,
+        "Overcast" => WeatherAnimationKind.Overcast,
         "Drizzle" or "Rain" or "FreezingRain" or "Showers" => WeatherAnimationKind.Rain,
         "Snow" or "SnowShowers" => WeatherAnimationKind.Snow,
         "Fog" => WeatherAnimationKind.Fog,

@@ -8,10 +8,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\PulseMonitor.ico</ApplicationIcon>
-    <Version>0.15.1</Version>
+    <Version>0.15.2</Version>
+    <!-- Sürüm adı (ana sürüm hattının adı: 0.15.x = Lodos); Hakkında'da gösterilir, release-notes/v<sürüm>.md başındaki ad satırıyla aynı olmalı (test denetler) -->
+    <ReleaseName>Lodos</ReleaseName>
     <Product>PulseMonitor</Product>
     <SatelliteResourceLanguages>tr</SatelliteResourceLanguages>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>ReleaseName</_Parameter1>
+      <_Parameter2>$(ReleaseName)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
 
   <!-- tests/ ayrı bir proje; uygulamanın derlemesine girmesin -->
   <ItemGroup>

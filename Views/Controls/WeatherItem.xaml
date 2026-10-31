@@ -137,24 +137,22 @@
 
     <!-- DataContext: WeatherViewModel. Simge 26×26 sabit: resim (Renkli/Gerçekçi) ya da temanın yazı renginde şekil
          (Çizgi/Dolu). Sıcaklık satırı görünmez yer tutucuyla sabit; hava değişince genişlik değişmez.
-         Animasyon (yağmur, kar, sis, şimşek) içeriğin arkasında, yalnızca bu öğenin alanında. -->
+         Animasyon sütunun tamamında, içeriğin önünde (Views/TaskbarWindow.xaml sütun şablonu). -->
     <Grid Opacity="{Binding Opacity}">
-        <controls:WeatherAnimation Kind="{Binding Animation}" Margin="-6,-4" />
-
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="26" />
+                <ColumnDefinition Width="32" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Image Source="{Binding Icon}" Width="26" Height="26" VerticalAlignment="Center"
+            <Image Source="{Binding Icon}" Width="32" Height="32" VerticalAlignment="Center"
                    RenderOptions.BitmapScalingMode="HighQuality" />
             <Path Data="{Binding IconShape}" Fill="{DynamicResource Brush.Text}" Stretch="Uniform"
-                  Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBlock Text="{Binding IconGlyph}" FontFamily="Segoe UI Symbol" FontSize="20"
+                  Width="27" Height="27" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding IconGlyph}" FontFamily="Segoe UI Symbol" FontSize="24"
                        TextAlignment="Center" VerticalAlignment="Center" />
             <controls:SpriteIcon Strip="{Binding IconStrip}" Still="{Binding IconStill}" Animate="{Binding AnimateIcon}"
-                                 Width="30" Height="30" Margin="-2" RenderOptions.BitmapScalingMode="HighQuality" />
+                                 Width="37" Height="37" Margin="-2.5" RenderOptions.BitmapScalingMode="HighQuality" />
 
             <Grid Grid.Column="1" Margin="6,0,0,0" MaxWidth="170" Typography.NumeralAlignment="Tabular">
                 <Grid.RowDefinitions>
@@ -162,17 +160,19 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Visibility="Hidden">
-                    <Run Text="{Binding TemperaturePlaceholder, Mode=OneWay}" FontWeight="SemiBold" />
+                    <Run Text="{Binding TemperaturePlaceholder, Mode=OneWay}" FontWeight="SemiBold" FontSize="{DynamicResource Font.Size.WeatherTemp}" />
                     <Run Text="{Binding FeelsLikePlaceholder, Mode=OneWay}" FontSize="10" />
                 </TextBlock>
-                <TextBlock>
-                    <Run Text="{Binding TemperatureText, Mode=OneWay}" FontWeight="SemiBold" Foreground="{Binding TemperatureBrush}" />
+                <TextBlock HorizontalAlignment="Center">
+                    <Run Text="{Binding TemperatureText, Mode=OneWay}" FontWeight="SemiBold" FontSize="{DynamicResource Font.Size.WeatherTemp}" Foreground="{Binding TemperatureBrush}" />
                     <Run Text="{Binding FeelsLikeText, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource Brush.Muted}" />
                 </TextBlock>
-                <!-- Yer adı satırı: görünmez en geniş metin genişliği sabitler, çok uzunsa üç nokta ile kesilir. -->
+                <!-- Yer adı satırı: görünmez ortalama uzunluktaki metin genişliği sabitler; daha uzun metin küçülerek sığar (ShrinkToFit). -->
                 <Grid Grid.Row="1">
-                    <TextBlock Text="{Binding PlacePlaceholder}" Visibility="Hidden" TextTrimming="CharacterEllipsis" />
-                    <TextBlock Text="{Binding PlaceName}" Foreground="{DynamicResource Brush.Muted}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding PlacePlaceholder}" Visibility="Hidden" />
+                    <controls:ShrinkToFit>
+                        <TextBlock Text="{Binding PlaceName}" Foreground="{DynamicResource Brush.Muted}" TextTrimming="CharacterEllipsis" />
+                    </controls:ShrinkToFit>
                 </Grid>
             </Grid>
         </Grid>

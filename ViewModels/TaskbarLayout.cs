@@ -10,6 +10,9 @@ public sealed record TaskbarColumn(object? Top, object? Bottom, object? Tall)
     public IReadOnlyList<DetailCard> Cards { get; init; } = Array.Empty<DetailCard>();
     public bool HasCards => Cards.Count > 0;
 
+    /// <summary>Hava sütunuysa hava öğesi (animasyon tüm sütunu kaplasın diye sütun şablonu bağlar); değilse null.</summary>
+    public WeatherViewModel? Weather => Tall as WeatherViewModel;
+
     public bool Equals(TaskbarColumn? other) =>
         other is not null && Equals(Top, other.Top) && Equals(Bottom, other.Bottom) && Equals(Tall, other.Tall);
 

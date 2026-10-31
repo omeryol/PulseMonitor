@@ -21,6 +21,7 @@ internal static class StyleResources
     {
         ResourceDictionary r = app.Resources;
         r["Font.Size"] = (double)s.FontSize;
+        r["Font.Size.WeatherTemp"] = Math.Round(s.FontSize * 1.2, 1); // hava kartında sıcaklık satırı biraz büyük
 
         r["Thickness.LabelGap"] = new Thickness(0, 0, s.LabelGap, 0);
         r["Thickness.ColumnGap"] = new Thickness(s.ColumnGap, 0, 0, 0);

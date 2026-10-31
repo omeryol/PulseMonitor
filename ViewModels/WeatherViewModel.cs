@@ -124,7 +124,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         // Animasyonlu simge kendisi hareket ettiği için kart animasyonu o setlerde kapalı (üst üste binmesin).
         bool animatedSet = icon.Strip is not null;
         AnimateIcon = st.WeatherAnimation && animatedSet;
-        Animation = st.WeatherAnimation && !animatedSet ? WeatherCodes.Animation(report.WeatherCode) : WeatherAnimationKind.None;
+        Animation = st.WeatherAnimation ? WeatherCodes.Animation(report.WeatherCode, report.IsDay) : WeatherAnimationKind.None;
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;
         Opacity = stale ? 0.55 : 1;
@@ -134,7 +134,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
 
     private static string WidestPlace(AppSettings s, string labelMode)
     {
-        string description = WeatherCodes.LongestDescription();
+        string description = WeatherCodes.TypicalDescription();
         return s.Weather.Locations
             .Select(l => labelMode switch
             {

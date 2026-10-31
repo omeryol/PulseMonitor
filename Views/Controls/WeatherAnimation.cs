@@ -6,15 +6,16 @@ using PulseMonitor.Weather;
 namespace PulseMonitor.Views.Controls;
 
 /// <summary>
-/// Hava kartının içinde küçük animasyon: yağmur damlaları, kar taneleri, sis bantları, gök gürültüsünde şimşek.
+/// Hava sütununun tamamında (görev çubuğu sütun şablonu, içeriğin önünde) küçük animasyon: yağmur damlaları, kar taneleri,
+/// sis bantları, gök gürültüsünde şimşek; bulutlu havada süzülen bulutlar, açıkta güneş ışıltısı / yıldızlar (<see cref="SkyLayer"/>).
 /// Hafif olsun diye saniyede 15 kare, birkaç parçacık; yalnızca görünürken, tür "None" değilken ve Windows
 /// animasyonlara izin verirken (<see cref="SystemMotion"/>) çalışır.
 /// </summary>
 public sealed class WeatherAnimation : FrameworkElement
 {
     private const int Fps = 15;
-    private static readonly Brush RainBrush = Frozen(Color.FromArgb(170, 96, 165, 250));
-    private static readonly Brush SnowBrush = Frozen(Color.FromArgb(220, 224, 242, 254));
+    private static readonly Brush RainBrush = Frozen(Color.FromArgb(130, 96, 165, 250));
+    private static readonly Brush SnowBrush = Frozen(Color.FromArgb(190, 224, 242, 254));
     private static readonly Brush FogBrush = Frozen(Color.FromArgb(46, 203, 213, 225));
     private static readonly Brush FlashBrush = Frozen(Color.FromArgb(60, 255, 255, 240));
     private static readonly Pen RainPen = FrozenPen(RainBrush, 1.1);
@@ -23,6 +24,7 @@ public sealed class WeatherAnimation : FrameworkElement
         nameof(Kind), typeof(WeatherAnimationKind), typeof(WeatherAnimation),
         new PropertyMetadata(WeatherAnimationKind.None, (d, _) => ((WeatherAnimation)d).UpdateTimer()));
 
+    private readonly SkyLayer _sky = new();
     private readonly DispatcherTimer _timer;
     private readonly Random _random = new();
     private readonly List<Point> _particles = new();
@@ -39,6 +41,16 @@ public sealed class WeatherAnimation : FrameworkElement
         Loaded += (_, _) => { SystemMotion.Changed += OnMotionChanged; UpdateTimer(); };
     }
 
+    /// <summary>Sütunun köşe yuvarlaklığı; animasyon köşelerden taşmasın.</summary>
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        nameof(CornerRadius), typeof(double), typeof(WeatherAnimation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+
+    public double CornerRadius
+    {
+        get => (double)GetValue(CornerRadiusProperty);
+        set => SetValue(CornerRadiusProperty, value);
+    }
+
     public WeatherAnimationKind Kind
     {
         get => (WeatherAnimationKind)GetValue(KindProperty);
@@ -51,6 +63,7 @@ public sealed class WeatherAnimation : FrameworkElement
     {
         bool run = Kind != WeatherAnimationKind.None && IsVisible && IsLoaded && SystemMotion.Allowed;
         _particles.Clear();
+        _sky.Clear();
         if (run && !_timer.IsEnabled) _timer.Start();
         else if (!run && _timer.IsEnabled) _timer.Stop();
         InvalidateVisual();
@@ -60,7 +73,15 @@ public sealed class WeatherAnimation : FrameworkElement
     {
         double w = ActualWidth, h = ActualHeight;
         if (w <= 0 || h <= 0) return;
-        int count = Kind switch { WeatherAnimationKind.Fog => 3, WeatherAnimationKind.Snow => 9, _ => 12 };
+        if (SkyLayer.IsSky(Kind))
+        {
+            _sky.Step(Kind, w, h);
+            _frame++;
+            InvalidateVisual();
+            return;
+        }
+        double wide = Math.Clamp(w / 90.0, 1, 2);
+        int count = (int)Math.Round(wide * Kind switch { WeatherAnimationKind.Fog => 3, WeatherAnimationKind.Snow => 9, _ => 12 });
         while (_particles.Count < count) _particles.Add(new Point(_random.NextDouble() * w, _random.NextDouble() * h));
 
         (double dx, double dy) = Kind switch
@@ -88,6 +109,9 @@ public sealed class WeatherAnimation : FrameworkElement
         double w = ActualWidth, h = ActualHeight;
         if (Kind == WeatherAnimationKind.None || w <= 0 || h <= 0) return;
 
+        dc.PushClip(new RectangleGeometry(new Rect(0, 0, w, h), CornerRadius, CornerRadius));
+        if (SkyLayer.IsSky(Kind)) _sky.Render(dc, Kind, w);
+
         foreach (Point p in _particles)
         {
             switch (Kind)
@@ -107,6 +131,7 @@ public sealed class WeatherAnimation : FrameworkElement
         // Şimşek: yaklaşık her 4 saniyede bir, 2 kare süren hafif parlama.
         if (Kind == WeatherAnimationKind.Thunder && _frame % (Fps * 4) is 0 or 1)
             dc.DrawRectangle(FlashBrush, null, new Rect(0, 0, w, h));
+        dc.Pop();
     }
 
     private static Brush Frozen(Color c)
