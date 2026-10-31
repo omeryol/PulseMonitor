@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU 温度",
   "Alerts.DiskTemp": "磁盘温度 (NVMe)",
   "Alerts.Test": "发送测试通知",
+  "Weather.Warn.Disclaimer": "仅为预报，并非官方预警。",
   "Weather.Tomorrow": "明天",
   "Weather.Warn.Title": "天气 · {0}",
   "Weather.Warn.Thunder": "预计 {0} 前后有雷暴。",

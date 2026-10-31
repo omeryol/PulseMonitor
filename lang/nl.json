@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU-temperatuur",
   "Alerts.DiskTemp": "Schijftemperatuur (NVMe)",
   "Alerts.Test": "Testmelding verzenden",
+  "Weather.Warn.Disclaimer": "Alleen een voorspelling, geen officiële waarschuwing.",
   "Weather.Tomorrow": "Morgen",
   "Weather.Warn.Title": "Weer · {0}",
   "Weather.Warn.Thunder": "Rond {0} wordt onweer verwacht.",

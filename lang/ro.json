@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "Temperatură GPU",
   "Alerts.DiskTemp": "Temperatură disc (NVMe)",
   "Alerts.Test": "Trimite o notificare de test",
+  "Weather.Warn.Disclaimer": "Doar o prognoză, nu un avertisment oficial.",
   "Weather.Tomorrow": "Mâine",
   "Weather.Warn.Title": "Vreme · {0}",
   "Weather.Warn.Thunder": "În jur de {0} se așteaptă furtună.",

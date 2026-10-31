@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU 온도",
   "Alerts.DiskTemp": "디스크 온도 (NVMe)",
   "Alerts.Test": "테스트 알림 보내기",
+  "Weather.Warn.Disclaimer": "예보일 뿐 공식 경보가 아닙니다.",
   "Weather.Tomorrow": "내일",
   "Weather.Warn.Title": "날씨 · {0}",
   "Weather.Warn.Thunder": "{0}경 뇌우가 예상됩니다.",

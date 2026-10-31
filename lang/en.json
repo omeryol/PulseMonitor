@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU temperature",
   "Alerts.DiskTemp": "Disk temperature (NVMe)",
   "Alerts.Test": "Send a test notification",
+  "Weather.Warn.Disclaimer": "Forecast only, not an official warning.",
   "Weather.Tomorrow": "Tomorrow",
   "Weather.Warn.Title": "Weather info · {0}",
   "Weather.Warn.Thunder": "Thunderstorm expected around {0}.",

@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "Temperatura de la GPU",
   "Alerts.DiskTemp": "Temperatura del disco (NVMe)",
   "Alerts.Test": "Enviar notificación de prueba",
+  "Weather.Warn.Disclaimer": "Solo es un pronóstico, no un aviso oficial.",
   "Weather.Tomorrow": "Mañana",
   "Weather.Warn.Title": "Tiempo · {0}",
   "Weather.Warn.Thunder": "Hacia las {0} se espera una tormenta.",

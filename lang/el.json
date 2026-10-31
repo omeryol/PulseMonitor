@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "Θερμοκρασία GPU",
   "Alerts.DiskTemp": "Θερμοκρασία δίσκου (NVMe)",
   "Alerts.Test": "Αποστολή δοκιμαστικής ειδοποίησης",
+  "Weather.Warn.Disclaimer": "Πρόγνωση μόνο, όχι επίσημη προειδοποίηση.",
   "Weather.Tomorrow": "Αύριο",
   "Weather.Warn.Title": "Καιρός · {0}",
   "Weather.Warn.Thunder": "Περίπου στις {0} αναμένεται καταιγίδα.",

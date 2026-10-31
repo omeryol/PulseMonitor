@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "Suhu GPU",
   "Alerts.DiskTemp": "Suhu disk (NVMe)",
   "Alerts.Test": "Kirim notifikasi tes",
+  "Weather.Warn.Disclaimer": "Hanya prakiraan, bukan peringatan resmi.",
   "Weather.Tomorrow": "Besok",
   "Weather.Warn.Title": "Cuaca · {0}",
   "Weather.Warn.Thunder": "Badai petir diperkirakan sekitar pukul {0}.",

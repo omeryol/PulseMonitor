@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "อุณหภูมิ GPU",
   "Alerts.DiskTemp": "อุณหภูมิดิสก์ (NVMe)",
   "Alerts.Test": "ส่งการแจ้งเตือนทดสอบ",
+  "Weather.Warn.Disclaimer": "เป็นเพียงการพยากรณ์ ไม่ใช่คำเตือนอย่างเป็นทางการ",
   "Weather.Tomorrow": "พรุ่งนี้",
   "Weather.Warn.Title": "สภาพอากาศ · {0}",
   "Weather.Warn.Thunder": "คาดว่าจะมีพายุฝนฟ้าคะนองราว {0}",

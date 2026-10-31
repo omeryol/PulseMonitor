@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU hőmérséklete",
   "Alerts.DiskTemp": "Lemez hőmérséklete (NVMe)",
   "Alerts.Test": "Tesztértesítés küldése",
+  "Weather.Warn.Disclaimer": "Csak előrejelzés, nem hivatalos figyelmeztetés.",
   "Weather.Tomorrow": "Holnap",
   "Weather.Warn.Title": "Időjárás · {0}",
   "Weather.Warn.Thunder": "Kb. {0} körül zivatar várható.",

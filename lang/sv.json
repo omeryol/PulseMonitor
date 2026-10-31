@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU-temperatur",
   "Alerts.DiskTemp": "Disktemperatur (NVMe)",
   "Alerts.Test": "Skicka en testavisering",
+  "Weather.Warn.Disclaimer": "Bara en prognos, inte en officiell varning.",
   "Weather.Tomorrow": "Imorgon",
   "Weather.Warn.Title": "Väder · {0}",
   "Weather.Warn.Thunder": "Runt {0} väntas åska.",

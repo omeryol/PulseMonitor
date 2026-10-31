@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "Teplota GPU",
   "Alerts.DiskTemp": "Teplota disku (NVMe)",
   "Alerts.Test": "Odeslat testovací oznámení",
+  "Weather.Warn.Disclaimer": "Jde o předpověď, nikoli oficiální varování.",
   "Weather.Tomorrow": "Zítra",
   "Weather.Warn.Title": "Počasí · {0}",
   "Weather.Warn.Thunder": "Kolem {0} se očekává bouřka.",

@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU sıcaklığı",
   "Alerts.DiskTemp": "Disk sıcaklığı (NVMe)",
   "Alerts.Test": "Deneme bildirimi gönder",
+  "Weather.Warn.Disclaimer": "Tahmindir, resmî uyarı değildir.",
   "Weather.Tomorrow": "Yarın",
   "Weather.Warn.Title": "Hava bilgisi · {0}",
   "Weather.Warn.Thunder": "Yaklaşık {0} sularında gök gürültülü fırtına bekleniyor.",

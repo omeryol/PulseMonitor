@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "Nhiệt độ GPU",
   "Alerts.DiskTemp": "Nhiệt độ ổ đĩa (NVMe)",
   "Alerts.Test": "Gửi thông báo thử nghiệm",
+  "Weather.Warn.Disclaimer": "Chỉ là dự báo, không phải cảnh báo chính thức.",
   "Weather.Tomorrow": "Ngày mai",
   "Weather.Warn.Title": "Thời tiết · {0}",
   "Weather.Warn.Thunder": "Khoảng {0} dự kiến có giông.",

@@ -96,7 +96,7 @@ internal static class WeatherTooltip
         if (top is null) return ("", ThemeBrushes.Get("Brush.Muted"), null);
         string text = WeatherWarningText.Format(top, r.LocalNow, fahrenheit);
         ImageSource? icon = IconByKey(set, top.IconKey);
-        return top.Notify ? ("⚠ " + text, ThemeBrushes.Get("Brush.Load.Warn"), icon) : (text, ThemeBrushes.Get("Brush.Muted"), icon);
+        return top.Notify ? ("⚠ " + text, Faded(ThemeBrushes.Get("Brush.Load.Hot"), 0.8), icon) : (text, ThemeBrushes.Get("Brush.Muted"), icon);
     }
 
     private static List<PlaceRow> Places(IReadOnlyList<(WeatherLocation Loc, WeatherReport? Report)> others, StyleSettings st) =>
@@ -119,6 +119,15 @@ internal static class WeatherTooltip
         if (icon.Still is { } still) return still;
         if (icon.Shape is { } shape) return new DrawingImage(new GeometryDrawing(ThemeBrushes.Get("Brush.Text"), null, shape));
         return Application.Current?.TryFindResource($"Wx.{key}") as ImageSource;
+    }
+
+    /// <summary>Uyarı satırı için silik kırmızı: tema kırmızısı, biraz saydam (gözü yormasın, yine de uyarı okunsun).</summary>
+    private static Brush Faded(Brush brush, double opacity)
+    {
+        if (brush is not SolidColorBrush solid) return brush;
+        var faded = new SolidColorBrush(solid.Color) { Opacity = opacity };
+        faded.Freeze();
+        return faded;
     }
 
     /// <summary>Sıcaklığa göre renk (≤0 · &lt;10 · &lt;20 · &lt;28 · ≥28 °C), görev çubuğundakiyle aynı.</summary>

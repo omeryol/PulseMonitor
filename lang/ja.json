@@ -110,6 +110,7 @@
   "Alerts.GpuTemp": "GPU 温度",
   "Alerts.DiskTemp": "ディスク温度 (NVMe)",
   "Alerts.Test": "テスト通知を送信",
+  "Weather.Warn.Disclaimer": "予報にすぎず、公式の警報ではありません。",
   "Weather.Tomorrow": "明日",
   "Weather.Warn.Title": "天気 · {0}",
   "Weather.Warn.Thunder": "{0}ごろに雷雨の見込みです。",
