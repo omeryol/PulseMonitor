@@ -13,6 +13,10 @@ The interface is available in 22 languages.
 
 ![Taskbar, another look](docs/screenshots/en/taskbar-alt.png)
 
+The weather column animates across its whole width: clouds drift past the sun, rain and snow fall, sun glints and stars twinkle (can be turned off in Settings).
+
+![Weather animations: partly cloudy, rain, clear day, clear night](docs/screenshots/en/weather-animations.gif)
+
 ## Installation
 
 1. Download **`PulseMonitor-Setup-<version>.exe`** from the [Releases](https://github.com/omeryol/PulseMonitor/releases/latest) page.

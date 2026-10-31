@@ -12,6 +12,10 @@ esinlenilmiştir; C# / WPF (.NET 10) ile sıfırdan yazılmıştır. Arayüz 22 
 
 ![Görev çubuğu, başka bir görünüm](docs/screenshots/tr/taskbar-alt.png)
 
+Hava sütunu tüm genişliğinde canlanır: güneşin önünden bulutlar geçer, yağmur ve kar yağar, güneş ışıltıları ve yıldızlar göz kırpar (Ayarlar’dan kapatılabilir).
+
+![Hava animasyonları: parçalı bulutlu, yağmur, açık gündüz, açık gece](docs/screenshots/tr/weather-animations.gif)
+
 ## Kurulum
 
 1. [Releases](https://github.com/omeryol/PulseMonitor/releases/latest) sayfasından **`PulseMonitor-Setup-<sürüm>.exe`** dosyasını indirin.
