@@ -15,3 +15,6 @@ docs/KOD-HARITASI.md
 tools/publish.ps1
 tools/screenshots.ps1
 tools/translate.ps1
+
+# Claude Code yerel ayarlari (kisisel izinler; depoya girmez)
+.claude/

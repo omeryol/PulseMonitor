@@ -30,12 +30,20 @@ internal static class SystemActions
         }
     }
 
-    /// <summary>Bağlantıyı varsayılan tarayıcıda açar.</summary>
+    /// <summary>
+    /// Bağlantıyı varsayılan tarayıcıda açar. Adres güncelleme yanıtından ya da sürüm notlarından gelebildiği için yalnızca
+    /// https kabul edilir (dosya yolu, program ya da özel protokol açılmaz).
+    /// </summary>
     public static void OpenUrl(string url)
     {
+        if (!Uri.TryCreate(url, UriKind.Absolute, out Uri? uri) || uri.Scheme != Uri.UriSchemeHttps)
+        {
+            Log.Warn($"Bağlantı açılmadı (yalnızca https): {url}");
+            return;
+        }
         try
         {
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
         }
         catch (Exception ex)
         {
