@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Saf mantık testleri: WPF'e bağlı olmayan kaynak dosyalar doğrudan derlenir (uygulama projesine bağımlılık yok). -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Compile Include="..\..\Weather\WeatherReport.cs" Link="Linked\WeatherReport.cs" />
+    <Compile Include="..\..\Weather\OpenMeteoModels.cs" Link="Linked\OpenMeteoModels.cs" />
+    <Compile Include="..\..\Weather\Warnings\WeatherWarning.cs" Link="Linked\WeatherWarning.cs" />
+    <Compile Include="..\..\Weather\Warnings\WeatherWarningDetector.cs" Link="Linked\WeatherWarningDetector.cs" />
+    <Compile Include="..\..\Weather\Warnings\WarningLedger.cs" Link="Linked\WarningLedger.cs" />
+  </ItemGroup>
+
+</Project>

@@ -59,5 +59,12 @@ foreach ($f in Get-ChildItem $langDir -Filter *.json) {
     if ($missing) { Write-Host "lang/$($f.Name): $($missing.Count) untranslated ($(($missing | Select-Object -First 5) -join ', ')...)" -ForegroundColor Yellow }
 }
 
+# Unit tests (pure logic: weather warnings, notification ledger). A failing test fails the check.
+$testProject = Join-Path $root 'tests\PulseMonitor.Tests'
+if (Test-Path $testProject) {
+    dotnet test $testProject --nologo -v q | Out-Host
+    if ($LASTEXITCODE -ne 0) { Write-Host 'TESTS FAILED' -ForegroundColor Red; $failed = $true }
+}
+
 if ($failed) { Write-Host 'check: FAILED' -ForegroundColor Red; exit 1 }
 Write-Host "check: OK ($($files.Count) files)" -ForegroundColor Green
