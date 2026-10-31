@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "สีสด",
   "Style.Palette.Soft": "สีอ่อน",
   "Style.Palette.Mono": "สีเน้นเดียว",
+  "Style.Palette.Plain": "เรียบ (สีตัวอักษร)",
   "Style.Palette.Custom": "สีที่กำหนดเอง",
   "Style.ColorTarget.Value": "ค่า",
   "Style.ColorTarget.Label": "ป้ายชื่อ",

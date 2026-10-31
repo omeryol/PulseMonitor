@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vif",
   "Style.Palette.Soft": "Doux",
   "Style.Palette.Mono": "Accent unique",
+  "Style.Palette.Plain": "Sobre (couleur du texte)",
   "Style.Palette.Custom": "Couleurs personnalisées",
   "Style.ColorTarget.Value": "Valeur",
   "Style.ColorTarget.Label": "Libellé",

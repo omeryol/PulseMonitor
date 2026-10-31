@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Lebhaft",
   "Style.Palette.Soft": "Sanft",
   "Style.Palette.Mono": "Akzentfarbe",
+  "Style.Palette.Plain": "Schlicht (Textfarbe)",
   "Style.Palette.Custom": "Benutzerdefinierte Farben",
   "Style.ColorTarget.Value": "Wert",
   "Style.ColorTarget.Label": "Bezeichnung",

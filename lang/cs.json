@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Živá",
   "Style.Palette.Soft": "Jemná",
   "Style.Palette.Mono": "Jeden akcent",
+  "Style.Palette.Plain": "Prostá (barva textu)",
   "Style.Palette.Custom": "Vlastní barvy",
   "Style.ColorTarget.Value": "Hodnota",
   "Style.ColorTarget.Label": "Popisek",

@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Canlı",
   "Style.Palette.Soft": "Yumuşak",
   "Style.Palette.Mono": "Tek vurgu",
+  "Style.Palette.Plain": "Sade (yazı rengi)",
   "Style.Palette.Custom": "Özel renkler",
   "Style.ColorTarget.Value": "Değerde",
   "Style.ColorTarget.Label": "Etikette",

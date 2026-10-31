@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vivid",
   "Style.Palette.Soft": "Soft",
   "Style.Palette.Mono": "Single accent",
+  "Style.Palette.Plain": "Plain (text color)",
   "Style.Palette.Custom": "Custom colors",
   "Style.ColorTarget.Value": "Value",
   "Style.ColorTarget.Label": "Label",

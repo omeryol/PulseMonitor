@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Levendig",
   "Style.Palette.Soft": "Zacht",
   "Style.Palette.Mono": "Enkele accentkleur",
+  "Style.Palette.Plain": "Eenvoudig (tekstkleur)",
   "Style.Palette.Custom": "Aangepaste kleuren",
   "Style.ColorTarget.Value": "Waarde",
   "Style.ColorTarget.Label": "Label",

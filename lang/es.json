@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vívido",
   "Style.Palette.Soft": "Suave",
   "Style.Palette.Mono": "Un solo color",
+  "Style.Palette.Plain": "Sencilla (color del texto)",
   "Style.Palette.Custom": "Colores personalizados",
   "Style.ColorTarget.Value": "Valor",
   "Style.ColorTarget.Label": "Etiqueta",

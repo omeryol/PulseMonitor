@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Livfull",
   "Style.Palette.Soft": "Mjuk",
   "Style.Palette.Mono": "Enkel accent",
+  "Style.Palette.Plain": "Enkel (textfärg)",
   "Style.Palette.Custom": "Anpassade färger",
   "Style.ColorTarget.Value": "Värde",
   "Style.ColorTarget.Label": "Etikett",

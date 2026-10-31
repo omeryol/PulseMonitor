@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\PulseMonitor.ico</ApplicationIcon>
-    <Version>0.15.0</Version>
+    <Version>0.15.1</Version>
     <Product>PulseMonitor</Product>
     <SatelliteResourceLanguages>tr</SatelliteResourceLanguages>
   </PropertyGroup>

@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Élénk",
   "Style.Palette.Soft": "Lágy",
   "Style.Palette.Mono": "Egyetlen hangsúlyszín",
+  "Style.Palette.Plain": "Egyszerű (szövegszín)",
   "Style.Palette.Custom": "Egyéni színek",
   "Style.ColorTarget.Value": "Érték",
   "Style.ColorTarget.Label": "Címke",

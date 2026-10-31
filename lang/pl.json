@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Żywa",
   "Style.Palette.Soft": "Delikatna",
   "Style.Palette.Mono": "Pojedynczy akcent",
+  "Style.Palette.Plain": "Prosta (kolor tekstu)",
   "Style.Palette.Custom": "Niestandardowe kolory",
   "Style.ColorTarget.Value": "Wartość",
   "Style.ColorTarget.Label": "Etykieta",

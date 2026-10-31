@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "鲜艳",
   "Style.Palette.Soft": "柔和",
   "Style.Palette.Mono": "单色强调",
+  "Style.Palette.Plain": "简约（文字颜色）",
   "Style.Palette.Custom": "自定义颜色",
   "Style.ColorTarget.Value": "数值",
   "Style.ColorTarget.Label": "标签",

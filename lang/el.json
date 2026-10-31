@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Ζωντανή",
   "Style.Palette.Soft": "Απαλή",
   "Style.Palette.Mono": "Μονόχρωμη",
+  "Style.Palette.Plain": "Απλή (χρώμα κειμένου)",
   "Style.Palette.Custom": "Προσαρμοσμένα χρώματα",
   "Style.ColorTarget.Value": "Τιμή",
   "Style.ColorTarget.Label": "Ετικέτα",

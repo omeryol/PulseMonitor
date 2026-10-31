@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vivace",
   "Style.Palette.Soft": "Tenue",
   "Style.Palette.Mono": "Accento singolo",
+  "Style.Palette.Plain": "Semplice (colore del testo)",
   "Style.Palette.Custom": "Colori personalizzati",
   "Style.ColorTarget.Value": "Valore",
   "Style.ColorTarget.Label": "Etichetta",

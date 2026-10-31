@@ -6,7 +6,7 @@ namespace PulseMonitor.Settings;
 public static class StyleOptions
 {
     public const string ThemeAuto = "Auto", ThemeDark = "Dark", ThemeLight = "Light";
-    public const string PaletteVivid = "Vivid", PaletteSoft = "Soft", PaletteMono = "Mono", PaletteCustom = "Custom";
+    public const string PaletteVivid = "Vivid", PaletteSoft = "Soft", PaletteMono = "Mono", PalettePlain = "Plain", PaletteCustom = "Custom";
     public const string TargetValue = "Value", TargetLabel = "Label", TargetBoth = "Both";
     public const string WeightNormal = "Normal", WeightSemiBold = "SemiBold", WeightBold = "Bold", WeightBySpeed = "BySpeed";
     public const string ArrowThin = "Thin", ArrowTriangle = "Triangle", ArrowDashed = "Dashed", ArrowIcon = "Icon", ArrowText = "Text";
@@ -27,7 +27,7 @@ public static class StyleOptions
     public static readonly Dictionary<string, string[]> Groups = new()
     {
         ["Theme"] = [ThemeAuto, ThemeDark, ThemeLight],
-        ["Palette"] = [PaletteVivid, PaletteSoft, PaletteMono, PaletteCustom],
+        ["Palette"] = [PaletteVivid, PaletteSoft, PaletteMono, PalettePlain, PaletteCustom],
         ["ColorTarget"] = [TargetValue, TargetLabel, TargetBoth],
         ["ValueWeight"] = [WeightNormal, WeightSemiBold, WeightBold, WeightBySpeed],
         ["Arrows"] = [ArrowThin, ArrowTriangle, ArrowDashed, ArrowIcon, ArrowText],

@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vivid",
   "Style.Palette.Soft": "Soft",
   "Style.Palette.Mono": "Aksen tunggal",
+  "Style.Palette.Plain": "Polos (warna teks)",
   "Style.Palette.Custom": "Warna kustom",
   "Style.ColorTarget.Value": "Nilai",
   "Style.ColorTarget.Label": "Label",

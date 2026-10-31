@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "선명하게",
   "Style.Palette.Soft": "부드럽게",
   "Style.Palette.Mono": "단일 강조색",
+  "Style.Palette.Plain": "단순(글자색)",
   "Style.Palette.Custom": "사용자 지정 색상",
   "Style.ColorTarget.Value": "값",
   "Style.ColorTarget.Label": "레이블",

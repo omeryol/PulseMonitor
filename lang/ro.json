@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vibrant",
   "Style.Palette.Soft": "Șters",
   "Style.Palette.Mono": "Accent unic",
+  "Style.Palette.Plain": "Simplă (culoarea textului)",
   "Style.Palette.Custom": "Personalizat",
   "Style.ColorTarget.Value": "Valoare",
   "Style.ColorTarget.Label": "Etichetă",

@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "鮮やか",
   "Style.Palette.Soft": "ソフト",
   "Style.Palette.Mono": "アクセント カラー 1 色",
+  "Style.Palette.Plain": "シンプル（文字色）",
   "Style.Palette.Custom": "カスタム カラー",
   "Style.ColorTarget.Value": "値",
   "Style.ColorTarget.Label": "ラベル",

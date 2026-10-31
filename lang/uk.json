@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Яскрава",
   "Style.Palette.Soft": "М’яка",
   "Style.Palette.Mono": "Один акцент",
+  "Style.Palette.Plain": "Проста (колір тексту)",
   "Style.Palette.Custom": "Спеціальні кольори",
   "Style.ColorTarget.Value": "Значення",
   "Style.ColorTarget.Label": "Підпис",

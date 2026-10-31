@@ -200,6 +200,7 @@
   "Style.Palette.Vivid": "Vívida",
   "Style.Palette.Soft": "Suave",
   "Style.Palette.Mono": "Destaque único",
+  "Style.Palette.Plain": "Simples (cor do texto)",
   "Style.Palette.Custom": "Cores personalizadas",
   "Style.ColorTarget.Value": "Valor",
   "Style.ColorTarget.Label": "Rótulo",

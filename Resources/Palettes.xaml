@@ -37,4 +37,15 @@
     <Color x:Key="Palette.Mono.Ip.OnDark">#FFFFFF</Color>         <Color x:Key="Palette.Mono.Ip.OnLight">#111111</Color>
     <Color x:Key="Palette.Mono.Ping.OnDark">#FFFFFF</Color>       <Color x:Key="Palette.Mono.Ping.OnLight">#111111</Color>
 
+    <!-- Sade: her öğe yazı rengi (Brush.Text ile aynı); tema değişince beyaz ↔ siyaha geçer, vurgu rengi yok -->
+    <Color x:Key="Palette.Plain.Upload.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Upload.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Download.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Download.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Cpu.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Cpu.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Ram.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Ram.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Gpu.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Gpu.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Disk.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Disk.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Keyboard.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Keyboard.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Ip.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Ip.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Ping.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Ping.OnLight">#111827</Color>
+
 </ResourceDictionary>
