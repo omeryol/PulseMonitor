@@ -8,7 +8,7 @@ public static class StyleOptions
     public const string ThemeAuto = "Auto", ThemeDark = "Dark", ThemeLight = "Light";
     public const string PaletteVivid = "Vivid", PaletteSoft = "Soft", PaletteMono = "Mono", PaletteCustom = "Custom";
     public const string TargetValue = "Value", TargetLabel = "Label", TargetBoth = "Both";
-    public const string WeightNormal = "Normal", WeightSemiBold = "SemiBold", WeightBold = "Bold";
+    public const string WeightNormal = "Normal", WeightSemiBold = "SemiBold", WeightBold = "Bold", WeightBySpeed = "BySpeed";
     public const string ArrowThin = "Thin", ArrowTriangle = "Triangle", ArrowDashed = "Dashed", ArrowIcon = "Icon", ArrowText = "Text";
     public const string LabelsText = "Text", LabelsIcon = "Icon", LabelsNone = "None";
     public const string SparkNone = "None", SparkBehind = "Behind", SparkSide = "Side";
@@ -21,13 +21,14 @@ public static class StyleOptions
     public static readonly string[] AnimatedIconSets = [IconMeteoconsFill, IconMeteoconsFlat, IconMeteoconsLine, IconMakinThings];
     public const string Celsius = "C", Fahrenheit = "F";
     public const string WxLabelWithPlace = "WithPlace", WxLabelInstead = "Instead", WxLabelNone = "None";
+    public const string ForecastHourly = "Hourly", ForecastDaily = "Daily", ForecastBoth = "Both";
 
     public static readonly Dictionary<string, string[]> Groups = new()
     {
         ["Theme"] = [ThemeAuto, ThemeDark, ThemeLight],
         ["Palette"] = [PaletteVivid, PaletteSoft, PaletteMono, PaletteCustom],
         ["ColorTarget"] = [TargetValue, TargetLabel, TargetBoth],
-        ["ValueWeight"] = [WeightNormal, WeightSemiBold, WeightBold],
+        ["ValueWeight"] = [WeightNormal, WeightSemiBold, WeightBold, WeightBySpeed],
         ["Arrows"] = [ArrowThin, ArrowTriangle, ArrowDashed, ArrowIcon, ArrowText],
         ["Labels"] = [LabelsText, LabelsIcon, LabelsNone],
         ["Sparkline"] = [SparkNone, SparkBehind, SparkSide],
@@ -37,6 +38,7 @@ public static class StyleOptions
                             IconColor, IconRealistic, IconLine, IconMono, IconGlyph],
         ["TemperatureUnit"] = [Celsius, Fahrenheit],
         ["WeatherLabel"] = [WxLabelWithPlace, WxLabelInstead, WxLabelNone],
+        ["WeatherForecast"] = [ForecastHourly, ForecastDaily, ForecastBoth],
     };
 
     /// <summary>Renklendirilen öğeler (Palettes.xaml anahtarları: Palette.&lt;palet&gt;.&lt;öğe&gt;.OnDark/OnLight).</summary>
@@ -67,6 +69,7 @@ public static class StyleOptions
         s.WeatherIcons = Valid("WeatherIcons", s.WeatherIcons, d.WeatherIcons);
         s.TemperatureUnit = Valid("TemperatureUnit", s.TemperatureUnit, d.TemperatureUnit);
         s.WeatherLabel = Valid("WeatherLabel", s.WeatherLabel, d.WeatherLabel);
+        s.WeatherForecast = Valid("WeatherForecast", s.WeatherForecast, d.WeatherForecast);
         s.FontSize = Math.Clamp(s.FontSize, MinFont, MaxFont);
         s.BackgroundOpacity = Math.Clamp(s.BackgroundOpacity, MinOpacity, MaxOpacity);
         s.ColumnGap = Math.Clamp(s.ColumnGap, MinColumnGap, MaxColumnGap);

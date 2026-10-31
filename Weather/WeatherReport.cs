@@ -22,10 +22,23 @@ public sealed class WeatherReport
 
     public List<HourForecast> Hours { get; set; } = new();
 
+    /// <summary>Günlük tahmin (bugünden başlar); 0.13 ve öncesinin önbelleğinde boş, sonraki yenilemede dolar.</summary>
+    public List<DayForecast> Days { get; set; } = new();
+
     public TimeSpan Age => DateTime.UtcNow - FetchedAtUtc;
 
     /// <summary>Konumdaki şu anki saat (<see cref="HourForecast.Time"/> ile karşılaştırmak için).</summary>
     public DateTime LocalNow => UtcOffsetSeconds is { } s ? DateTime.UtcNow.AddSeconds(s) : DateTime.Now;
+}
+
+/// <summary>Günlük tahmin; <see cref="Date"/> konumun yerel günüdür.</summary>
+public sealed class DayForecast
+{
+    public DateTime Date { get; set; }
+    public double High { get; set; }
+    public double Low { get; set; }
+    public int WeatherCode { get; set; }
+    public int? PrecipitationProbability { get; set; }
 }
 
 /// <summary>Saatlik tahmin; <see cref="Time"/> konumun yerel saatidir.</summary>

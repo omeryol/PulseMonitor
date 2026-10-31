@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using PulseMonitor.Core;
 using PulseMonitor.Formatting;
+using PulseMonitor.Settings;
 using PulseMonitor.Weather;
 
 namespace PulseMonitor.ViewModels;
@@ -10,14 +11,21 @@ namespace PulseMonitor.ViewModels;
 /// <summary>Hava öğesinin renkli ipucu kartı (Views/Controls/WeatherItem.xaml şablonu gösterir).</summary>
 public sealed record WeatherTooltipModel(
     string Place, string Context, ImageSource? Icon, string Description, string Temperature, Brush TemperatureBrush,
-    string Details, IReadOnlyList<HourRow> Hours, string Updated, bool IsStale, bool IsLoading,
+    string Details, IReadOnlyList<HourRow> Hours, IReadOnlyList<DayRow> Days, string Updated, bool IsStale, bool IsLoading,
     IReadOnlyList<PlaceRow> Others)
 {
     public bool HasOthers => Others.Count > 0;
+    public bool HasHours => Hours.Count > 0;
+    public bool HasDays => Days.Count > 0;
+    /// <summary>Saatlik ve günlük birlikte gösterilirken aralarına ince çizgi konur.</summary>
+    public bool HasBoth => HasHours && HasDays;
 }
 
 /// <summary>Saatlik satır: saat, renkli simge, sıcaklığa göre renkli derece, yağış olasılığı.</summary>
 public sealed record HourRow(string Time, ImageSource? Icon, string Temperature, Brush TemperatureBrush, string Rain, bool HasRain);
+
+/// <summary>Günlük satır: gün adı, simge, en yüksek (sıcaklığa göre renkli) / en düşük, yağış olasılığı.</summary>
+public sealed record DayRow(string Day, ImageSource? Icon, string High, Brush HighBrush, string Low, string Rain, bool HasRain);
 
 /// <summary>Diğer takip edilen konumlar: ad, simge, sıcaklık (veri yoksa "--°").</summary>
 public sealed record PlaceRow(string Name, ImageSource? Icon, string Temperature, Brush TemperatureBrush);
@@ -27,44 +35,73 @@ internal static class WeatherTooltip
     private static CultureInfo Tr => UiLanguage.Culture;
     private const int Hours = 6;
 
-    public static WeatherTooltipModel Loading(WeatherLocation loc, IReadOnlyList<(WeatherLocation, WeatherReport?)> others, bool fahrenheit) =>
+    public static WeatherTooltipModel Loading(WeatherLocation loc, IReadOnlyList<(WeatherLocation, WeatherReport?)> others, StyleSettings st) =>
         new(loc.ShownName, loc.Context, null, Strings.Get("Weather.Loading"), "", ThemeBrushes.Get("Brush.Text"),
-            "", Array.Empty<HourRow>(), "", false, true, Places(others, fahrenheit));
+            "", Array.Empty<HourRow>(), Array.Empty<DayRow>(), "", false, true, Places(others, st));
 
     public static WeatherTooltipModel Build(WeatherLocation loc, WeatherReport r, IReadOnlyList<(WeatherLocation, WeatherReport?)> others,
-        bool fahrenheit, bool stale)
+        StyleSettings st, bool stale)
     {
+        bool fahrenheit = st.TemperatureUnit == StyleOptions.Fahrenheit;
         string Deg(double c) => ValueFormat.Degrees(c, fahrenheit);
+        string set = st.WeatherIcons;
 
         DateTime now = r.LocalNow;
-        var hours = r.Hours.Where(h => h.Time > now).Take(Hours)
-            .Select(h => new HourRow(
-                h.Time.ToString("HH:mm", Tr),
-                Icon(h.WeatherCode, h.IsDay),
-                Deg(h.Temperature),
-                TemperatureBrush(h.Temperature),
-                h.PrecipitationProbability is > 0 and var p ? ValueFormat.Percent(p) : "",
-                h.PrecipitationProbability is > 0))
-            .ToList();
+        var hours = st.WeatherForecast == StyleOptions.ForecastDaily
+            ? new List<HourRow>()
+            : r.Hours.Where(h => h.Time > now).Take(Hours)
+                .Select(h => new HourRow(
+                    h.Time.ToString("HH:mm", Tr),
+                    Icon(set, h.WeatherCode, h.IsDay),
+                    Deg(h.Temperature),
+                    TemperatureBrush(h.Temperature),
+                    h.PrecipitationProbability is > 0 and var p ? ValueFormat.Percent(p) : "",
+                    h.PrecipitationProbability is > 0))
+                .ToList();
+
+        // Eski önbellekte günlük veri yok (Days boş): bölüm gizlenir, sonraki yenilemede dolar.
+        var days = st.WeatherForecast == StyleOptions.ForecastHourly
+            ? new List<DayRow>()
+            : r.Days.Where(d => d.Date.Date >= now.Date).Take(OpenMeteoClient.DaysAhead)
+                .Select(d => new DayRow(
+                    d.Date.Date == now.Date ? Strings.Get("Weather.Today") : d.Date.ToString("ddd", Tr),
+                    Icon(set, d.WeatherCode, true),
+                    Deg(d.High),
+                    TemperatureBrush(d.High),
+                    Deg(d.Low),
+                    d.PrecipitationProbability is > 0 and var p ? ValueFormat.Percent(p) : "",
+                    d.PrecipitationProbability is > 0))
+                .ToList();
 
         string details = string.Format(Tr, Strings.Get("Weather.FeelsLike"), Deg(r.ApparentTemperature)) + "   ·   " +
                          string.Format(Tr, Strings.Get("Weather.HumidityWind"), r.Humidity, Math.Round(r.WindKmh));
         string updated = string.Format(Tr, Strings.Get("Weather.Updated"), r.FetchedAtUtc.ToLocalTime().ToString("HH:mm", Tr)) +
                          "   ·   " + OpenMeteoModels.SourceLabel(r.Model);
 
-        return new WeatherTooltipModel(loc.ShownName, loc.Context, Icon(r.WeatherCode, r.IsDay), WeatherCodes.Describe(r.WeatherCode),
-            Deg(r.Temperature), TemperatureBrush(r.Temperature), details, hours, updated, stale, false, Places(others, fahrenheit));
+        return new WeatherTooltipModel(loc.ShownName, loc.Context, Icon(set, r.WeatherCode, r.IsDay), WeatherCodes.Describe(r.WeatherCode),
+            Deg(r.Temperature), TemperatureBrush(r.Temperature), details, hours, days, updated, stale, false, Places(others, st));
     }
 
-    private static List<PlaceRow> Places(IReadOnlyList<(WeatherLocation Loc, WeatherReport? Report)> others, bool fahrenheit) =>
+    private static List<PlaceRow> Places(IReadOnlyList<(WeatherLocation Loc, WeatherReport? Report)> others, StyleSettings st) =>
         others.Select(o => o.Report is { } r && r.Age < TimeSpan.FromHours(12)
-                ? new PlaceRow(o.Loc.ShownName, Icon(r.WeatherCode, r.IsDay), ValueFormat.Degrees(r.Temperature, fahrenheit), TemperatureBrush(r.Temperature))
+                ? new PlaceRow(o.Loc.ShownName, Icon(st.WeatherIcons, r.WeatherCode, r.IsDay),
+                    ValueFormat.Degrees(r.Temperature, st.TemperatureUnit == StyleOptions.Fahrenheit), TemperatureBrush(r.Temperature))
                 : new PlaceRow(o.Loc.ShownName, null, "--°", ThemeBrushes.Get("Brush.Muted")))
             .ToList();
 
-    /// <summary>İpucunda her zaman renkli simgeler kullanılır (Resources/WeatherIcons.xaml).</summary>
-    private static ImageSource? Icon(int code, bool isDay) =>
-        Application.Current?.TryFindResource($"Wx.{WeatherCodes.IconKey(code, isDay)}") as ImageSource;
+    /// <summary>
+    /// Kart simgesi seçili simge setinden gelir: resim olduğu gibi, animasyonlu sette sabit kare, Çizgi/Dolu sette şekil kart
+    /// yazı rengiyle. "Karakter" setinde (ya da simge yüklenemezse) renkli simge kullanılır.
+    /// </summary>
+    private static ImageSource? Icon(string set, int code, bool isDay)
+    {
+        string key = WeatherCodes.IconKey(code, isDay);
+        WeatherIcon icon = WeatherIcons.Resolve(set, key);
+        if (icon.Image is { } image) return image;
+        if (icon.Still is { } still) return still;
+        if (icon.Shape is { } shape) return new DrawingImage(new GeometryDrawing(ThemeBrushes.Get("Brush.Text"), null, shape));
+        return Application.Current?.TryFindResource($"Wx.{key}") as ImageSource;
+    }
 
     /// <summary>Sıcaklığa göre renk (≤0 · &lt;10 · &lt;20 · &lt;28 · ≥28 °C), görev çubuğundakiyle aynı.</summary>
     public static Brush TemperatureBrush(double celsius) => ThemeBrushes.Get(Math.Round(celsius) switch

@@ -36,9 +36,9 @@
                 <Grid Grid.Column="1">
                     <controls:Sparkline Values="{Binding History}" Stroke="{Binding ItemBrush}" Margin="0,1"
                                         Visibility="{DynamicResource Visibility.SparkBehind}" />
-                    <TextBlock Text="{Binding Placeholder}" FontWeight="{DynamicResource Font.ValueWeight}" Visibility="Hidden" />
+                    <TextBlock Text="{Binding Placeholder}" FontWeight="{Binding PlaceholderWeight}" FontSize="{Binding PlaceholderSize}" Visibility="Hidden" />
                     <TextBlock Text="{Binding Value}" Foreground="{Binding ValueBrush}"
-                               FontWeight="{DynamicResource Font.ValueWeight}" HorizontalAlignment="Right" />
+                               FontWeight="{Binding ValueWeight}" FontSize="{Binding ValueSize}" HorizontalAlignment="Right" />
                 </Grid>
                 <Border Grid.Column="2" Width="30" Margin="5,2,0,2" Visibility="{DynamicResource Visibility.SparkSide}">
                     <controls:Sparkline x:Name="SideSpark" Values="{Binding History}" Stroke="{Binding ItemBrush}" />

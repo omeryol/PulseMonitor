@@ -36,6 +36,8 @@ public sealed class StyleSettings
     public string WeatherIcons { get; set; } = StyleOptions.IconMakinThings;
     /// <summary>Hava açıklaması (Güneşli, Sisli…): yer adının yanında / yerine / gösterme.</summary>
     public string WeatherLabel { get; set; } = StyleOptions.WxLabelWithPlace;
+    /// <summary>Hava kartındaki tahmin: saatlik (varsayılan, eski davranış), günlük ya da ikisi.</summary>
+    public string WeatherForecast { get; set; } = StyleOptions.ForecastHourly;
     public bool TemperatureColors { get; set; } = true;
     public string TemperatureUnit { get; set; } = StyleOptions.Celsius;
     public bool ShowFeelsLike { get; set; } = true;

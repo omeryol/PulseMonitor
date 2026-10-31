@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Media;
 using PulseMonitor.Core;
 using PulseMonitor.Settings;
@@ -11,6 +12,8 @@ namespace PulseMonitor.ViewModels;
 public sealed class MetricLine : ObservableObject
 {
     private string _value = "--";
+    private FontWeight _valueWeight = FontWeights.SemiBold, _placeholderWeight = FontWeights.SemiBold;
+    private double _valueSize = 11, _placeholderSize = 11;
     private string _labelText;
     private Geometry? _labelIcon;
     private int _level;
@@ -33,6 +36,14 @@ public sealed class MetricLine : ObservableObject
     public string Placeholder { get; }
     public string BrushKey { get; }
     public string Value { get => _value; set => Set(ref _value, value); }
+
+    /// <summary>Değerin kalınlığı: ayardaki sabit değer, "Hıza göre"de ağ satırlarında hıza göre değişir.</summary>
+    public FontWeight ValueWeight { get => _valueWeight; set => Set(ref _valueWeight, value); }
+    public double ValueSize { get => _valueSize; set => Set(ref _valueSize, value); }
+
+    /// <summary>Görünmez yer tutucunun yazısı: "Hıza göre"de ağ satırlarında en büyük/kalın hâl (genişlik ve satır yüksekliği oynamasın).</summary>
+    public FontWeight PlaceholderWeight { get => _placeholderWeight; set => Set(ref _placeholderWeight, value); }
+    public double PlaceholderSize { get => _placeholderSize; set => Set(ref _placeholderSize, value); }
 
     public string LabelText { get => _labelText; private set => Set(ref _labelText, value); }
     public Geometry? LabelIcon { get => _labelIcon; private set => Set(ref _labelIcon, value); }

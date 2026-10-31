@@ -10,11 +10,12 @@ namespace PulseMonitor.Weather;
 internal static class OpenMeteoClient
 {
     private const int HoursAhead = 12;
+    public const int DaysAhead = 5;
 
     public static async Task<WeatherReport> FetchAsync(double lat, double lon, string model, CancellationToken token)
     {
         string url = FormattableString.Invariant(
-            $"https://api.open-meteo.com/v1/forecast?latitude={lat:0.####}&longitude={lon:0.####}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,weather_code,precipitation_probability,is_day&forecast_hours={HoursAhead + 1}&timezone=auto");
+            $"https://api.open-meteo.com/v1/forecast?latitude={lat:0.####}&longitude={lon:0.####}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,weather_code,precipitation_probability,is_day&forecast_hours={HoursAhead + 1}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days={DaysAhead}&timezone=auto");
         if (model != OpenMeteoModels.Auto) url += "&models=" + Uri.EscapeDataString(model);
 
         using HttpResponseMessage response = await Http.Client.GetAsync(url, token);
@@ -65,7 +66,34 @@ internal static class OpenMeteoClient
                 IsDay = isDay[i].ValueKind != JsonValueKind.Number || isDay[i].GetInt32() == 1,
             });
         }
+        ParseDays(root, report);
         return report;
+    }
+
+    /// <summary>Günlük tahmin kartta ek bilgidir: eksik/boş gelirse anlık rapor yine de geçerli sayılır.</summary>
+    private static void ParseDays(JsonElement root, WeatherReport report)
+    {
+        if (!root.TryGetProperty("daily", out JsonElement daily)) return;
+        if (!daily.TryGetProperty("time", out JsonElement times) ||
+            !daily.TryGetProperty("temperature_2m_max", out JsonElement highs) ||
+            !daily.TryGetProperty("temperature_2m_min", out JsonElement lows) ||
+            !daily.TryGetProperty("weather_code", out JsonElement codes)) return;
+        daily.TryGetProperty("precipitation_probability_max", out JsonElement precip);
+
+        for (int i = 0; i < times.GetArrayLength(); i++)
+        {
+            if (highs[i].ValueKind != JsonValueKind.Number || lows[i].ValueKind != JsonValueKind.Number ||
+                codes[i].ValueKind != JsonValueKind.Number) continue;
+            report.Days.Add(new DayForecast
+            {
+                Date = DateTime.Parse(times[i].GetString()!, CultureInfo.InvariantCulture),
+                High = highs[i].GetDouble(),
+                Low = lows[i].GetDouble(),
+                WeatherCode = codes[i].GetInt32(),
+                PrecipitationProbability = precip.ValueKind == JsonValueKind.Array && precip[i].ValueKind == JsonValueKind.Number
+                    ? (int)Math.Round(precip[i].GetDouble()) : null,
+            });
+        }
     }
 
     private static double? Number(JsonElement e, string name) =>

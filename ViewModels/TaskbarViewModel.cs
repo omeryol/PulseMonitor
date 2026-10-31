@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Windows;
 using PulseMonitor.Core;
 using PulseMonitor.Formatting;
 using PulseMonitor.Metrics;
@@ -12,9 +13,15 @@ public sealed class TaskbarViewModel
     private readonly Dictionary<string, object> _items;
     private readonly SpeedHistory _upHistory = new();
     private readonly SpeedHistory _downHistory = new();
+    private readonly SpeedWeightScale _weightScale = new();
+    private readonly SpeedWeight _upWeight, _downWeight;
+    private bool _weightBySpeed;
+    private double _fontSize = 11;
 
     public TaskbarViewModel()
     {
+        _upWeight = new SpeedWeight(_weightScale);
+        _downWeight = new SpeedWeight(_weightScale);
         _items = new Dictionary<string, object>
         {
             [TaskbarItemId.Weather] = Weather,
@@ -92,8 +99,15 @@ public sealed class TaskbarViewModel
     /// <summary>Tema ya da görünüm değişti: etiketler, renk kuralları ve renkler yeniden uygulanır.</summary>
     internal void ApplyStyle(StyleSettings s)
     {
+        _weightBySpeed = s.ValueWeight == StyleOptions.WeightBySpeed;
+        _fontSize = s.FontSize;
         foreach (var (id, line) in _items.Where(kv => kv.Value is MetricLine).Select(kv => (kv.Key, (MetricLine)kv.Value)))
         {
+            bool speedSized = _weightBySpeed && id is TaskbarItemId.Upload or TaskbarItemId.Download;
+            line.ValueWeight = StyleResources.ValueWeight(s);
+            line.ValueSize = s.FontSize;
+            line.PlaceholderWeight = speedSized ? FontWeights.Black : line.ValueWeight;
+            line.PlaceholderSize = s.FontSize + (speedSized ? SpeedWeight.MaxSizeBonus : 0);
             var (text, icon) = LabelFor(id, line.DefaultLabel, s);
             line.ApplyStyle(text, icon, s.ColorTarget, s.LoadColors);
         }
@@ -139,6 +153,12 @@ public sealed class TaskbarViewModel
     {
         Upload.Value = ValueFormat.Speed(m.Network.UpBps);
         Download.Value = ValueFormat.Speed(m.Network.DownBps);
+        if (_weightBySpeed)
+        {
+            _weightScale.Add(Math.Max(m.Network.UpBps, m.Network.DownBps));
+            ApplySpeed(Upload, _upWeight.Next(m.Network.UpBps));
+            ApplySpeed(Download, _downWeight.Next(m.Network.DownBps));
+        }
         Upload.History = _upHistory.Add(m.Network.UpBps);
         Download.History = _downHistory.Add(m.Network.DownBps);
 
@@ -154,6 +174,12 @@ public sealed class TaskbarViewModel
         Keyboard.Caps.IsOn = keys.Caps;
         Keyboard.Num.IsOn = keys.Num;
         Keyboard.Scroll.IsOn = keys.Scroll;
+    }
+
+    private void ApplySpeed(MetricLine line, int step)
+    {
+        line.ValueWeight = SpeedWeight.WeightOf(step);
+        line.ValueSize = _fontSize + SpeedWeight.SizeBonusOf(step);
     }
 
     private static void SetPercent(MetricLine line, double? percent)

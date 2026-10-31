@@ -9,16 +9,18 @@ namespace PulseMonitor.Core;
 /// </summary>
 internal static class StyleResources
 {
+    /// <summary>Sabit değer kalınlığı; "Hıza göre"de ağ dışı satırlar yarı kalın kalır.</summary>
+    public static FontWeight ValueWeight(StyleSettings s) => s.ValueWeight switch
+    {
+        StyleOptions.WeightNormal => FontWeights.Normal,
+        StyleOptions.WeightBold => FontWeights.Bold,
+        _ => FontWeights.SemiBold,
+    };
+
     public static void Apply(Application app, StyleSettings s)
     {
         ResourceDictionary r = app.Resources;
         r["Font.Size"] = (double)s.FontSize;
-        r["Font.ValueWeight"] = s.ValueWeight switch
-        {
-            StyleOptions.WeightNormal => FontWeights.Normal,
-            StyleOptions.WeightBold => FontWeights.Bold,
-            _ => FontWeights.SemiBold,
-        };
 
         r["Thickness.LabelGap"] = new Thickness(0, 0, s.LabelGap, 0);
         r["Thickness.ColumnGap"] = new Thickness(s.ColumnGap, 0, 0, 0);

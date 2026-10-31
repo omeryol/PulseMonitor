@@ -29,6 +29,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     private string _feelsPlaceholder = "";
     private string _place = "";
     private WeatherTooltipModel? _tooltip;
+    private Func<WeatherTooltipModel>? _buildTooltip; // tema değişince şekil simgeleri ve renkler yeniden alınır
     private double _opacity = 1;
     private WeatherAnimationKind _animation;
 
@@ -94,7 +95,8 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
             Animation = WeatherAnimationKind.None;
             SetTemperatureBrush("Brush.Text");
             Opacity = 1;
-            Tooltip = WeatherTooltip.Loading(loc, others, f);
+            _buildTooltip = () => WeatherTooltip.Loading(loc, others, st);
+            Tooltip = _buildTooltip();
             return;
         }
 
@@ -117,18 +119,23 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;
         Opacity = stale ? 0.55 : 1;
-        Tooltip = WeatherTooltip.Build(loc, report, others, f, stale);
+        _buildTooltip = () => WeatherTooltip.Build(loc, report, others, st, stale);
+        Tooltip = _buildTooltip();
     }
 
     private static string FeelsLike(string degrees) => string.Format(Tr, Strings.Get("Weather.FeelsLikeShort"), degrees);
 
     /// <summary>Tema değişince sıcaklık rengi yeniden okunur.</summary>
-    public void RefreshBrush() => TemperatureBrush = ThemeBrushes.Get(_tempBrushKey);
+    public void RefreshBrush()
+    {
+        TemperatureBrush = ThemeBrushes.Get(_tempBrushKey);
+        if (_buildTooltip is not null) Tooltip = _buildTooltip();
+    }
 
     private void SetTemperatureBrush(string key)
     {
         _tempBrushKey = key;
-        RefreshBrush();
+        TemperatureBrush = ThemeBrushes.Get(key);
     }
 
     /// <summary>Renk her zaman Celsius'a göre seçilir (≤0 · &lt;10 · &lt;20 · &lt;28 · ≥28).</summary>

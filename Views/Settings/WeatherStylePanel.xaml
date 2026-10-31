@@ -13,6 +13,10 @@
             <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherLabel}" ItemsSource="{Binding WeatherLabel.Options}" SelectedItem="{Binding WeatherLabel.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <DockPanel Margin="0,3">
+            <TextBlock Text="{DynamicResource Style.Label.WeatherForecast}" Width="190" VerticalAlignment="Center" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherForecast}" ItemsSource="{Binding WeatherForecast.Options}" SelectedItem="{Binding WeatherForecast.Selected}" DisplayMemberPath="Display" />
+        </DockPanel>
+        <DockPanel Margin="0,3">
             <TextBlock Text="{DynamicResource Style.Label.TemperatureUnit}" Width="190" VerticalAlignment="Center" />
             <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.TemperatureUnit}" ItemsSource="{Binding TemperatureUnit.Options}" SelectedItem="{Binding TemperatureUnit.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
