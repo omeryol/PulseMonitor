@@ -9,6 +9,7 @@ namespace PulseMonitor.ViewModels;
 public sealed class StyleSettingsViewModel : ObservableObject
 {
     private readonly SettingsStore _store;
+    private StyleSettings? _beforeReset; // "Geri al" için; başka bir değişiklik yapılınca unutulur
     private StyleSettings S => _store.Current.Style;
 
     internal StyleSettingsViewModel(SettingsStore store)
@@ -34,6 +35,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
             CustomColors.Add(new ColorRow(item, Strings.Get($"Style.ColorItem.{item}"), SetCustomColor));
         RefreshColorRows();
         ResetCommand = new RelayCommand(Reset);
+        UndoResetCommand = new RelayCommand(UndoReset);
     }
 
     public Choice Theme { get; }
@@ -74,6 +76,11 @@ public sealed class StyleSettingsViewModel : ObservableObject
     /// <summary>Öğe renkleri (#RRGGBB). Birini değiştirmek paleti "Özel"e geçirir.</summary>
     public ObservableCollection<ColorRow> CustomColors { get; } = new();
     public ICommand ResetCommand { get; }
+    public ICommand UndoResetCommand { get; }
+    public bool CanUndoReset => _beforeReset is not null;
+
+    /// <summary>Windows animasyon efektleri kapalı: hava animasyonu ayardan bağımsız durur (Views/Controls/SystemMotion.cs).</summary>
+    public bool SystemMotionOff => !System.Windows.SystemParameters.ClientAreaAnimation;
 
     private void SetCustomColor(string item, string hex)
     {
@@ -85,12 +92,29 @@ public sealed class StyleSettingsViewModel : ObservableObject
         }
         S.CustomColors[item] = hex;
         _store.Save();
+        ForgetUndo();
         Palette.Refresh();
     }
 
     private void Reset()
     {
-        _store.Current.Style = new StyleSettings();
+        _beforeReset = _store.Current.Style;
+        Apply(new StyleSettings());
+        Log.Info("Görünüm varsayılana döndürüldü");
+    }
+
+    private void UndoReset()
+    {
+        if (_beforeReset is null) return;
+        StyleSettings previous = _beforeReset;
+        _beforeReset = null;
+        Apply(previous);
+        Log.Info("Görünüm sıfırlaması geri alındı");
+    }
+
+    private void Apply(StyleSettings style)
+    {
+        _store.Current.Style = style;
         _store.Save();
         Raise(null); // tüm özellikler yeniden okunur
         foreach (Choice c in new[] { Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel })
@@ -101,8 +125,16 @@ public sealed class StyleSettingsViewModel : ObservableObject
     private void Update(Action change)
     {
         change();
+        ForgetUndo();
         _store.Save();      // görev çubuğu hemen güncellenir (App.OnSettingsChanged)
         RefreshColorRows(); // palet ya da tema değiştiyse renk kutuları yeni renkleri göstersin
+    }
+
+    private void ForgetUndo()
+    {
+        if (_beforeReset is null) return;
+        _beforeReset = null;
+        Raise(nameof(CanUndoReset));
     }
 
     private void RefreshColorRows()

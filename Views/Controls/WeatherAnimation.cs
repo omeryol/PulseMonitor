@@ -7,7 +7,8 @@ namespace PulseMonitor.Views.Controls;
 
 /// <summary>
 /// Hava kartının içinde küçük animasyon: yağmur damlaları, kar taneleri, sis bantları, gök gürültüsünde şimşek.
-/// Hafif olsun diye saniyede 15 kare, birkaç parçacık; yalnızca görünürken ve tür "None" değilken çalışır.
+/// Hafif olsun diye saniyede 15 kare, birkaç parçacık; yalnızca görünürken, tür "None" değilken ve Windows
+/// animasyonlara izin verirken (<see cref="SystemMotion"/>) çalışır.
 /// </summary>
 public sealed class WeatherAnimation : FrameworkElement
 {
@@ -34,8 +35,8 @@ public sealed class WeatherAnimation : FrameworkElement
         _timer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(1000.0 / Fps) };
         _timer.Tick += (_, _) => Step();
         IsVisibleChanged += (_, _) => UpdateTimer();
-        Unloaded += (_, _) => _timer.Stop();
-        Loaded += (_, _) => UpdateTimer();
+        Unloaded += (_, _) => { _timer.Stop(); SystemMotion.Changed -= OnMotionChanged; };
+        Loaded += (_, _) => { SystemMotion.Changed += OnMotionChanged; UpdateTimer(); };
     }
 
     public WeatherAnimationKind Kind
@@ -44,9 +45,11 @@ public sealed class WeatherAnimation : FrameworkElement
         set => SetValue(KindProperty, value);
     }
 
+    private void OnMotionChanged(object? sender, EventArgs e) => Dispatcher.Invoke(UpdateTimer);
+
     private void UpdateTimer()
     {
-        bool run = Kind != WeatherAnimationKind.None && IsVisible && IsLoaded;
+        bool run = Kind != WeatherAnimationKind.None && IsVisible && IsLoaded && SystemMotion.Allowed;
         _particles.Clear();
         if (run && !_timer.IsEnabled) _timer.Start();
         else if (!run && _timer.IsEnabled) _timer.Stop();

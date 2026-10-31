@@ -14,6 +14,7 @@ public sealed class WeatherLocationsViewModel : ObservableObject
 {
     private readonly SettingsStore _store;
     private LocationRow? _selected;
+    private (WeatherLocation Location, int Index, bool WasActive)? _removed; // "Geri al" için son kaldırılan
 
     internal WeatherLocationsViewModel(SettingsStore store)
     {
@@ -21,6 +22,7 @@ public sealed class WeatherLocationsViewModel : ObservableObject
         ShowCommand = new RelayCommand(() => Change(i => W.ActiveIndex = i));
         MoveUpCommand = new RelayCommand(MoveUp);
         RemoveCommand = new RelayCommand(Remove);
+        UndoRemoveCommand = new RelayCommand(UndoRemove);
         Reload(W.Active);
     }
 
@@ -30,6 +32,10 @@ public sealed class WeatherLocationsViewModel : ObservableObject
     public ICommand ShowCommand { get; }
     public ICommand MoveUpCommand { get; }
     public ICommand RemoveCommand { get; }
+    public ICommand UndoRemoveCommand { get; }
+
+    public bool CanUndoRemove => _removed is not null;
+    public string RemovedText => _removed is { } r ? string.Format(Strings.Get("Weather.Removed"), r.Location.ShownName) : string.Empty;
 
     public bool HasLocations => Rows.Count > 0;
     public bool IsEmpty => Rows.Count == 0;
@@ -53,6 +59,7 @@ public sealed class WeatherLocationsViewModel : ObservableObject
         {
             if (_selected is null) return;
             _selected.Location.DisplayName = value.Trim();
+            ForgetUndo();
             _store.Save();
             Reload(_selected.Location);
         }
@@ -73,6 +80,7 @@ public sealed class WeatherLocationsViewModel : ObservableObject
         if (existing < 0) W.Locations = [.. list, target];
         W.ActiveIndex = W.Locations.IndexOf(target);
         _store.Save();
+        ForgetUndo();
         Log.Info($"Hava durumu konumu {(existing < 0 ? "eklendi" : "seçildi")}: {l.Name} ({l.Context}) {l.Latitude:0.####},{l.Longitude:0.####} [{l.Source}]");
         Reload(target);
         return existing < 0 ? AddResult.Added : AddResult.Existing;
@@ -93,10 +101,44 @@ public sealed class WeatherLocationsViewModel : ObservableObject
         WeatherLocation? active = W.Active;
         var list = W.Locations.ToList();
         Log.Info($"Hava durumu konumu kaldırıldı: {list[i].Name}");
+        WeatherLocation removed = list[i];
         list.RemoveAt(i);
         W.Locations = list;
         W.ActiveIndex = active is null || !list.Contains(active) ? 0 : list.IndexOf(active);
+        SetUndo((removed, i, ReferenceEquals(removed, active)));
     }, keepSelection: false);
+
+    /// <summary>Son kaldırılan konumu eski yerine (ve gösteriliyorsa yine gösterilen olarak) geri koyar.</summary>
+    private void UndoRemove()
+    {
+        if (_removed is not { } r) return;
+        var list = W.Locations.ToList();
+        if (list.Count >= WeatherSettings.MaxLocations || list.Any(x => x.SamePlace(r.Location.Latitude, r.Location.Longitude)))
+        {
+            SetUndo(null);
+            return;
+        }
+        WeatherLocation? active = W.Active;
+        list.Insert(Math.Min(r.Index, list.Count), r.Location);
+        W.Locations = list;
+        W.ActiveIndex = r.WasActive || active is null ? list.IndexOf(r.Location) : list.IndexOf(active);
+        _store.Save();
+        Log.Info($"Hava durumu konumu geri alındı: {r.Location.Name}");
+        SetUndo(null);
+        Reload(r.Location);
+    }
+
+    private void ForgetUndo()
+    {
+        if (_removed is not null) SetUndo(null);
+    }
+
+    private void SetUndo((WeatherLocation, int, bool)? removed)
+    {
+        _removed = removed;
+        Raise(nameof(CanUndoRemove));
+        Raise(nameof(RemovedText));
+    }
 
     private void Change(Action<int> change, bool keepSelection = true)
     {

@@ -13,7 +13,7 @@ namespace PulseMonitor.Core;
 internal static class WindowTheme
 {
     private static readonly string[] Keys =
-        ["Window", "Card", "Border", "Text", "Muted", "Hover", "Accent", "AccentHover", "AccentSoft", "OnAccent"];
+        ["Window", "Card", "Border", "Text", "Muted", "Hover", "Accent", "AccentHover", "AccentSoft", "AccentOnSoft", "OnAccent"];
 
     private static readonly Uri StylesUri = new("pack://application:,,,/Resources/WindowStyles.xaml");
 

@@ -61,7 +61,7 @@
                     <StackPanel>
                         <TextBlock Text="{DynamicResource Settings.Network}" Style="{StaticResource Heading}" Margin="0,2,0,6" />
                         <TextBlock Text="{DynamicResource Settings.Adapter}" Margin="0,0,0,4" />
-                        <ComboBox ItemsSource="{Binding Adapters}" SelectedItem="{Binding SelectedAdapter}" DisplayMemberPath="Display" />
+                        <ComboBox AutomationProperties.Name="{DynamicResource Settings.Adapter}" ItemsSource="{Binding Adapters}" SelectedItem="{Binding SelectedAdapter}" DisplayMemberPath="Display" />
                         <DockPanel Margin="0,8,0,0">
                             <Button DockPanel.Dock="Right" Content="{DynamicResource Settings.OpenHistory}" Command="{Binding OpenHistoryCommand}" Padding="10,2" />
                             <TextBlock Text="{DynamicResource Settings.Today}" Margin="0,0,8,0" Foreground="{DynamicResource Ui.Muted}" VerticalAlignment="Center" />
@@ -69,13 +69,13 @@
                         </DockPanel>
                         <DockPanel Margin="0,10,0,0">
                             <TextBlock Text="{DynamicResource Settings.PingHost}" Margin="0,0,12,0" VerticalAlignment="Center" />
-                            <TextBox Text="{Binding PingHost, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
+                            <TextBox AutomationProperties.Name="{DynamicResource Settings.PingHost}" Text="{Binding PingHost, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
                         </DockPanel>
 
                         <TextBlock Text="{DynamicResource Settings.General}" Style="{StaticResource Heading}" />
                         <DockPanel Margin="0,0,0,4">
                             <TextBlock Text="{DynamicResource Settings.Language}" Margin="0,0,12,0" VerticalAlignment="Center" />
-                            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Display" />
+                            <ComboBox AutomationProperties.Name="{DynamicResource Settings.Language}" ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" DisplayMemberPath="Display" />
                         </DockPanel>
                         <TextBlock Text="{DynamicResource Settings.LanguageHint}" Foreground="{DynamicResource Ui.Muted}" TextWrapping="Wrap" Margin="0,0,0,8" />
                         <CheckBox Content="{DynamicResource Settings.Startup}" IsChecked="{Binding StartWithWindows}" />
@@ -85,7 +85,7 @@
                             <TextBlock DockPanel.Dock="Right" Width="48" TextAlignment="Right"
                                        Text="{Binding TrayGapPx, StringFormat={}{0} px}" />
                             <TextBlock Text="{DynamicResource Settings.Gap}" Margin="0,0,12,0" VerticalAlignment="Center" />
-                            <Slider Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"
+                            <Slider AutomationProperties.Name="{DynamicResource Settings.Gap}" Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"
                                     Value="{Binding TrayGapPx}" VerticalAlignment="Center" />
                         </DockPanel>
                     </StackPanel>

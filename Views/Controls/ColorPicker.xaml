@@ -6,7 +6,7 @@
     <!-- Renk seçici: kutuya tıklayınca hazır renkler + ton / doygunluk / parlaklık kaydırıcıları açılır.
          SelectedColor (#RRGGBB) iki yönlü bağlanır. Kod: ColorPicker.xaml.cs -->
     <Grid>
-        <ToggleButton x:Name="Toggle" Width="34" Height="22" Cursor="Hand" ToolTip="{DynamicResource ColorPicker.Hint}">
+        <ToggleButton x:Name="Toggle" AutomationProperties.Name="{Binding (AutomationProperties.Name), ElementName=Root}" Width="34" Height="22" Cursor="Hand" ToolTip="{DynamicResource ColorPicker.Hint}">
             <ToggleButton.Template>
                 <ControlTemplate TargetType="ToggleButton">
                     <Border x:Name="Box" CornerRadius="6" BorderThickness="1" BorderBrush="{DynamicResource Ui.Border}"
@@ -37,7 +37,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Click="OnSwatchClick" Tag="{Binding}" Width="25" Height="25" Margin="2" Cursor="Hand" ToolTip="{Binding}">
+                                <Button Click="OnSwatchClick" Tag="{Binding}" Width="25" Height="25" Margin="2" Cursor="Hand" ToolTip="{Binding}" AutomationProperties.Name="{Binding}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border x:Name="Sw" CornerRadius="5" Background="{Binding}" BorderThickness="1" BorderBrush="#22000000" />

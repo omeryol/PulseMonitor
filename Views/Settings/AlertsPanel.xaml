@@ -20,27 +20,27 @@
         <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.Traffic}" IsChecked="{Binding TrafficEnabled}" />
             <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding TrafficLimitGb, StringFormat={}{0} GB}" />
-            <Slider Minimum="1" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" VerticalAlignment="Center" />
+            <Slider Minimum="1" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" AutomationProperties.Name="{DynamicResource Alerts.Traffic}" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.Cpu}" IsChecked="{Binding CpuEnabled}" />
             <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding CpuPercent, StringFormat=% {0}}" />
-            <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding CpuPercent}" VerticalAlignment="Center" />
+            <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding CpuPercent}" AutomationProperties.Name="{DynamicResource Alerts.Cpu}" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.Ram}" IsChecked="{Binding RamEnabled}" />
             <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding RamPercent, StringFormat=% {0}}" />
-            <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding RamPercent}" VerticalAlignment="Center" />
+            <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding RamPercent}" AutomationProperties.Name="{DynamicResource Alerts.Ram}" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.GpuTemp}" IsChecked="{Binding GpuTempEnabled}" />
             <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding GpuTempC, StringFormat={}{0} °C}" />
-            <Slider Minimum="30" Maximum="120" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding GpuTempC}" VerticalAlignment="Center" />
+            <Slider Minimum="30" Maximum="120" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding GpuTempC}" AutomationProperties.Name="{DynamicResource Alerts.GpuTemp}" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.DiskTemp}" IsChecked="{Binding DiskTempEnabled}" />
             <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding DiskTempC, StringFormat={}{0} °C}" />
-            <Slider Minimum="30" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding DiskTempC}" VerticalAlignment="Center" />
+            <Slider Minimum="30" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding DiskTempC}" AutomationProperties.Name="{DynamicResource Alerts.DiskTemp}" VerticalAlignment="Center" />
         </DockPanel>
 
         <Button Content="{DynamicResource Alerts.Test}" Command="{Binding TestCommand}" HorizontalAlignment="Left"

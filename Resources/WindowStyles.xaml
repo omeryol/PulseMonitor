@@ -128,8 +128,8 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Box" Property="Background" Value="{DynamicResource Ui.AccentSoft}" />
                             <Setter TargetName="Bar" Property="Background" Value="{DynamicResource Ui.Accent}" />
-                            <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource Ui.Accent}" />
-                            <Setter TargetName="Text" Property="TextElement.Foreground" Value="{DynamicResource Ui.Accent}" />
+                            <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource Ui.AccentOnSoft}" />
+                            <Setter TargetName="Text" Property="TextElement.Foreground" Value="{DynamicResource Ui.AccentOnSoft}" />
                             <Setter TargetName="Text" Property="TextElement.FontWeight" Value="SemiBold" />
                         </Trigger>
                     </ControlTemplate.Triggers>

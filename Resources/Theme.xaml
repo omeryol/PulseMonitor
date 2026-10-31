@@ -41,6 +41,9 @@
     <SolidColorBrush x:Key="Ui.AccentHover.OnDark" Color="#A5ACFA" />
     <SolidColorBrush x:Key="Ui.AccentSoft.OnLight" Color="#E4E6FB" />
     <SolidColorBrush x:Key="Ui.AccentSoft.OnDark" Color="#2B2E4A" />
+    <!-- AccentSoft zemin üstünde vurgu yazısı (seçili sekme): en az 4,5:1 (açık ≈ 5,1:1, koyu ≈ 4,8:1) -->
+    <SolidColorBrush x:Key="Ui.AccentOnSoft.OnLight" Color="#4F46E5" />
+    <SolidColorBrush x:Key="Ui.AccentOnSoft.OnDark" Color="#8B93F8" />
     <SolidColorBrush x:Key="Ui.OnAccent.OnLight" Color="#FFFFFF" />
     <SolidColorBrush x:Key="Ui.OnAccent.OnDark" Color="#14151F" />
 

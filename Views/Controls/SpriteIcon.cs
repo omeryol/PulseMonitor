@@ -7,7 +7,8 @@ namespace PulseMonitor.Views.Controls;
 
 /// <summary>
 /// Film şeridi (yan yana kareler) PNG'sini saniyede 10 kare oynatır (tools/render_icons.ps1 üretir).
-/// <see cref="Animate"/> kapalıysa ya da görünmüyorsa sabit resmi çizer ve zamanlayıcı durur.
+/// <see cref="Animate"/> kapalıysa, Windows animasyonları kapalıysa (<see cref="SystemMotion"/>) ya da görünmüyorsa
+/// sabit resmi çizer ve zamanlayıcı durur.
 /// </summary>
 public sealed class SpriteIcon : FrameworkElement
 {
@@ -31,8 +32,8 @@ public sealed class SpriteIcon : FrameworkElement
             InvalidateVisual();
         };
         IsVisibleChanged += (_, _) => Restart();
-        Unloaded += (_, _) => _timer.Stop();
-        Loaded += (_, _) => Restart();
+        Unloaded += (_, _) => { _timer.Stop(); SystemMotion.Changed -= OnMotionChanged; };
+        Loaded += (_, _) => { SystemMotion.Changed += OnMotionChanged; Restart(); };
     }
 
     public BitmapSource? Strip { get => (BitmapSource?)GetValue(StripProperty); set => SetValue(StripProperty, value); }
@@ -44,11 +45,13 @@ public sealed class SpriteIcon : FrameworkElement
             new FrameworkPropertyMetadata(type == typeof(bool) ? false : null, FrameworkPropertyMetadataOptions.AffectsRender,
                 (d, _) => ((SpriteIcon)d).Restart()));
 
+    private void OnMotionChanged(object? sender, EventArgs e) => Dispatcher.Invoke(Restart);
+
     private void Restart()
     {
         _frames.Clear();
         _frame = 0;
-        if (Strip is { PixelHeight: > 0 } strip && Animate)
+        if (Strip is { PixelHeight: > 0 } strip && Animate && SystemMotion.Allowed)
         {
             int size = strip.PixelHeight, count = strip.PixelWidth / size;
             for (int i = 0; i < count; i++)

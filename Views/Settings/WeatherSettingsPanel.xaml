@@ -6,7 +6,7 @@
     <StackPanel>
         <DockPanel Margin="0,2,0,0">
             <TextBlock Text="{DynamicResource Weather.Model}" Width="190" VerticalAlignment="Center" />
-            <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="Display" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Weather.Model}" ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" DisplayMemberPath="Display" />
         </DockPanel>
         <TextBlock Text="{DynamicResource Weather.Model.Hint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" />
 
@@ -21,7 +21,7 @@
                     <Button Content="{DynamicResource Weather.MoveUp}" Command="{Binding MoveUpCommand}" Padding="10,2" Margin="0,0,0,4" />
                     <Button Content="{DynamicResource Weather.Remove}" Command="{Binding RemoveCommand}" Padding="10,2" />
                 </StackPanel>
-                <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" MaxHeight="150">
+                <ListBox AutomationProperties.Name="{DynamicResource Weather.Locations}" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" MaxHeight="150">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <DockPanel>
@@ -32,9 +32,15 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </DockPanel>
+            <!-- Kaldırma hemen uygulanır; bir sonraki kaldırmaya ya da eklemeye kadar geri alınabilir. -->
+            <StackPanel Orientation="Horizontal" Margin="0,6,0,0"
+                        Visibility="{Binding CanUndoRemove, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding RemovedText}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <Button Content="{DynamicResource Common.Undo}" Command="{Binding UndoRemoveCommand}" Padding="10,2" />
+            </StackPanel>
             <DockPanel Margin="0,6,0,0" Visibility="{Binding HasSelection, Converter={StaticResource BoolToVisibility}}">
                 <TextBlock Text="{DynamicResource Weather.DisplayName}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
+                <TextBox AutomationProperties.Name="{DynamicResource Weather.DisplayName}" Text="{Binding DisplayName, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
             </DockPanel>
             <TextBlock Text="{DynamicResource Weather.ClickToSwitch}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" Margin="0,4,0,0" />
         </StackPanel>
@@ -43,11 +49,11 @@
         <DockPanel>
             <Button DockPanel.Dock="Right" Content="{DynamicResource Weather.Search}" Command="{Binding SearchCommand}"
                     MinWidth="70" Padding="10,2" Margin="8,0,0,0" IsDefault="True" />
-            <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" />
+            <TextBox AutomationProperties.Name="{DynamicResource Weather.SearchHint}" Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" />
         </DockPanel>
         <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Ui.Muted}" Margin="0,4,0,4" TextWrapping="Wrap"
                    Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}" />
-        <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}"
+        <ListBox AutomationProperties.Name="{DynamicResource Weather.SearchHint}" ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}"
                  DisplayMemberPath="Display" MaxHeight="170"
                  Visibility="{Binding HasResults, Converter={StaticResource BoolToVisibility}}" />
 

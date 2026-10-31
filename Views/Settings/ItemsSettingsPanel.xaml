@@ -12,7 +12,7 @@
                 <Button Content="{DynamicResource Items.MoveDown}" Command="{Binding MoveDownCommand}"
                         MinWidth="90" Padding="8,3" />
             </StackPanel>
-            <ListBox ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}">
+            <ListBox AutomationProperties.Name="{DynamicResource Settings.Tab.Items}" ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <CheckBox Content="{Binding Name}" IsChecked="{Binding Visible}" Margin="0,2" />

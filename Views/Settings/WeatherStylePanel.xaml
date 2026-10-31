@@ -6,18 +6,20 @@
     <StackPanel>
         <DockPanel Margin="0,3">
             <TextBlock Text="{DynamicResource Style.Label.WeatherIcons}" Width="190" VerticalAlignment="Center" />
-            <ComboBox ItemsSource="{Binding WeatherIcons.Options}" SelectedItem="{Binding WeatherIcons.Selected}" DisplayMemberPath="Display" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherIcons}" ItemsSource="{Binding WeatherIcons.Options}" SelectedItem="{Binding WeatherIcons.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <DockPanel Margin="0,3">
             <TextBlock Text="{DynamicResource Style.Label.WeatherLabel}" Width="190" VerticalAlignment="Center" />
-            <ComboBox ItemsSource="{Binding WeatherLabel.Options}" SelectedItem="{Binding WeatherLabel.Selected}" DisplayMemberPath="Display" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherLabel}" ItemsSource="{Binding WeatherLabel.Options}" SelectedItem="{Binding WeatherLabel.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <DockPanel Margin="0,3">
             <TextBlock Text="{DynamicResource Style.Label.TemperatureUnit}" Width="190" VerticalAlignment="Center" />
-            <ComboBox ItemsSource="{Binding TemperatureUnit.Options}" SelectedItem="{Binding TemperatureUnit.Selected}" DisplayMemberPath="Display" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.TemperatureUnit}" ItemsSource="{Binding TemperatureUnit.Options}" SelectedItem="{Binding TemperatureUnit.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <CheckBox Content="{DynamicResource Style.Label.FeelsLike}" IsChecked="{Binding ShowFeelsLike}" Margin="0,6,0,3" />
         <CheckBox Content="{DynamicResource Style.Label.TemperatureColors}" IsChecked="{Binding TemperatureColors}" Margin="0,3" />
         <CheckBox Content="{DynamicResource Style.Label.Animation}" IsChecked="{Binding WeatherAnimation}" Margin="0,3" />
+        <TextBlock Text="{DynamicResource Style.AnimationSystemOff}" Foreground="{DynamicResource Ui.Muted}" TextWrapping="Wrap"
+                   Margin="24,0,0,3" Visibility="{Binding SystemMotionOff, Converter={StaticResource BoolToVisibility}}" />
     </StackPanel>
 </UserControl>
