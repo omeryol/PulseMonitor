@@ -47,7 +47,7 @@ Screenshots are generated with sample data.
 - **Indicators** (each can be turned on/off and reordered): upload/download speed (with a mini chart behind the value),
   CPU, RAM, GPU, disk activity, GPU and NVMe temperature, ping, local/external IP, Caps/Num/Scroll Lock, weather.
 - **Weather**: search villages, neighbourhoods and towns anywhere in the world (Open-Meteo + OpenStreetMap; places in
-  your own country first); forecast for the chosen spot with an hourly strip; feels-like temperature, description, °C/°F;
+  your own country first); forecast for the chosen spot with an hourly and/or 5-day strip; feels-like temperature, description, °C/°F;
   up to 8 locations (click the weather item to switch, the card lists the others); choice of forecast model (ECMWF,
   DWD ICON, NOAA GFS, Météo-France, UK Met Office, …); 9 icon sets, 4 of them animated (Meteocons, Makin-Things).
 - **Appearance**: theme, palette and per-item colors, color by load, font size/weight, arrow and label style, column cards,
@@ -58,6 +58,8 @@ Screenshots are generated with sample data.
   `lang` folder next to `PulseMonitor.exe`. Missing texts fall back to English.
 - **Traffic history**: daily records, month/year chart.
 - **Alerts**: Windows notifications for a daily traffic limit, CPU, RAM, GPU/disk temperature; new version notification.
+- **Weather alerts** (optional levels): storms, hail, very strong wind, extreme heat/cold, heavy rain and sudden temperature
+  changes, each event only once, at most 3 a day, with quiet hours. Based on a forecast model; **not an official warning**.
 - **Detail cards**: hover over an item for item-specific details (can be turned off).
 - **Lightweight**: software rendering, ~60 MB of memory, ~1–4% of a single core.
 - **No drivers**: no kernel driver and no administrator rights; nothing that would trigger an antivirus warning.

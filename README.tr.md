@@ -46,7 +46,7 @@ Görüntüler örnek verilerle üretilmiştir.
 - **Göstergeler** (her biri ayrı açılır/kapanır, sırası ayarlanır): yükleme/indirme hızı (değerin arkasında mini grafik),
   CPU, RAM, GPU, disk etkinliği, GPU ve NVMe sıcaklığı, ping, yerel/dış IP, Caps/Num/Scroll Lock, hava durumu.
 - **Hava durumu**: dünyanın her yerinde köy, mahalle, kasaba araması (Open-Meteo + OpenStreetMap; kendi ülkendeki yerler
-  önce); seçilen noktanın tahmini, saatlik şerit; hissedilen sıcaklık, açıklama, °C/°F; en çok 8 konum (hava öğesine
+  önce); seçilen noktanın tahmini, saatlik ve/veya 5 günlük şerit; hissedilen sıcaklık, açıklama, °C/°F; en çok 8 konum (hava öğesine
   tıklayınca sıradaki, kartta diğerleri); tahmin modeli seçimi (ECMWF, DWD ICON, NOAA GFS, Météo-France, UK Met Office…);
   9 simge seti, 4'ü animasyonlu (Meteocons, Makin-Things).
 - **Görünüm**: tema, palet ve öğe başına renk, yüke göre renk, yazı boyutu/kalınlığı, ok ve etiket biçimi, sütun kartları,
@@ -57,6 +57,8 @@ Görüntüler örnek verilerle üretilmiştir.
   gerekmez: `lang/tr.json` kopyalanıp çevrilir (`lang/de.json` gibi), program klasöründeki `lang` klasörüne konur.
 - **Trafik geçmişi**: günlük kayıt, ay/yıl grafiği.
 - **Uyarılar**: günlük trafik sınırı, CPU, RAM, GPU/disk sıcaklığı için Windows bildirimi; yeni sürüm bildirimi.
+- **Hava uyarıları** (seviye seçilebilir): fırtına, dolu, çok sert rüzgâr, aşırı sıcak/soğuk, kuvvetli yağış ve ani sıcaklık
+  değişimi; her olay yalnızca bir kez, günde en çok 3, sessiz saatlerle. Tahmin modeline dayanır; **resmî uyarı değildir**.
 - **Ayrıntı kartları**: her kartın üzerine gelince öğeye özel bilgiler (açılıp kapatılabilir).
 - **Hafif**: işlemciyle çizim, ~60 MB bellek, tek çekirdeğin ~% 1–4'ü.
 - **Sürücüsüz**: çekirdek sürücüsü yoktur, yönetici yetkisi istemez; antivirüs uyarısına yol açacak bileşen içermez.
