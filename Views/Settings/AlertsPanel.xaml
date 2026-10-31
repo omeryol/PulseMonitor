@@ -49,6 +49,7 @@
             <TextBlock Text="{DynamicResource Alerts.WeatherLevel}" Width="190" VerticalAlignment="Center" />
             <ComboBox AutomationProperties.Name="{DynamicResource Alerts.WeatherLevel}" ItemsSource="{Binding WeatherLevel.Options}" SelectedItem="{Binding WeatherLevel.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
+        <TextBlock Text="{DynamicResource Alerts.WeatherLevels}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Ui.Muted}" Margin="0,2,0,6" />
         <CheckBox Content="{DynamicResource Alerts.WeatherQuiet}" IsChecked="{Binding WeatherQuietHours}" Margin="0,3" />
         <TextBlock Text="{DynamicResource Alerts.WeatherNote}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Ui.Muted}" Margin="0,4,0,0" />
 
