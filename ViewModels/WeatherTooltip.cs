@@ -5,6 +5,7 @@ using PulseMonitor.Core;
 using PulseMonitor.Formatting;
 using PulseMonitor.Settings;
 using PulseMonitor.Weather;
+using PulseMonitor.Weather.Warnings;
 
 namespace PulseMonitor.ViewModels;
 
@@ -12,9 +13,10 @@ namespace PulseMonitor.ViewModels;
 public sealed record WeatherTooltipModel(
     string Place, string Context, ImageSource? Icon, string Description, string Temperature, Brush TemperatureBrush,
     string Details, IReadOnlyList<HourRow> Hours, IReadOnlyList<DayRow> Days, string Updated, bool IsStale, bool IsLoading,
-    IReadOnlyList<PlaceRow> Others)
+    IReadOnlyList<PlaceRow> Others, string Warning = "", Brush? WarningBrush = null, ImageSource? WarningIcon = null)
 {
     public bool HasOthers => Others.Count > 0;
+    public bool HasWarning => Warning.Length > 0;
     public bool HasHours => Hours.Count > 0;
     public bool HasDays => Days.Count > 0;
     /// <summary>Saatlik ve günlük birlikte gösterilirken aralarına ince çizgi konur.</summary>
@@ -40,7 +42,7 @@ internal static class WeatherTooltip
             "", Array.Empty<HourRow>(), Array.Empty<DayRow>(), "", false, true, Places(others, st));
 
     public static WeatherTooltipModel Build(WeatherLocation loc, WeatherReport r, IReadOnlyList<(WeatherLocation, WeatherReport?)> others,
-        StyleSettings st, bool stale)
+        StyleSettings st, int warningLevel, bool stale)
     {
         bool fahrenheit = st.TemperatureUnit == StyleOptions.Fahrenheit;
         string Deg(double c) => ValueFormat.Degrees(c, fahrenheit);
@@ -78,8 +80,23 @@ internal static class WeatherTooltip
         string updated = string.Format(Tr, Strings.Get("Weather.Updated"), r.FetchedAtUtc.ToLocalTime().ToString("HH:mm", Tr)) +
                          "   ·   " + OpenMeteoModels.SourceLabel(r.Model);
 
+        (string warning, Brush warningBrush, ImageSource? warningIcon) = Warning(r, warningLevel, fahrenheit, set);
         return new WeatherTooltipModel(loc.ShownName, loc.Context, Icon(set, r.WeatherCode, r.IsDay), WeatherCodes.Describe(r.WeatherCode),
-            Deg(r.Temperature), TemperatureBrush(r.Temperature), details, hours, days, updated, stale, false, Places(others, st));
+            Deg(r.Temperature), TemperatureBrush(r.Temperature), details, hours, days, updated, stale, false, Places(others, st),
+            warning, warningBrush, warningIcon);
+    }
+
+    /// <summary>
+    /// Kartın altındaki tek satır: en önemli uyarı. Bildirimlik olanlar ⚠ ile ve uyarı renginde, "son 30 güne göre" sıra dışı
+    /// günler yalnızca soluk bir not olarak. Bildirimler sessiz saatte bastırılsa bile kartta görünür.
+    /// </summary>
+    private static (string, Brush, ImageSource?) Warning(WeatherReport r, int level, bool fahrenheit, string set)
+    {
+        WeatherWarning? top = WeatherWarningDetector.Detect(r, level).FirstOrDefault();
+        if (top is null) return ("", ThemeBrushes.Get("Brush.Muted"), null);
+        string text = WeatherWarningText.Format(top, r.LocalNow, fahrenheit);
+        ImageSource? icon = IconByKey(set, top.IconKey);
+        return top.Notify ? ("⚠ " + text, ThemeBrushes.Get("Brush.Load.Warn"), icon) : (text, ThemeBrushes.Get("Brush.Muted"), icon);
     }
 
     private static List<PlaceRow> Places(IReadOnlyList<(WeatherLocation Loc, WeatherReport? Report)> others, StyleSettings st) =>
@@ -93,9 +110,10 @@ internal static class WeatherTooltip
     /// Kart simgesi seçili simge setinden gelir: resim olduğu gibi, animasyonlu sette sabit kare, Çizgi/Dolu sette şekil kart
     /// yazı rengiyle. "Karakter" setinde (ya da simge yüklenemezse) renkli simge kullanılır.
     /// </summary>
-    private static ImageSource? Icon(string set, int code, bool isDay)
+    private static ImageSource? Icon(string set, int code, bool isDay) => IconByKey(set, WeatherCodes.IconKey(code, isDay));
+
+    private static ImageSource? IconByKey(string set, string key)
     {
-        string key = WeatherCodes.IconKey(code, isDay);
         WeatherIcon icon = WeatherIcons.Resolve(set, key);
         if (icon.Image is { } image) return image;
         if (icon.Still is { } still) return still;

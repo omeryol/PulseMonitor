@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Windows.Media;
 using System.Windows.Interop;
 using PulseMonitor.Core;
 using PulseMonitor.Interop;
@@ -51,17 +52,33 @@ internal sealed class TrayIcon : IDisposable
             Log.Warn("Tepsi simgesi eklenemedi.");
     }
 
-    /// <summary>Windows bildirimi (Windows 10/11'de bildirim merkezine düşer). Odaklanma yardımı açıksa Windows erteler.</summary>
-    public void ShowNotification(string title, string text, bool warning)
+    /// <summary>
+    /// Windows bildirimi (Windows 10/11'de bildirim merkezine düşer). Odaklanma yardımı açıksa Windows erteler.
+    /// <paramref name="image"/> verilirse sistemin sarı üçgeni yerine bu resim (köşesinde küçük uyarı rozetiyle) gösterilir.
+    /// </summary>
+    public void ShowNotification(string title, string text, bool warning, ImageSource? image = null)
     {
         var data = CreateData();
         data.uFlags = Shell32.NIF_INFO;
         data.szInfoTitle = title.Length > 63 ? title[..63] : title;
         data.szInfo = text.Length > 255 ? text[..255] : text;
         data.dwInfoFlags = warning ? Shell32.NIIF_WARNING : Shell32.NIIF_INFO;
+
+        IntPtr custom = image is null ? IntPtr.Zero : NotificationIcon.WithWarningBadge(image);
+        if (custom != IntPtr.Zero)
+        {
+            data.hBalloonIcon = custom;
+            data.dwInfoFlags = Shell32.NIIF_USER | Shell32.NIIF_LARGE_ICON;
+        }
         if (!Shell32.Shell_NotifyIcon(Shell32.NIM_MODIFY, ref data))
             Log.Warn($"Bildirim gösterilemedi: {title}");
+
+        // Bildirim simgeyi görüntülenirken kullanır; bir sonrakinde ya da kapanışta serbest bırakılır.
+        NotificationIcon.Destroy(_lastBalloonIcon);
+        _lastBalloonIcon = custom;
     }
+
+    private IntPtr _lastBalloonIcon;
 
     private NOTIFYICONDATA CreateData() => new()
     {
@@ -97,6 +114,7 @@ internal sealed class TrayIcon : IDisposable
         var data = CreateData();
         Shell32.Shell_NotifyIcon(Shell32.NIM_DELETE, ref data);
         if (_icon != IntPtr.Zero) User32.DestroyIcon(_icon);
+        NotificationIcon.Destroy(_lastBalloonIcon);
         _source.RemoveHook(WndProc);
         _source.Dispose();
     }

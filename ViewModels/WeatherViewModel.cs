@@ -5,6 +5,7 @@ using PulseMonitor.Core;
 using PulseMonitor.Formatting;
 using PulseMonitor.Settings;
 using PulseMonitor.Weather;
+using PulseMonitor.Weather.Warnings;
 
 namespace PulseMonitor.ViewModels;
 
@@ -127,7 +128,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;
         Opacity = stale ? 0.55 : 1;
-        _buildTooltip = () => WeatherTooltip.Build(loc, report, others, st, stale);
+        _buildTooltip = () => WeatherTooltip.Build(loc, report, others, st, WarningLevels.From(s.Alerts.WeatherLevel), stale);
         Tooltip = _buildTooltip();
     }
 

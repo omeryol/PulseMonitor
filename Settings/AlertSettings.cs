@@ -20,8 +20,18 @@ public sealed class AlertSettings
     public bool DiskTempEnabled { get; set; }
     public int DiskTempC { get; set; } = 70;
 
+    /// <summary>
+    /// Hava durumu uyarıları (Weather/Warnings): Kapalı / yalnızca aşırı olaylar / dengeli / hassas
+    /// (<see cref="StyleOptions.Groups"/> → "WeatherWarnings"). Varsayılan yalnızca aşırı: nadir ve önemli olaylar.
+    /// </summary>
+    public string WeatherLevel { get; set; } = StyleOptions.WarnExtreme;
+
+    /// <summary>23:00–07:00 arasında hava bildirimi gösterme.</summary>
+    public bool WeatherQuietHours { get; set; } = true;
+
     internal void Normalize()
     {
+        if (!StyleOptions.Groups["WeatherWarnings"].Contains(WeatherLevel)) WeatherLevel = StyleOptions.WarnExtreme;
         TrafficLimitGb = Math.Clamp(TrafficLimitGb, 1, 10000);
         CpuPercent = Math.Clamp(CpuPercent, 10, 100);
         RamPercent = Math.Clamp(RamPercent, 10, 100);

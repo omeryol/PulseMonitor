@@ -31,6 +31,12 @@
                             </StackPanel>
                         </DockPanel>
 
+                        <!-- En önemli hava uyarısı (varsa): ⚠ ile uyarı renginde ya da soluk not. Tahmin bilgisidir, resmî uyarı değildir. -->
+                        <DockPanel Margin="0,6,0,0" MaxWidth="280" Visibility="{Binding HasWarning, Converter={StaticResource BoolToVisibility}}">
+                            <Image Source="{Binding WarningIcon}" Width="24" Height="24" Margin="0,0,8,0" DockPanel.Dock="Left" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Warning}" Foreground="{Binding WarningBrush}" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center" />
+                        </DockPanel>
+
                         <Rectangle Height="1" Fill="{DynamicResource Brush.Tooltip.Border}" Margin="0,10,0,8" />
                         <!-- Saatlik tahmin yatay şerit: her saat bir sütun, sütunlar kart genişliğini eşit paylaşır. -->
                         <ItemsControl ItemsSource="{Binding Hours}" Visibility="{Binding HasHours, Converter={StaticResource BoolToVisibility}}">

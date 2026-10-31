@@ -21,6 +21,7 @@ public static class StyleOptions
     public static readonly string[] AnimatedIconSets = [IconMeteoconsFill, IconMeteoconsFlat, IconMeteoconsLine, IconMakinThings];
     public const string Celsius = "C", Fahrenheit = "F";
     public const string WxLabelWithPlace = "WithPlace", WxLabelInstead = "Instead", WxLabelNone = "None";
+    public const string WarnOff = "Off", WarnExtreme = "Extreme", WarnBalanced = "Balanced", WarnSensitive = "Sensitive";
     public const string ForecastHourly = "Hourly", ForecastDaily = "Daily", ForecastBoth = "Both";
 
     public static readonly Dictionary<string, string[]> Groups = new()
@@ -39,6 +40,7 @@ public static class StyleOptions
         ["TemperatureUnit"] = [Celsius, Fahrenheit],
         ["WeatherLabel"] = [WxLabelWithPlace, WxLabelInstead, WxLabelNone],
         ["WeatherForecast"] = [ForecastHourly, ForecastDaily, ForecastBoth],
+        ["WeatherWarnings"] = [WarnOff, WarnExtreme, WarnBalanced, WarnSensitive],
     };
 
     /// <summary>Renklendirilen öğeler (Palettes.xaml anahtarları: Palette.&lt;palet&gt;.&lt;öğe&gt;.OnDark/OnLight).</summary>

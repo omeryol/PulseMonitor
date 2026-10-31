@@ -13,9 +13,12 @@ public sealed class AlertsSettingsViewModel : ObservableObject
     {
         _store = store;
         TestCommand = new RelayCommand(testNotification);
+        WeatherLevel = new Choice("WeatherWarnings", () => A.WeatherLevel, v => Update(() => A.WeatherLevel = v));
     }
 
     public ICommand TestCommand { get; }
+    public Choice WeatherLevel { get; }
+    public bool WeatherQuietHours { get => A.WeatherQuietHours; set => Update(() => A.WeatherQuietHours = value); }
 
     public bool TrafficEnabled { get => A.TrafficEnabled; set => Update(() => A.TrafficEnabled = value); }
     public int TrafficLimitGb { get => A.TrafficLimitGb; set => Update(() => A.TrafficLimitGb = value); }

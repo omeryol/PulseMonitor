@@ -34,6 +34,7 @@ public partial class App : Application
     private bool _updateNotificationShown;
     private AppWindows? _windows;
     private readonly Alerts.AlertMonitor _alerts = new();
+    private readonly Weather.Warnings.WeatherWarningNotifier _weatherWarnings = new();
 
     // Kaynak sözlükleri (App.xaml) OnStartup'tan önce yüklenir; oradaki bir hata da günlüğe düşsün.
     static App() => AppDomain.CurrentDomain.UnhandledException += (_, a) =>
@@ -83,6 +84,8 @@ public partial class App : Application
         _ping = new PingMonitor(_settings.Current);
         _ping.Changed += () => Dispatcher.BeginInvoke(() => _viewModel.UpdatePing(_ping.LatencyMs));
         _alerts.Raised += (title, text) => _tray?.ShowNotification(title, text, warning: true);
+        _weatherWarnings.Raised += (title, text, iconKey) =>
+            _tray?.ShowNotification(title, text, warning: true, Resources[$"Wx.{iconKey}"] as System.Windows.Media.ImageSource);
         _updates = new UpdateChecker(_settings.Current);
         _windows = new AppWindows(_settings, _history, _updates,
             () => _tray?.ShowNotification(Strings.Get("Alert.Title"), Strings.Get("Alert.Test"), warning: false));
@@ -171,6 +174,7 @@ public partial class App : Application
     {
         if (_settings is null || _viewModel is null || _weather is null) return;
         _viewModel.Weather.Update(_settings.Current, _weather.ReportFor);
+        _weatherWarnings.Check(_settings.Current, _weather.ReportFor);
     }
 
     private static void OnWindowLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -50,6 +50,10 @@ internal static class ValueFormat
         return string.Format(Tr, "{0:0}°", value == 0 ? 0 : value);
     }
 
+    /// <summary>Sıcaklık farkı (konum yok): 8° · Fahrenheit'ta farklar da 9/5 ile çarpılır.</summary>
+    public static string DegreeDelta(double celsiusDelta, bool fahrenheit) =>
+        string.Format(Tr, "{0:0}°", Math.Round(Math.Abs(fahrenheit ? celsiusDelta * 9 / 5 : celsiusDelta)));
+
     /// <summary>Grafik ekseni için kısa boyut: 8 GB · 1,5 GB · 512 MB (gereksiz ondalık yok).</summary>
     public static string SizeCompact(double bytes)
     {

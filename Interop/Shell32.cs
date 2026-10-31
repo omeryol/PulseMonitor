@@ -13,6 +13,8 @@ internal static class Shell32
     public const int NIF_INFO = 0x10;
     public const int NIIF_INFO = 0x01;
     public const int NIIF_WARNING = 0x02;
+    public const int NIIF_USER = 0x04;
+    public const int NIIF_LARGE_ICON = 0x20;
 
     public const int QUNS_RUNNING_D3D_FULL_SCREEN = 3;
     public const int QUNS_PRESENTATION_MODE = 4;

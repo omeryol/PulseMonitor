@@ -25,6 +25,13 @@ public sealed class WeatherReport
     /// <summary>Günlük tahmin (bugünden başlar); 0.13 ve öncesinin önbelleğinde boş, sonraki yenilemede dolar.</summary>
     public List<DayForecast> Days { get; set; } = new();
 
+    /// <summary>
+    /// Son 30 günün günlük en yüksek sıcaklık ortalaması ve standart sapması (Open-Meteo past_days); "son 30 güne göre"
+    /// sıra dışı günleri bulmak için. İklim normali değildir. Eski önbellekte ve veri azsa yok.
+    /// </summary>
+    public double? RecentHighMean { get; set; }
+    public double? RecentHighSd { get; set; }
+
     public TimeSpan Age => DateTime.UtcNow - FetchedAtUtc;
 
     /// <summary>Konumdaki şu anki saat (<see cref="HourForecast.Time"/> ile karşılaştırmak için).</summary>
@@ -49,4 +56,6 @@ public sealed class HourForecast
     public int WeatherCode { get; set; }
     public int? PrecipitationProbability { get; set; }
     public bool IsDay { get; set; } = true;
+    /// <summary>Rüzgâr hamlesi, km/sa; eski önbellekte yok.</summary>
+    public double? WindGustKmh { get; set; }
 }
