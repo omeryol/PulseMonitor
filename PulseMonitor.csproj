@@ -8,8 +8,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\PulseMonitor.ico</ApplicationIcon>
-    <Version>0.15.2</Version>
-    <!-- Sürüm adı (ana sürüm hattının adı: 0.15.x = Lodos); Hakkında'da gösterilir, release-notes/v<sürüm>.md başındaki ad satırıyla aynı olmalı (test denetler) -->
+    <Version>0.16.0</Version>
+    <!-- Sürüm adı (ana sürüm hattının adı: 0.15–0.16 = Lodos); Hakkında'da gösterilir, release-notes/v<sürüm>.md başındaki ad satırıyla aynı olmalı (test denetler) -->
     <ReleaseName>Lodos</ReleaseName>
     <Product>PulseMonitor</Product>
     <SatelliteResourceLanguages>tr</SatelliteResourceLanguages>

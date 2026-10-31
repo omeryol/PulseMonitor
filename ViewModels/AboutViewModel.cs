@@ -28,7 +28,7 @@ public sealed class AboutViewModel : ObservableObject
         Refresh();
     }
 
-    /// <summary>"0.15.2 · Lodos": sürüm numarası ve ana sürüm hattının adı (Core/ReleaseInfo.cs).</summary>
+    /// <summary>"0.16.0 · Lodos": sürüm numarası ve ana sürüm hattının adı (Core/ReleaseInfo.cs).</summary>
     public string Version { get; } = ReleaseInfo.WithName(UpdateChecker.Current.ToString(3));
     public string LicenseText { get; } = ReadEmbedded("LICENSE");
     public string NoticesText { get; } = ReadEmbedded("THIRD-PARTY-NOTICES.md");

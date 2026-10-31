@@ -8,6 +8,6 @@ internal static class ReleaseInfo
     public static string Name { get; } = typeof(ReleaseInfo).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
         .FirstOrDefault(a => a.Key == "ReleaseName")?.Value?.Trim() ?? "";
 
-    /// <summary>"0.15.2 · Lodos" ya da ad yoksa yalnızca sürüm.</summary>
+    /// <summary>"0.16.0 · Lodos" ya da ad yoksa yalnızca sürüm.</summary>
     public static string WithName(string version) => Name.Length == 0 ? version : $"{version} · {Name}";
 }
