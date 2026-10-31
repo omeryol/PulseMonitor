@@ -28,6 +28,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     private string _placeholder = "-88°";
     private string _feelsPlaceholder = "";
     private string _place = "";
+    private string _placePlaceholder = "";
     private WeatherTooltipModel? _tooltip;
     private Func<WeatherTooltipModel>? _buildTooltip; // tema değişince şekil simgeleri ve renkler yeniden alınır
     private double _opacity = 1;
@@ -58,6 +59,12 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     public string FeelsLikePlaceholder { get => _feelsPlaceholder; private set => Set(ref _feelsPlaceholder, value); }
 
     public string PlaceName { get => _place; private set => Set(ref _place, value); }
+
+    /// <summary>
+    /// Yer adı satırının görünmez en geniş hâli (tüm konumların adı + en uzun açıklama). Konum ya da hava değişince sütun genişliği
+    /// oynamasın; çok uzunsa görünümde 170 px'te kesilir (WeatherItem.xaml).
+    /// </summary>
+    public string PlacePlaceholder { get => _placePlaceholder; private set => Set(ref _placePlaceholder, value); }
     /// <summary>Renkli ipucu kartının içeriği (ViewModels/WeatherTooltip.cs).</summary>
     public WeatherTooltipModel? Tooltip { get => _tooltip; private set => Set(ref _tooltip, value); }
     public WeatherAnimationKind Animation { get => _animation; private set => Set(ref _animation, value); }
@@ -85,6 +92,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         TemperaturePlaceholder = widest;
         FeelsLikePlaceholder = st.ShowFeelsLike ? FeelsLike(widest) : "";
         PlaceName = loc.ShownName;
+        PlacePlaceholder = WidestPlace(s, st.WeatherLabel);
 
         if (report is null || report.Age > DiscardAfter)
         {
@@ -121,6 +129,19 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         Opacity = stale ? 0.55 : 1;
         _buildTooltip = () => WeatherTooltip.Build(loc, report, others, st, stale);
         Tooltip = _buildTooltip();
+    }
+
+    private static string WidestPlace(AppSettings s, string labelMode)
+    {
+        string description = WeatherCodes.LongestDescription();
+        return s.Weather.Locations
+            .Select(l => labelMode switch
+            {
+                StyleOptions.WxLabelWithPlace => $"{l.ShownName} · {description}",
+                StyleOptions.WxLabelInstead => description,
+                _ => l.ShownName,
+            })
+            .MaxBy(t => t.Length) ?? "";
     }
 
     private static string FeelsLike(string degrees) => string.Format(Tr, Strings.Get("Weather.FeelsLikeShort"), degrees);

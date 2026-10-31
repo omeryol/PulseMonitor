@@ -146,7 +146,7 @@
             <controls:SpriteIcon Strip="{Binding IconStrip}" Still="{Binding IconStill}" Animate="{Binding AnimateIcon}"
                                  Width="30" Height="30" Margin="-2" RenderOptions.BitmapScalingMode="HighQuality" />
 
-            <Grid Grid.Column="1" Margin="6,0,0,0" Typography.NumeralAlignment="Tabular">
+            <Grid Grid.Column="1" Margin="6,0,0,0" MaxWidth="170" Typography.NumeralAlignment="Tabular">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -159,7 +159,11 @@
                     <Run Text="{Binding TemperatureText, Mode=OneWay}" FontWeight="SemiBold" Foreground="{Binding TemperatureBrush}" />
                     <Run Text="{Binding FeelsLikeText, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource Brush.Muted}" />
                 </TextBlock>
-                <TextBlock Grid.Row="1" Text="{Binding PlaceName}" Foreground="{DynamicResource Brush.Muted}" />
+                <!-- Yer adı satırı: görünmez en geniş metin genişliği sabitler, çok uzunsa üç nokta ile kesilir. -->
+                <Grid Grid.Row="1">
+                    <TextBlock Text="{Binding PlacePlaceholder}" Visibility="Hidden" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding PlaceName}" Foreground="{DynamicResource Brush.Muted}" TextTrimming="CharacterEllipsis" />
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

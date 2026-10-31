@@ -10,6 +10,12 @@ internal static class WeatherCodes
 {
     public static string Describe(int code) => Strings.Get($"Weather.Code.{Group(code)}");
 
+    private static readonly int[] SampleCodes = [0, 1, 2, 3, 45, 51, 56, 61, 71, 80, 85, 95, 96, -1];
+
+    /// <summary>Seçili dildeki en uzun hava açıklaması; görev çubuğundaki yer adı satırının en geniş hâlini ölçmek için.</summary>
+    public static string LongestDescription() =>
+        SampleCodes.Select(Describe).MaxBy(d => d.Length) ?? "";
+
     /// <summary>Simge adı (ClearDay, Rain…); her sette aynı adlar kullanılır (Weather/WeatherIcons.cs).</summary>
     public static string IconKey(int code, bool isDay) => Group(code) switch
     {
