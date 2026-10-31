@@ -38,7 +38,7 @@ internal sealed class WeatherWarningNotifier
             WarningLedgerStore.Save(_ledger);
             // Her bildirimde "resmî uyarı değildir" notu: kullanıcı ayarlara bakmadan da görsün.
             string text = WeatherWarningText.Format(w, report.LocalNow, s.Style.TemperatureUnit == StyleOptions.Fahrenheit) +
-                          "\n" + Strings.Get("Weather.Warn.Disclaimer");
+                          "\n\n" + Strings.Get("Weather.Warn.Disclaimer");
             Log.Info($"Hava bilgisi: {w.Kind} ({loc.ShownName})");
             Raised?.Invoke(string.Format(Strings.Get("Weather.Warn.Title"), loc.ShownName), text, w.IconKey);
             return; // her denetimde en çok bir bildirim
