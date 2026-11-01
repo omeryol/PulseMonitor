@@ -22,6 +22,9 @@ internal sealed class TaskbarDocker : IDisposable
     private IntPtr _hwnd;
     private IntPtr _owner;
     private IntPtr _fgHook;
+    private IntPtr _reorderHook;
+    private readonly DispatcherTimer _burst;
+    private DateTime _burstUntil;
     private User32.WinEventProc? _fgProc;
     private bool _wanted;
 
@@ -32,6 +35,9 @@ internal sealed class TaskbarDocker : IDisposable
         _taskbarCreatedMsg = (int)User32.RegisterWindowMessage("TaskbarCreated");
         _timer = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromSeconds(1) };
         _timer.Tick += (_, _) => Refresh();
+        // Win+D sırasında görev çubuğu kısa süre pencerenin üstüne çıkar: birkaç yüz ms sık bakılır.
+        _burst = new DispatcherTimer(DispatcherPriority.Send) { Interval = TimeSpan.FromMilliseconds(15) };
+        _burst.Tick += (_, _) => BurstTick();
     }
 
     public void Start()
@@ -45,7 +51,21 @@ internal sealed class TaskbarDocker : IDisposable
         _source?.AddHook(WndProc);
         _window.SizeChanged += OnSizeChanged;
         // "Masaüstünü göster" masaüstü penceresini öne alır: olay gelir gelmez yeniden en üste al.
-        _fgProc = (_, _, _, _, _, _, _) => _window.Dispatcher.BeginInvoke(Refresh, DispatcherPriority.Send);
+        _fgProc = (_, evt, hwnd, _, _, _, _) =>
+        {
+            // Görev çubuğu pencerenin üstüne çıkarsa (Win+D) hemen geri al; kendi sıra değişikliklerimizi yok say.
+            if (evt == User32.EVENT_SYSTEM_FOREGROUND) StartBurst();
+            if (evt == User32.EVENT_OBJECT_REORDER)
+            {
+                if (hwnd != _owner || _owner == IntPtr.Zero || !_wanted) return;
+                User32.SetWindowPos(_hwnd, User32.HWND_TOPMOST, 0, 0, 0, 0,
+                    User32.SWP_NOMOVE | User32.SWP_NOSIZE | User32.SWP_NOACTIVATE);
+                return;
+            }
+            _window.Dispatcher.BeginInvoke(Refresh, DispatcherPriority.Send);
+        };
+        _reorderHook = User32.SetWinEventHook(User32.EVENT_OBJECT_REORDER, User32.EVENT_OBJECT_REORDER,
+            IntPtr.Zero, _fgProc, 0, 0, User32.WINEVENT_OUTOFCONTEXT);
         _fgHook = User32.SetWinEventHook(User32.EVENT_SYSTEM_FOREGROUND, User32.EVENT_SYSTEM_FOREGROUND,
             IntPtr.Zero, _fgProc, 0, 0, User32.WINEVENT_OUTOFCONTEXT);
         _timer.Start();
@@ -114,6 +134,21 @@ internal sealed class TaskbarDocker : IDisposable
         }
 
         User32.SetWindowPos(_hwnd, User32.HWND_TOPMOST, x, y, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOACTIVATE);
+    }
+
+    private void StartBurst()
+    {
+        _burstUntil = DateTime.UtcNow.AddMilliseconds(1500);
+        _burst.Start();
+    }
+
+    private void BurstTick()
+    {
+        if (DateTime.UtcNow > _burstUntil || !_wanted) { _burst.Stop(); return; }
+        // Görev çubuğu hemen üstümüzdeyse geri en üste al.
+        if (_owner != IntPtr.Zero && User32.GetWindow(_hwnd, User32.GW_HWNDPREV) == _owner)
+            User32.SetWindowPos(_hwnd, User32.HWND_TOPMOST, 0, 0, 0, 0,
+                User32.SWP_NOMOVE | User32.SWP_NOSIZE | User32.SWP_NOACTIVATE);
     }
 
     private void SetShown(bool shown)
@@ -187,7 +222,9 @@ internal sealed class TaskbarDocker : IDisposable
     public void Dispose()
     {
         _timer.Stop();
+        _burst.Stop();
         if (_fgHook != IntPtr.Zero) User32.UnhookWinEvent(_fgHook);
+        if (_reorderHook != IntPtr.Zero) User32.UnhookWinEvent(_reorderHook);
         _window.SizeChanged -= OnSizeChanged;
         _source?.RemoveHook(WndProc);
     }

@@ -65,6 +65,11 @@ internal static class User32
     public static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
 
     [DllImport("user32.dll")]
+    public static extern IntPtr GetWindow(IntPtr hWnd, uint cmd);
+
+    public const uint GW_HWNDPREV = 3;
+
+    [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool IsIconic(IntPtr hWnd);
 
@@ -114,6 +119,7 @@ internal static class User32
     public delegate void WinEventProc(IntPtr hook, uint evt, IntPtr hwnd, int idObject, int idChild, uint thread, uint time);
 
     public const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+    public const uint EVENT_OBJECT_REORDER = 0x8004;
     public const uint WINEVENT_OUTOFCONTEXT = 0x0000;
 
     [DllImport("user32.dll")]
