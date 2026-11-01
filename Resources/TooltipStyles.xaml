@@ -1,11 +1,13 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="clr-namespace:PulseMonitor.Core">
 
     <!-- Görev çubuğu ayrıntı kartlarının (ve hava ipucunun) görünümü: görev çubuğu temasına uyan yuvarlak kart.
          Açma/kapama: Ayarlar → Görünüm → "Fare üzerine gelince ayrıntı kartı göster" (DetailCards.Enabled). -->
     <Style x:Key="Ui.TooltipCard" TargetType="ToolTip">
         <Setter Property="Placement" Value="Top" />
         <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="core:PopupPlacementFix.Enabled" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">

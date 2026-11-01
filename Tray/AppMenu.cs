@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using PulseMonitor.Core;
 using PulseMonitor.Interop;
 using PulseMonitor.Platform;
 using PulseMonitor.Settings;
@@ -17,6 +18,7 @@ internal sealed class AppMenu
 
     public AppMenu(SettingsStore settings, Action openSettings, Action openHistory, Action refreshWeather, Action openAbout, Action exit)
     {
+        PopupPlacementFix.AttachMenu(_menu);
         _settings = settings;
 
         // Yeni sürüm varsa en üstte görünür (ShowUpdate).

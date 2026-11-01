@@ -66,3 +66,22 @@ internal struct NOTIFYICONDATA
     public Guid guidItem;
     public IntPtr hBalloonIcon;
 }
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct WINDOWPOS
+{
+    public IntPtr hwnd;
+    public IntPtr hwndInsertAfter;
+    public int x;
+    public int y;
+    public int cx;
+    public int cy;
+    public uint flags;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct POINT
+{
+    public int X;
+    public int Y;
+}

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -20,6 +21,9 @@ internal sealed class TaskbarDocker : IDisposable
     private HwndSource? _source;
     private IntPtr _hwnd;
     private IntPtr _owner;
+    private IntPtr _fgHook;
+    private User32.WinEventProc? _fgProc;
+    private bool _wanted;
 
     public TaskbarDocker(Window window, AppSettings settings)
     {
@@ -40,6 +44,10 @@ internal sealed class TaskbarDocker : IDisposable
         _source = HwndSource.FromHwnd(_hwnd);
         _source?.AddHook(WndProc);
         _window.SizeChanged += OnSizeChanged;
+        // "Masaüstünü göster" masaüstü penceresini öne alır: olay gelir gelmez yeniden en üste al.
+        _fgProc = (_, _, _, _, _, _, _) => _window.Dispatcher.BeginInvoke(Refresh, DispatcherPriority.Send);
+        _fgHook = User32.SetWinEventHook(User32.EVENT_SYSTEM_FOREGROUND, User32.EVENT_SYSTEM_FOREGROUND,
+            IntPtr.Zero, _fgProc, 0, 0, User32.WINEVENT_OUTOFCONTEXT);
         _timer.Start();
         Refresh();
     }
@@ -60,6 +68,15 @@ internal sealed class TaskbarDocker : IDisposable
             User32.SetWindowLongPtr(_hwnd, User32.GWLP_HWNDPARENT, bar.Handle);
             _owner = bar.Handle;
             Log.Info($"Görev çubuğuna bağlandı. Çubuk {bar.Bounds}, tepsi {bar.Tray}");
+        }
+
+        // Masaüstünü göster pencereyi küçültülmüş duruma alabilir: WPF konumu yanlış sanar,
+        // kart ve menü ekranın sol üstünde açılır.
+        if (_window.IsVisible && (User32.IsIconic(_hwnd) || _window.WindowState != WindowState.Normal))
+        {
+            Log.Info("Pencere küçültülmüştü, eski durumuna döndürüldü.");
+            User32.ShowWindow(_hwnd, User32.SW_SHOWNOACTIVATE);
+            _window.WindowState = WindowState.Normal;
         }
 
         bool fullscreen = _settings.HideInFullscreen && FullscreenDetector.IsActive(bar.Monitor, _hwnd);
@@ -88,14 +105,37 @@ internal sealed class TaskbarDocker : IDisposable
         }
 
         bool topmost = (User32.GetWindowLongPtr(_hwnd, User32.GWL_EXSTYLE).ToInt64() & User32.WS_EX_TOPMOST) != 0;
-        if (User32.GetWindowRect(_hwnd, out RECT now) && now.Left == x && now.Top == y && topmost) return;
+        // Konum aynı olsa da sıra "Masaüstünü göster" ile bozulabilir; en üstte kalma her turda yenilenir.
+        if (User32.GetWindowRect(_hwnd, out RECT now) && now.Left == x && now.Top == y && topmost)
+        {
+            User32.SetWindowPos(_hwnd, User32.HWND_TOPMOST, 0, 0, 0, 0,
+                User32.SWP_NOMOVE | User32.SWP_NOSIZE | User32.SWP_NOACTIVATE);
+            return;
+        }
 
         User32.SetWindowPos(_hwnd, User32.HWND_TOPMOST, x, y, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOACTIVATE);
     }
 
     private void SetShown(bool shown)
     {
-        if (shown == _window.IsVisible) return;
+        _wanted = shown;
+        if (shown == _window.IsVisible)
+        {
+            // "Masaüstünü göster" pencereyi Win32 düzeyinde gizler; WPF hâlâ görünür sanır.
+            if (!shown) return;
+            if (!User32.IsWindowVisible(_hwnd))
+            {
+                User32.ShowWindow(_hwnd, User32.SW_SHOWNOACTIVATE);
+                Log.Info("Pencere kabuk tarafından gizlenmişti, yeniden gösterildi.");
+            }
+            else if (Dwmapi.IsCloaked(_hwnd))
+            {
+                Log.Info("Pencere örtülmüştü, yeniden gösteriliyor.");
+                _window.Hide();
+                _window.Show();
+            }
+            return;
+        }
         if (shown) _window.Show();
         else _window.Hide();
     }
@@ -104,7 +144,28 @@ internal sealed class TaskbarDocker : IDisposable
 
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (msg == _taskbarCreatedMsg)
+        if (msg == User32.WM_WINDOWPOSCHANGING && _wanted)
+        {
+            // Kabuk (Masaüstünü göster) pencereyi gizlemeye ya da arkaya almaya kalkarsa engelle.
+            var pos = Marshal.PtrToStructure<WINDOWPOS>(lParam);
+            bool changed = false;
+            if ((pos.flags & User32.SWP_HIDEWINDOW) != 0) { pos.flags &= ~User32.SWP_HIDEWINDOW; changed = true; }
+            if ((pos.flags & User32.SWP_NOZORDER) == 0 && pos.hwndInsertAfter != User32.HWND_TOPMOST)
+            {
+                pos.hwndInsertAfter = User32.HWND_TOPMOST;
+                changed = true;
+            }
+            if (changed) Marshal.StructureToPtr(pos, lParam, false);
+        }
+        else if (msg == User32.WM_SHOWWINDOW && wParam == IntPtr.Zero && _wanted)
+        {
+            QueueRefresh();
+        }
+        else if (msg == User32.WM_SIZE && wParam.ToInt64() == 1 && _wanted)
+        {
+            QueueRefresh();
+        }
+        else if (msg == _taskbarCreatedMsg)
         {
             // Explorer yeniden başladı: yeni görev çubuğuna tekrar bağlan.
             _owner = IntPtr.Zero;
@@ -126,6 +187,7 @@ internal sealed class TaskbarDocker : IDisposable
     public void Dispose()
     {
         _timer.Stop();
+        if (_fgHook != IntPtr.Zero) User32.UnhookWinEvent(_fgHook);
         _window.SizeChanged -= OnSizeChanged;
         _source?.RemoveHook(WndProc);
     }
