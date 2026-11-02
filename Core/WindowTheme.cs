@@ -51,7 +51,6 @@ internal static class WindowTheme
             window.Resources[type] = style;
         }
 
-        Derive(typeof(ComboBox), (FrameworkElement.MinHeightProperty, 28.0), (Control.PaddingProperty, new Thickness(10, 3, 8, 3)));
         Derive(typeof(TextBox), (FrameworkElement.MinHeightProperty, 28.0), (Control.PaddingProperty, new Thickness(8, 3, 8, 3)));
         Derive(typeof(CheckBox), (FrameworkElement.MinHeightProperty, 24.0), (FrameworkElement.MarginProperty, new Thickness(0, 2, 0, 2)));
         Derive(typeof(ListBoxItem), (FrameworkElement.MinHeightProperty, 28.0), (Control.PaddingProperty, new Thickness(10, 3, 10, 3)));
