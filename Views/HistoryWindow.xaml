@@ -30,14 +30,22 @@
         <!-- Başlık ve gezinme -->
         <DockPanel DockPanel.Dock="Top" Margin="0,0,0,14">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                <RadioButton Content="{DynamicResource History.Month}" IsChecked="True" Margin="0,0,14,0" GroupName="View" />
-                <RadioButton Content="{DynamicResource History.Year}" IsChecked="{Binding YearView}" GroupName="View" />
+                <RadioButton x:Name="MonthOption" Content="{DynamicResource History.Month}" IsChecked="True" Click="Month_Click" Margin="0,0,14,0" GroupName="View" />
+                <RadioButton x:Name="YearOption" Content="{DynamicResource History.Year}" Click="Year_Click" GroupName="View" />
             </StackPanel>
-            <Button Content="◀" Command="{Binding PreviousCommand}" Width="32" Height="28" Margin="0,0,6,0" />
-            <Button Content="▶" Command="{Binding NextCommand}" Width="32" Height="28" Margin="0,0,6,0" />
-            <Button Content="{DynamicResource History.Today}" Command="{Binding TodayCommand}" Padding="10,2" Margin="0,0,16,0" />
+            <Button Content="◀" Command="{Binding PreviousCommand}" Click="PeriodNavigation_Click" Width="32" Height="28" Margin="0,0,6,0" />
+            <Button Content="▶" Command="{Binding NextCommand}" Click="PeriodNavigation_Click" Width="32" Height="28" Margin="0,0,6,0" />
+            <Button Content="{DynamicResource History.Today}" Command="{Binding TodayCommand}" Click="PeriodNavigation_Click" Padding="10,2" Margin="0,0,16,0" />
             <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
         </DockPanel>
+
+        <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <TextBlock Text="{DynamicResource History.Range}" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <DatePicker SelectedDate="{Binding RangeStart}" Width="125" Margin="0,0,6,0" />
+            <DatePicker SelectedDate="{Binding RangeEnd}" Width="125" Margin="0,0,6,0" />
+            <Button Content="{DynamicResource History.ApplyRange}" Click="ApplyRange_Click" Margin="0,0,6,0" />
+            <Button Content="{DynamicResource History.ExportCsv}" Click="ExportCsv_Click" />
+        </WrapPanel>
 
         <!-- Özet kartları -->
         <UniformGrid DockPanel.Dock="Top" Columns="4" Margin="0,0,-10,18">

@@ -21,6 +21,9 @@ public sealed class HistoryViewModel : ObservableObject
     private readonly TrafficHistory _history;
     private DateOnly _period = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private bool _yearView;
+    private DateTime? _rangeStart = DateTime.Today.AddDays(-29), _rangeEnd = DateTime.Today;
+    private DateOnly _appliedStart, _appliedEnd;
+    private bool _rangeView;
     private string _title = "", _down = "", _up = "", _average = "", _peak = "", _peakName = "", _averageLabel = "";
     private double _averageOffset;
 
@@ -31,6 +34,7 @@ public sealed class HistoryViewModel : ObservableObject
         NextCommand = new RelayCommand(() => Move(+1));
         TodayCommand = new RelayCommand(() =>
         {
+            _rangeView = false;
             _period = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, 1);
             Refresh();
         });
@@ -42,6 +46,33 @@ public sealed class HistoryViewModel : ObservableObject
     public ICommand PreviousCommand { get; }
     public ICommand NextCommand { get; }
     public ICommand TodayCommand { get; }
+    public DateTime? RangeStart { get => _rangeStart; set => Set(ref _rangeStart, value); }
+    public DateTime? RangeEnd { get => _rangeEnd; set => Set(ref _rangeEnd, value); }
+
+    internal bool ApplyRange()
+    {
+        if (RangeStart is not { } start || RangeEnd is not { } end || end.Date < start.Date || (end.Date - start.Date).TotalDays > 365) return false;
+        _appliedStart = DateOnly.FromDateTime(start);
+        _appliedEnd = DateOnly.FromDateTime(end);
+        _rangeView = true;
+        Refresh();
+        return true;
+    }
+
+    internal void SelectPeriodView(bool year)
+    {
+        _rangeView = false;
+        _yearView = year;
+        Raise(nameof(YearView));
+        Refresh();
+    }
+
+    internal List<KeyValuePair<DateOnly, DayTraffic>> ExportRows()
+    {
+        var start = _rangeView ? _appliedStart : YearView ? new DateOnly(_period.Year, 1, 1) : _period;
+        var end = _rangeView ? _appliedEnd : YearView ? new DateOnly(_period.Year, 12, 31) : _period.AddMonths(1).AddDays(-1);
+        return _history.Snapshot().Where(x => x.Key >= start && x.Key <= end).ToList();
+    }
     public double Height => ChartHeight;
 
     public bool YearView
@@ -49,7 +80,7 @@ public sealed class HistoryViewModel : ObservableObject
         get => _yearView;
         set
         {
-            if (Set(ref _yearView, value)) Refresh();
+            if (Set(ref _yearView, value)) { _rangeView = false; Refresh(); }
         }
     }
 
@@ -57,7 +88,7 @@ public sealed class HistoryViewModel : ObservableObject
     public string DownTotal { get => _down; private set => Set(ref _down, value); }
     public string UpTotal { get => _up; private set => Set(ref _up, value); }
     public string Average { get => _average; private set => Set(ref _average, value); }
-    public string AverageCaption => Strings.Get(YearView ? "History.AveragePerMonth" : "History.AveragePerDay");
+    public string AverageCaption => Strings.Get(YearView && !_rangeView ? "History.AveragePerMonth" : "History.AveragePerDay");
     public string Peak { get => _peak; private set => Set(ref _peak, value); }
     public string PeakName { get => _peakName; private set => Set(ref _peakName, value); }
     public double AverageOffset { get => _averageOffset; private set => Set(ref _averageOffset, value); }
@@ -65,6 +96,7 @@ public sealed class HistoryViewModel : ObservableObject
 
     private void Move(int step)
     {
+        _rangeView = false;
         _period = YearView ? _period.AddYears(step) : _period.AddMonths(step);
         Refresh();
     }
@@ -72,12 +104,12 @@ public sealed class HistoryViewModel : ObservableObject
     private void Refresh()
     {
         var days = _history.Snapshot().ToDictionary(kv => kv.Key, kv => kv.Value);
-        List<HistoryRow> rows = YearView ? HistoryRows.Months(days, _period.Year) : HistoryRows.Days(days, _period);
-        Title = YearView ? _period.Year.ToString(Tr) : _period.ToString("MMMM yyyy", Tr);
+        List<HistoryRow> rows = _rangeView ? HistoryRows.Range(days, _appliedStart, _appliedEnd) : YearView ? HistoryRows.Months(days, _period.Year) : HistoryRows.Days(days, _period);
+        Title = _rangeView ? $"{_appliedStart.ToString("d", Tr)} – {_appliedEnd.ToString("d", Tr)}" : YearView ? _period.Year.ToString(Tr) : _period.ToString("MMMM yyyy", Tr);
 
         ulong down = 0, up = 0;
         foreach (HistoryRow r in rows) { down += r.Traffic.Down; up += r.Traffic.Up; }
-        int used = rows.Count(r => r.Total > 0);
+        int used = _rangeView ? rows.Count : rows.Count(r => r.Total > 0);
         double average = used == 0 ? 0 : (down + up) / (double)used;
         double scale = NiceMax(Math.Max(rows.Max(r => (double)r.Total), 1));
 

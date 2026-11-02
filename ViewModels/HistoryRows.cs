@@ -25,6 +25,18 @@ internal static class HistoryRows
             .ToList();
     }
 
+    public static List<HistoryRow> Range(Dictionary<DateOnly, DayTraffic> days, DateOnly start, DateOnly end)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        int count = end.DayNumber - start.DayNumber + 1;
+        int labelEvery = Math.Max(1, (int)Math.Ceiling(count / 12.0));
+        return Enumerable.Range(0, count)
+            .Select(start.AddDays)
+            .Select((d, i) => new HistoryRow(i % labelEvery == 0 ? d.ToString("d.M", Tr) : "", d.ToString("d MMMM yyyy, dddd", Tr), days.GetValueOrDefault(d),
+                d == today, d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday))
+            .ToList();
+    }
+
     public static List<HistoryRow> Months(Dictionary<DateOnly, DayTraffic> days, int year)
     {
         var rows = new List<HistoryRow>();
