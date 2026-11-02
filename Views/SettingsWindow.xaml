@@ -68,6 +68,7 @@
                             <TextBlock Text="{Binding TodayText}" VerticalAlignment="Center" />
                         </DockPanel>
                         <DockPanel Margin="0,10,0,0">
+                            <Button DockPanel.Dock="Right" Content="{DynamicResource Ping.History}" Click="PingHistory_Click" Margin="8,0,0,0" />
                             <TextBlock Text="{DynamicResource Settings.PingHost}" Margin="0,0,12,0" VerticalAlignment="Center" />
                             <TextBox AutomationProperties.Name="{DynamicResource Settings.PingHost}" Text="{Binding PingHost, UpdateSourceTrigger=LostFocus}" Padding="4,2" />
                         </DockPanel>
@@ -81,6 +82,10 @@
                         <CheckBox Content="{DynamicResource Settings.Startup}" IsChecked="{Binding StartWithWindows}" />
                         <CheckBox Content="{DynamicResource Settings.HideFullscreen}" IsChecked="{Binding HideInFullscreen}" />
                         <CheckBox Content="{DynamicResource Settings.CheckUpdates}" IsChecked="{Binding CheckForUpdates}" />
+                        <TextBlock Text="{DynamicResource Taskbar.Monitor}" Margin="0,10,0,4" />
+                        <ComboBox AutomationProperties.Name="{DynamicResource Taskbar.Monitor}" ItemsSource="{Binding Monitors}" SelectedItem="{Binding SelectedMonitor}" DisplayMemberPath="Display" />
+                        <CheckBox Content="{DynamicResource Taskbar.Left}" IsChecked="{Binding TaskbarLeft}" />
+                        <TextBlock Text="{DynamicResource Taskbar.LeftHint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" TextWrapping="Wrap" />
                         <DockPanel Margin="0,8,0,0">
                             <TextBlock DockPanel.Dock="Right" Width="48" TextAlignment="Right"
                                        Text="{Binding TrayGapPx, StringFormat={}{0} px}" />
@@ -88,6 +93,13 @@
                             <Slider AutomationProperties.Name="{DynamicResource Settings.Gap}" Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"
                                     Value="{Binding TrayGapPx}" VerticalAlignment="Center" />
                         </DockPanel>
+                        <TextBlock Text="{DynamicResource Backup.Title}" Style="{StaticResource Heading}" />
+                        <WrapPanel>
+                            <Button Content="{DynamicResource Backup.ExportSettings}" Click="ExportSettings_Click" Margin="0,0,8,8" />
+                            <Button Content="{DynamicResource Backup.ImportSettings}" Click="ImportSettings_Click" Margin="0,0,8,8" />
+                            <Button Content="{DynamicResource Backup.ExportHistory}" Click="ExportHistory_Click" Margin="0,0,8,8" />
+                            <Button Content="{DynamicResource Backup.ImportHistory}" Click="ImportHistory_Click" Margin="0,0,8,8" />
+                        </WrapPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

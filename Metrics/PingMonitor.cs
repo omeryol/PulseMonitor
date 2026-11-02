@@ -15,6 +15,7 @@ internal sealed class PingMonitor : IDisposable
 
     private readonly AppSettings _settings;
     private readonly Timer _timer;
+    internal PingOutages Outages { get; } = new();
     private int _busy;
     private string? _lastError;
 
@@ -49,12 +50,13 @@ internal sealed class PingMonitor : IDisposable
 
     private async Task PingAsync()
     {
-        if (!_settings.IsShown(TaskbarItemId.Ping)) return;
+        if (!_settings.IsShown(TaskbarItemId.Ping)) { Outages.StopTracking(); return; }
         if (Interlocked.Exchange(ref _busy, 1) == 1) return;
+        string host = _settings.PingHost;
         try
         {
             using var ping = new Ping();
-            PingReply reply = await ping.SendPingAsync(_settings.PingHost, TimeoutMs);
+            PingReply reply = await ping.SendPingAsync(host, TimeoutMs);
             LatencyMs = reply.Status == IPStatus.Success ? reply.RoundtripTime : null;
             _lastError = null;
         }
@@ -66,6 +68,9 @@ internal sealed class PingMonitor : IDisposable
         }
         finally
         {
+            if (_settings.IsShown(TaskbarItemId.Ping) && string.Equals(host, _settings.PingHost, StringComparison.OrdinalIgnoreCase))
+                Outages.Observe(host, LatencyMs.HasValue, DateTimeOffset.Now);
+            else Outages.StopTracking();
             lock (_history)
             {
                 _history.Enqueue(LatencyMs);

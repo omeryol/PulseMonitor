@@ -22,6 +22,8 @@ jobs:
 
       - name: Unit tests
         run: dotnet test tests/PulseMonitor.Tests --nologo -v q
+      - name: Windows feature tests
+        run: dotnet test tests/PulseMonitor.WindowsTests --nologo -v q
 
       - name: Inno Setup
         run: choco install innosetup --no-progress -y

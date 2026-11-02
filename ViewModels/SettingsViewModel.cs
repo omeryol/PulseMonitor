@@ -4,6 +4,7 @@ using PulseMonitor.Metrics;
 using PulseMonitor.Platform;
 using PulseMonitor.Settings;
 using PulseMonitor.Traffic;
+using PulseMonitor.Taskbar;
 
 namespace PulseMonitor.ViewModels;
 
@@ -11,11 +12,16 @@ namespace PulseMonitor.ViewModels;
 public sealed class SettingsViewModel : ObservableObject
 {
     private readonly SettingsStore _store;
+    internal SettingsStore Store => _store;
+    internal TrafficHistory History { get; }
+    internal PingMonitor PingMonitor { get; }
     private AppSettings S => _store.Current;
 
-    internal SettingsViewModel(SettingsStore store, TrafficHistory history, Action testNotification, Action openHistory, AboutViewModel about)
+    internal SettingsViewModel(SettingsStore store, TrafficHistory history, PingMonitor ping, Action testNotification, Action openHistory, AboutViewModel about)
     {
         _store = store;
+        History = history;
+        PingMonitor = ping;
         About = about;
         Alerts = new AlertsSettingsViewModel(store, testNotification);
         OpenHistoryCommand = new RelayCommand(openHistory);
@@ -23,6 +29,13 @@ public sealed class SettingsViewModel : ObservableObject
         Items = new ItemsSettingsViewModel(store);
         Style = new StyleSettingsViewModel(store);
         Adapters = BuildAdapterOptions(S.NetworkAdapterId);
+        var monitors = new List<MonitorOption> { new("", Strings.Get("Taskbar.MonitorAuto")) };
+        int number = 0;
+        foreach (var (device, primary) in TaskbarLocator.Displays())
+            monitors.Add(new MonitorOption(device, $"{Strings.Get("Taskbar.Monitor")} {++number}{(primary ? " ★" : "")}"));
+        if (!string.IsNullOrEmpty(S.TaskbarMonitor) && monitors.All(x => x.Id != S.TaskbarMonitor))
+            monitors.Add(new MonitorOption(S.TaskbarMonitor, Strings.Get("Taskbar.MonitorMissing")));
+        Monitors = monitors;
         DayTraffic today = history.Get(DateOnly.FromDateTime(DateTime.Now));
         TodayText = $"↓ {ValueFormat.Size(today.Down)}    ↑ {ValueFormat.Size(today.Up)}";
     }
@@ -70,6 +83,13 @@ public sealed class SettingsViewModel : ObservableObject
     }
 
     public IReadOnlyList<AdapterOption> Adapters { get; }
+    public IReadOnlyList<MonitorOption> Monitors { get; }
+    public MonitorOption? SelectedMonitor
+    {
+        get => Monitors.FirstOrDefault(x => x.Id == (S.TaskbarMonitor ?? "")) ?? Monitors[0];
+        set { if (value is not null && value.Id != (S.TaskbarMonitor ?? "")) Update(() => S.TaskbarMonitor = value.Id.Length == 0 ? null : value.Id); }
+    }
+    public bool TaskbarLeft { get => S.TaskbarLeft; set => Update(() => S.TaskbarLeft = value); }
 
     public AdapterOption? SelectedAdapter
     {
@@ -109,3 +129,4 @@ public sealed class SettingsViewModel : ObservableObject
 }
 
 public sealed record AdapterOption(string Id, string Display);
+public sealed record MonitorOption(string Id, string Display);

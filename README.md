@@ -61,6 +61,10 @@ Screenshots are generated with sample data.
   language needs no code: copy `lang/tr.json`, translate the values, save it as e.g. `lang/de.json` and put it into the
   `lang` folder next to `PulseMonitor.exe`. Missing texts fall back to English.
 - **Traffic history**: daily records, month/year chart.
+- **Date range and export**: view up to 366 days, with a daily average and CSV export.
+- **Backups**: export and restore settings and traffic separately; imported traffic is merged with existing records.
+- **Ping history**: periods without a response are recorded while the Ping indicator is enabled. A failed ping does not prove the internet is down.
+- **Placement**: choose a display with a taskbar and left or right placement. Left placement may overlap pinned icons; the primary display is used if the selected taskbar is unavailable.
 - **Alerts**: Windows notifications for a daily traffic limit, CPU, RAM, GPU/disk temperature; new version notification.
 - **Weather alerts** (optional levels): storms, hail, very strong wind, extreme heat/cold, heavy rain and sudden temperature
   changes, each event only once, at most 3 a day, with quiet hours. Based on a forecast model; **not an official warning**.
@@ -89,6 +93,8 @@ the zip and attach them to Releases.
 ## Privacy and network requests
 
 Settings, traffic history and cache are kept only under `%LOCALAPPDATA%\PulseMonitor`. The program connects to:
+
+Settings backups may contain personal information such as saved locations and the ping target; review them before sharing.
 
 | Service | When |
 |---|---|

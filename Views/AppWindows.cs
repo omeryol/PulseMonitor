@@ -3,6 +3,7 @@ using PulseMonitor.Platform;
 using PulseMonitor.Settings;
 using PulseMonitor.Traffic;
 using PulseMonitor.ViewModels;
+using PulseMonitor.Metrics;
 
 namespace PulseMonitor.Views;
 
@@ -13,22 +14,24 @@ internal sealed class AppWindows
     private readonly TrafficHistory _history;
     private readonly UpdateChecker _updates;
     private readonly Action _testNotification;
+    private readonly PingMonitor _ping;
     private SettingsWindow? _settingsWindow;
     private HistoryWindow? _historyWindow;
     private AboutWindow? _aboutWindow;
     private UpdateWindow? _updateWindow;
 
-    public AppWindows(SettingsStore settings, TrafficHistory history, UpdateChecker updates, Action testNotification)
+    public AppWindows(SettingsStore settings, TrafficHistory history, UpdateChecker updates, PingMonitor ping, Action testNotification)
     {
         _settings = settings;
         _history = history;
         _updates = updates;
+        _ping = ping;
         _testNotification = testNotification;
     }
 
     public void OpenSettings() => Open(ref _settingsWindow, () => new SettingsWindow
     {
-        DataContext = new SettingsViewModel(_settings, _history, _testNotification, OpenHistory, new AboutViewModel(_updates, OpenUpdate)),
+        DataContext = new SettingsViewModel(_settings, _history, _ping, _testNotification, OpenHistory, new AboutViewModel(_updates, OpenUpdate)),
     });
 
     public bool IsSettingsOpen => _settingsWindow is not null;

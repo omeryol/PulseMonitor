@@ -10,7 +10,7 @@ if (-not $map) { Write-Host 'map not found: map check skipped' -ForegroundColor 
 $failed = $false
 
 $files = Get-ChildItem $root -Recurse -File -Include *.cs, *.xaml |
-    Where-Object { $_.FullName -notmatch '\\(bin|obj)\\' }
+    Where-Object { $_.FullName -notmatch '\\(bin|obj|artifacts)\\' }
 
 foreach ($f in $files) {
     $rel = $f.FullName.Substring($root.Length + 1).Replace('\', '/')
@@ -35,7 +35,7 @@ $patterns = @('C:\\Users\\', '\b192\.168\.\d+\.\d+\b', '\b10\.\d+\.\d+\.\d+\b', 
 $wordsFile = Join-Path $PSScriptRoot 'private-words.txt'
 if (Test-Path $wordsFile) { $patterns += Get-Content $wordsFile -Encoding UTF8 | Where-Object { $_.Trim() } | ForEach-Object { [regex]::Escape($_.Trim()) } }
 $textFiles = Get-ChildItem $root -Recurse -File -Include *.cs, *.xaml, *.md, *.ps1, *.json, *.csproj, *.manifest |
-    Where-Object { $_.FullName -notmatch '\\(bin|obj|\.git)\\' -and $_.Name -ne 'check.ps1' -and $_.Name -ne 'private-words.txt' }
+    Where-Object { $_.FullName -notmatch '\\(bin|obj|artifacts|\.git)\\' -and $_.Name -ne 'check.ps1' -and $_.Name -ne 'private-words.txt' }
 foreach ($f in $textFiles) {
     $hit = Select-String -Path $f.FullName -Pattern $patterns -Encoding UTF8 | Select-Object -First 1
     if ($hit) {
@@ -64,6 +64,11 @@ $testProject = Join-Path $root 'tests\PulseMonitor.Tests'
 if (Test-Path $testProject) {
     dotnet test $testProject --nologo -v q | Out-Host
     if ($LASTEXITCODE -ne 0) { Write-Host 'TESTS FAILED' -ForegroundColor Red; $failed = $true }
+}
+$windowsTests = Join-Path $root 'tests\PulseMonitor.WindowsTests'
+if (Test-Path $windowsTests) {
+    dotnet test $windowsTests --nologo -v q | Out-Host
+    if ($LASTEXITCODE -ne 0) { Write-Host 'WINDOWS TESTS FAILED' -ForegroundColor Red; $failed = $true }
 }
 
 if ($failed) { Write-Host 'check: FAILED' -ForegroundColor Red; exit 1 }

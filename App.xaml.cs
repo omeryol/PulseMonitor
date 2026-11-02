@@ -87,7 +87,7 @@ public partial class App : Application
         _weatherWarnings.Raised += (title, text, iconKey) =>
             _tray?.ShowNotification(title, text, warning: true, Resources[$"Wx.{iconKey}"] as System.Windows.Media.ImageSource);
         _updates = new UpdateChecker(_settings.Current);
-        _windows = new AppWindows(_settings, _history, _updates,
+        _windows = new AppWindows(_settings, _history, _updates, _ping,
             () => _tray?.ShowNotification(Strings.Get("Alert.Title"), Strings.Get("Alert.Test"), warning: false));
         _settings.Changed += OnSettingsChanged;
 
@@ -146,6 +146,13 @@ public partial class App : Application
     }
 
     private string? _restartArgs;
+
+    internal void RestartAfterImport()
+    {
+        if (_restartArgs is not null) return;
+        _restartArgs = "--settings";
+        Dispatcher.BeginInvoke(() => Shutdown());
+    }
 
     /// <summary>
     /// Dil değişince program kendini yeniden başlatır: metinlerin bir kısmı (etiketler, kart başlıkları, listeler)

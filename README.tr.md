@@ -60,6 +60,10 @@ Görüntüler örnek verilerle üretilmiştir.
   Çince; Windows diline göre kendiliğinden seçilir, menüden değiştirilir. Yeni dil için kod
   gerekmez: `lang/tr.json` kopyalanıp çevrilir (`lang/de.json` gibi), program klasöründeki `lang` klasörüne konur.
 - **Trafik geçmişi**: günlük kayıt, ay/yıl grafiği.
+- **Tarih aralığı ve dışa aktarma**: trafik geçmişinde en fazla 366 günlük aralık, seçili dönem ortalaması ve CSV.
+- **Yedekleme**: ayarlar ve trafik geçmişi ayrı ayrı dışa/içe aktarılır; içe alınan trafik mevcut günlerle birleştirilir.
+- **Ping geçmişi**: Ping göstergesi açıkken hedefin yanıt vermediği dönemler kaydedilir. Bu durum internetin tamamen kesildiğini kanıtlamaz.
+- **Yerleşim**: görev çubuğu bulunan ekran seçimi ve sol/sağ yerleşim. Sol konum sabitlenmiş simgelerle çakışabilir; ekranın görev çubuğu yoksa birincil ekrana dönülür.
 - **Uyarılar**: günlük trafik sınırı, CPU, RAM, GPU/disk sıcaklığı için Windows bildirimi; yeni sürüm bildirimi.
 - **Hava uyarıları** (seviye seçilebilir): fırtına, dolu, çok sert rüzgâr, aşırı sıcak/soğuk, kuvvetli yağış ve ani sıcaklık
   değişimi; her olay yalnızca bir kez, günde en çok 3, sessiz saatlerle. Tahmin modeline dayanır; **resmî uyarı değildir**.
@@ -88,6 +92,8 @@ zip'i derleyip Releases'a ekler.
 ## Gizlilik ve ağ istekleri
 
 Ayarlar, trafik geçmişi ve önbellek yalnızca `%LOCALAPPDATA%\PulseMonitor` altında tutulur. Program şu adreslere bağlanır:
+
+Ayar yedekleri seçilmiş konum ve ping hedefi gibi kişisel bilgiler içerebilir; paylaşmadan önce kontrol edin.
 
 | Servis | Ne zaman |
 |---|---|

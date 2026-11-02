@@ -16,6 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>PulseMonitor.WindowsTests</_Parameter1>
+    </AssemblyAttribute>
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>ReleaseName</_Parameter1>
       <_Parameter2>$(ReleaseName)</_Parameter2>
