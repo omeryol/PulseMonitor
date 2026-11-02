@@ -51,6 +51,9 @@ internal sealed class PingOutages
     public void StopTracking() { lock (_sync) _current = null; }
     public List<Outage> Snapshot() { lock (_sync) return _events.AsEnumerable().Reverse().ToList(); }
 
+    public static List<Outage> InRange(IEnumerable<Outage> events, DateTimeOffset? start) =>
+        events.Where(x => start is null || x.Started >= start || (x.Recovered is { } end && end >= start)).ToList();
+
     private void Save()
     {
         try

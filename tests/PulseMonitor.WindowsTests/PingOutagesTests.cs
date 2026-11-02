@@ -39,4 +39,18 @@ public sealed class PingOutagesTests
         }
         finally { File.Delete(path); }
     }
+
+    [Fact]
+    public void RangeIncludesOverlappingRecoveredPeriodsButNotOldUnknownPeriods()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var events = new[]
+        {
+            new PingOutages.Outage("a", now.AddDays(-10), now.AddDays(-1)),
+            new PingOutages.Outage("b", now.AddDays(-10), null),
+            new PingOutages.Outage("c", now.AddHours(-1), null)
+        };
+        var result = PingOutages.InRange(events, now.AddDays(-7));
+        Assert.Equal(new[] { "a", "c" }, result.Select(x => x.Host));
+    }
 }

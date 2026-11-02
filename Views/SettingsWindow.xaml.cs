@@ -25,10 +25,7 @@ public partial class SettingsWindow : Window
     private void PingHistory_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not SettingsViewModel vm) return;
-        var history = vm.PingMonitor.Outages.Snapshot();
-        var entries = history.Take(20).ToList();
-        var lines = entries.Select(x => $"{x.Started.ToLocalTime():g} — {(x.Recovered is { } end ? end.ToLocalTime().ToString("g") : Strings.Get("Ping.EndUnknown"))}  ({x.Host})");
-        MessageBox.Show(this, Strings.Get("Ping.HistoryHint") + "\n" + string.Format(Strings.Get("Ping.HistoryCount"), history.Count) + "\n\n" + (entries.Count == 0 ? Strings.Get("Ping.NoHistory") : string.Join("\n", lines)), Strings.Get("Ping.History"), MessageBoxButton.OK, MessageBoxImage.Information);
+        new PingHistoryWindow(vm.PingMonitor.Outages) { Owner = this }.ShowDialog();
     }
 
     private void Export(bool settings)
