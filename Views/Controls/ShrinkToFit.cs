@@ -23,11 +23,10 @@ public sealed class ShrinkToFit : Decorator
     protected override Size ArrangeOverride(Size arrangeSize)
     {
         if (Child is null) return arrangeSize;
-        Child.Measure(new Size(double.PositiveInfinity, arrangeSize.Height));
+        // MeasureOverride'daki doğal genişliği kullan: Arrange sırasında yeniden ölçmek yerleşim döngüsü oluşturur.
         double natural = Child.DesiredSize.Width;
         double scale = natural <= 0 || arrangeSize.Width >= natural ? 1 : Math.Max(MinScale, arrangeSize.Width / natural);
         double width = arrangeSize.Width / scale;
-        if (natural > arrangeSize.Width) Child.Measure(new Size(width, arrangeSize.Height)); // en küçük ölçekte de sığmazsa kesme
         _scale.ScaleX = _scale.ScaleY = scale;
         Child.RenderTransformOrigin = new Point(0, 0.5);
         Child.RenderTransform = _scale;
