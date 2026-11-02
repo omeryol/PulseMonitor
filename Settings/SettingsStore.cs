@@ -60,6 +60,17 @@ internal sealed class SettingsStore
         Changed?.Invoke();
     }
 
+    public void Replace(AppSettings settings)
+    {
+        Directory.CreateDirectory(AppPaths.DataDir);
+        string temp = AppPaths.SettingsFile + ".tmp";
+        File.WriteAllText(temp, JsonSerializer.Serialize(settings, JsonOptions));
+        if (File.Exists(AppPaths.SettingsFile))
+            File.Copy(AppPaths.SettingsFile, AppPaths.SettingsFile + ".before-import", overwrite: true);
+        File.Move(temp, AppPaths.SettingsFile, overwrite: true);
+        Current = settings;
+    }
+
     private static void TryCopy(string from, string to)
     {
         try { File.Copy(from, to, overwrite: true); }

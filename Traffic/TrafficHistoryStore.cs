@@ -47,25 +47,35 @@ internal static class TrafficHistoryStore
         return history;
     }
 
-    public static void Save(TrafficHistory history)
+    public static bool Save(TrafficHistory history)
     {
-        var model = new FileModel();
-        foreach (var (day, t) in history.Snapshot())
-            model.Days[day.ToString(DateFormat, CultureInfo.InvariantCulture)] = [t.Down, t.Up];
-
         try
         {
             lock (FileSync)
             {
+                var model = new FileModel();
+                foreach (var (day, t) in history.Snapshot())
+                    model.Days[day.ToString(DateFormat, CultureInfo.InvariantCulture)] = [t.Down, t.Up];
                 Directory.CreateDirectory(AppPaths.DataDir);
                 string temp = AppPaths.TrafficHistoryFile + ".tmp";
                 File.WriteAllText(temp, JsonSerializer.Serialize(model));
                 File.Move(temp, AppPaths.TrafficHistoryFile, overwrite: true);
             }
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error("Trafik geçmişi kaydedilemedi.", ex);
+            return false;
+        }
+    }
+
+    public static bool MergeAndSave(TrafficHistory history, IEnumerable<KeyValuePair<DateOnly, DayTraffic>> imported)
+    {
+        lock (FileSync)
+        {
+            foreach (var day in imported) history.MergeMax(day.Key, day.Value);
+            return Save(history);
         }
     }
 }
