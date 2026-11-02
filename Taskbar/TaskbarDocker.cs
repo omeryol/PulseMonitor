@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using PulseMonitor.Core;
 using PulseMonitor.Interop;
 using PulseMonitor.Settings;
+using PulseMonitor.Platform;
 
 namespace PulseMonitor.Taskbar;
 
@@ -76,7 +77,7 @@ internal sealed class TaskbarDocker : IDisposable
     {
         if (_hwnd == IntPtr.Zero) return;
 
-        TaskbarSnapshot? found = TaskbarLocator.Find();
+        TaskbarSnapshot? found = TaskbarLocator.Find(_settings.TaskbarMonitor);
         if (found is not { } bar)
         {
             SetShown(false);
@@ -112,16 +113,17 @@ internal sealed class TaskbarDocker : IDisposable
         if (w <= 0 || h <= 0) return;
 
         int gap = (int)Math.Round(_settings.TrayGapPx * scale);
+        bool left = _settings.TaskbarLeft && TaskbarAlignment.IsCentered();
         int x, y;
         if (bar.IsHorizontal)
         {
-            x = bar.Tray.Left - w - gap;
+            x = TaskbarPosition.Calculate(bar.Bounds.Left, bar.Tray.Left, bar.Monitor.Left, bar.Monitor.Right, w, gap, left, scale);
             y = bar.Bounds.Top + (bar.Bounds.Height - h) / 2;
         }
         else
         {
             x = bar.Bounds.Left + (bar.Bounds.Width - w) / 2;
-            y = bar.Tray.Top - h - gap;
+            y = TaskbarPosition.Calculate(bar.Bounds.Top, bar.Tray.Top, bar.Monitor.Top, bar.Monitor.Bottom, h, gap, left, scale);
         }
 
         bool topmost = (User32.GetWindowLongPtr(_hwnd, User32.GWL_EXSTYLE).ToInt64() & User32.WS_EX_TOPMOST) != 0;

@@ -24,9 +24,38 @@ internal readonly record struct TaskbarSnapshot(IntPtr Handle, RECT Bounds, RECT
 
 internal static class TaskbarLocator
 {
-    public static TaskbarSnapshot? Find()
+    public static List<(string Device, bool Primary)> Displays()
     {
-        IntPtr bar = User32.FindWindow("Shell_TrayWnd", null);
+        var result = new List<(string, bool)>();
+        foreach (var (handle, primary) in Bars())
+        {
+            var monitor = User32.MonitorFromWindow(handle, User32.MONITOR_DEFAULTTOPRIMARY);
+            var info = new MONITORINFOEX { cbSize = Marshal.SizeOf<MONITORINFOEX>(), device = "" };
+            if (User32.GetMonitorInfoEx(monitor, ref info)) result.Add((info.device, primary));
+        }
+        return result;
+    }
+
+    private static IEnumerable<(IntPtr Handle, bool Primary)> Bars()
+    {
+        IntPtr primary = User32.FindWindow("Shell_TrayWnd", null);
+        if (primary != IntPtr.Zero) yield return (primary, true);
+        IntPtr next = IntPtr.Zero;
+        while ((next = User32.FindWindowEx(IntPtr.Zero, next, "Shell_SecondaryTrayWnd", null)) != IntPtr.Zero)
+            yield return (next, false);
+    }
+
+    public static TaskbarSnapshot? Find(string? device = null)
+    {
+        IntPtr bar = IntPtr.Zero;
+        foreach (var (handle, primary) in Bars())
+        {
+            if (string.IsNullOrEmpty(device)) { if (primary) { bar = handle; break; } continue; }
+            var m = User32.MonitorFromWindow(handle, User32.MONITOR_DEFAULTTOPRIMARY);
+            var mi = new MONITORINFOEX { cbSize = Marshal.SizeOf<MONITORINFOEX>(), device = "" };
+            if (User32.GetMonitorInfoEx(m, ref mi) && string.Equals(mi.device, device, StringComparison.OrdinalIgnoreCase)) { bar = handle; break; }
+        }
+        if (bar == IntPtr.Zero && !string.IsNullOrEmpty(device)) return Find();
         if (bar == IntPtr.Zero || !User32.GetWindowRect(bar, out RECT bounds)) return null;
 
         // Tepsi bulunamazsa görev çubuğunun bitiş kenarı kullanılır.

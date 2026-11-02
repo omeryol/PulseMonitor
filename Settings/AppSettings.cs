@@ -17,6 +17,10 @@ public sealed class AppSettings
     /// <summary>Pencere ile sistem tepsisi arasındaki boşluk (96 DPI'da piksel).</summary>
     public int TrayGapPx { get; set; } = 0;
 
+    /// <summary>Boş: birincil görev çubuğu; aksi halde Windows ekran aygıtı.</summary>
+    public string? TaskbarMonitor { get; set; }
+    public bool TaskbarLeft { get; set; }
+
     /// <summary>Ölçülen ağ bağdaştırıcısının GUID'i; boşsa tüm bağlı fiziksel bağdaştırıcılar.</summary>
     public string? NetworkAdapterId { get; set; }
 

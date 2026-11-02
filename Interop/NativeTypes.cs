@@ -33,6 +33,16 @@ internal struct MONITORINFO
     public uint dwFlags;
 }
 
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+internal struct MONITORINFOEX
+{
+    public int cbSize;
+    public RECT rcMonitor;
+    public RECT rcWork;
+    public uint dwFlags;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string device;
+}
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct MEMORYSTATUSEX
 {
