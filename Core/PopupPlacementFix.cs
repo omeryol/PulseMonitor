@@ -2,7 +2,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
-using System.Windows.Input;
 using System.Windows.Threading;
 using PulseMonitor.Interop;
 
@@ -37,12 +36,8 @@ internal static class PopupPlacementFix
     private static void OnComboBoxEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is ComboBox combo && (bool)e.NewValue)
-        {
-            combo.PreviewMouseLeftButtonDown += (_, _) => PrepareDropDown(combo);
-            combo.PreviewKeyDown += (_, _) => PrepareDropDown(combo);
             combo.DropDownOpened += (_, _) => combo.Dispatcher.BeginInvoke(
                 () => FixDropDown(combo), DispatcherPriority.Loaded);
-        }
     }
 
     /// <summary>Sağ tık menüsü için: imlecin yanına (görev çubuğunda yukarı doğru) yerleştirir.</summary>
@@ -88,20 +83,6 @@ internal static class PopupPlacementFix
         Point anchor = new(x + rect.Width / 2, y);
         MoveDropDown(hwnd, rect, x, y, above: owner.Top + (int)Math.Round(origin.Y * scale) - rect.Height, anchor);
     }
-
-    /// <summary>Popup görünmeden önce WPF'e göreli konumu açıkça verir; Win+D sonrası yanlış ekran kökenini kullanmaz.</summary>
-    private static void PrepareDropDown(ComboBox combo)
-    {
-        if (combo.Template.FindName("PART_Popup", combo) is not Popup popup) return;
-        popup.Placement = PlacementMode.Custom;
-        popup.CustomPopupPlacementCallback = PlaceDropDown;
-    }
-
-    private static CustomPopupPlacement[] PlaceDropDown(Size popupSize, Size targetSize, Point offset) =>
-    [
-        new CustomPopupPlacement(new Point(0, targetSize.Height), PopupPrimaryAxis.Vertical),
-        new CustomPopupPlacement(new Point(0, -popupSize.Height), PopupPrimaryAxis.Vertical)
-    ];
 
     /// <summary>Açılır pencerenin gerçek konumu sol üst köşedeyse (yanlış yerleşim) true.</summary>
     private static bool TryGetMisplaced(FrameworkElement popupRoot, out IntPtr hwnd, out RECT rect)
