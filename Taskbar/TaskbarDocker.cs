@@ -117,13 +117,13 @@ internal sealed class TaskbarDocker : IDisposable
         int x, y;
         if (bar.IsHorizontal)
         {
-            x = TaskbarPosition.Calculate(bar.Bounds.Left, bar.Tray.Left, bar.Monitor.Left, bar.Monitor.Right, w, gap, left, scale);
+            x = TaskbarPosition.Calculate(bar.Bounds.Left, bar.Tray.Left, bar.Monitor.Left, bar.Monitor.Right, w, gap, left);
             y = bar.Bounds.Top + (bar.Bounds.Height - h) / 2;
         }
         else
         {
             x = bar.Bounds.Left + (bar.Bounds.Width - w) / 2;
-            y = TaskbarPosition.Calculate(bar.Bounds.Top, bar.Tray.Top, bar.Monitor.Top, bar.Monitor.Bottom, h, gap, left, scale);
+            y = TaskbarPosition.Calculate(bar.Bounds.Top, bar.Tray.Top, bar.Monitor.Top, bar.Monitor.Bottom, h, gap, left);
         }
 
         bool topmost = (User32.GetWindowLongPtr(_hwnd, User32.GWL_EXSTYLE).ToInt64() & User32.WS_EX_TOPMOST) != 0;
