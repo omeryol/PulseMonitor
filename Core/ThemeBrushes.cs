@@ -53,6 +53,22 @@ internal static class ThemeBrushes
         r["Brush.WindowBg"] = style.Background == StyleOptions.BgSingle && surface.Color.A > 0 ? surface : HitTestBrush;
 
         r["Brush.Keyboard.On"] = style.KeyboardStyle == StyleOptions.KeysColor ? r["Brush.Item.Keyboard"] : r["Brush.Text"];
+
+        // Trafik geçmişi, ayrı sabit bir açık tema kullanmak yerine pencere teması ve seçili
+        // indirme/yükleme paletiyle birlikte değişir. Açık olan grafik pencereleri DynamicResource
+        // kullandığından ayar uygulanır uygulanmaz yeniden boyanmadan güncellenir.
+        r["Brush.History.Window"] = r["Ui.Window"];
+        r["Brush.History.Card"] = r["Ui.Card"];
+        r["Brush.History.Muted"] = r["Ui.Muted"];
+        r["Brush.History.Grid"] = r["Ui.Border"];
+        r["Brush.History.Axis"] = r["Ui.Text"];
+        r["Brush.History.Weekend"] = r["Ui.Hover"];
+        r["Brush.History.Hover"] = r["Ui.AccentSoft"];
+        r["Brush.History.Average"] = r["Ui.Accent"];
+        r["Brush.History.DownText"] = r["Brush.Item.Download"];
+        r["Brush.History.UpText"] = r["Brush.Item.Upload"];
+        r["Brush.History.DownFill"] = r["Brush.Item.Download"];
+        r["Brush.History.UpFill"] = r["Brush.Item.Upload"];
     }
 
     public static Brush Get(string key) =>

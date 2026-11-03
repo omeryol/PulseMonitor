@@ -11,6 +11,7 @@ public partial class HistoryWindow : Window
 {
     public HistoryWindow()
     {
+        WindowTheme.Prepare(this);
         InitializeComponent();
     }
 

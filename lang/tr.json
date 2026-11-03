@@ -363,5 +363,9 @@
   "Taskbar.MonitorAuto": "Birincil ekran (otomatik)",
   "Taskbar.MonitorMissing": "Kayıtlı ekran kullanılamıyor (birincil ekran kullanılır)",
   "Taskbar.Left": "Görev çubuğunun solunda göster",
-  "Taskbar.LeftHint": "Sol konum Windows 11'de simgeler ortalıyken kullanılır ve simgelerle çakışabilir. Diğer durumlarda sağ konum, ekranın görev çubuğu yoksa birincil ekran kullanılır."
+  "Taskbar.LeftHint": "Sol konum Windows 11'de simgeler ortalıyken kullanılır ve simgelerle çakışabilir. Diğer durumlarda sağ konum, ekranın görev çubuğu yoksa birincil ekran kullanılır.",
+  "Taskbar.MoveLeftTitle": "PulseMonitor konumu",
+  "Taskbar.MoveLeftQuestion": "Görev çubuğu simgeleri ortaya alındı. PulseMonitor'u sol tarafa taşımak ister misiniz?",
+  "Taskbar.MoveLeftYes": "Sola taşı",
+  "Taskbar.MoveLeftNo": "Sağda kalsın"
 }

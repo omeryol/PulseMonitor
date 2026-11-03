@@ -100,6 +100,7 @@ public partial class App : Application
         _window.MouseLeftButtonDown += OnWindowLeftButtonDown;
         _window.SetScale(_settings.Current.Style.Scale / 100.0);
         _docker = new TaskbarDocker(_window, _settings.Current);
+        _docker.CenteredAfterLeftAlignment += AskToMoveTaskbarLeft;
         _window.Loaded += (_, _) => _docker.Start();
         _window.Show();
 
@@ -146,6 +147,24 @@ public partial class App : Application
     }
 
     private string? _restartArgs;
+    private bool _alignmentQuestionOpen;
+
+    private void AskToMoveTaskbarLeft()
+    {
+        // Kullanıcının kayıtlı tercihi önceki sol yerleşimden kalmış olabilir. Simgeler sola
+        // alındığında panel fiilen sağdadır; bu yüzden soruyu tercihe değil gerçek hizalama
+        // geçişine göre soruyoruz.
+        if (_settings is null || _alignmentQuestionOpen) return;
+        _alignmentQuestionOpen = true;
+        try
+        {
+            // Dialog kapatılırsa güvenli varsayılan sağ konumdur; bu, kullanıcı "Sağda
+            // kalsın" dediğinde önceki sol tercihinin aynı yenilemede geri gelmesini önler.
+            _settings.Current.TaskbarLeft = new TaskbarPlacementDialog().ShowDialog() == true;
+            _settings.Save();
+        }
+        finally { _alignmentQuestionOpen = false; }
+    }
 
     internal void RestartAfterImport()
     {

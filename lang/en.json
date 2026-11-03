@@ -363,5 +363,9 @@
   "Taskbar.MonitorAuto": "Primary display (automatic)",
   "Taskbar.MonitorMissing": "Saved display unavailable (using primary display)",
   "Taskbar.Left": "Show on the left side of the taskbar",
-  "Taskbar.LeftHint": "Left placement requires centered Windows 11 taskbar icons and may overlap them. Otherwise right placement is used; a display without a taskbar falls back to the primary display."
+  "Taskbar.LeftHint": "Left placement requires centered Windows 11 taskbar icons and may overlap them. Otherwise right placement is used; a display without a taskbar falls back to the primary display.",
+  "Taskbar.MoveLeftTitle": "PulseMonitor position",
+  "Taskbar.MoveLeftQuestion": "Taskbar icons were centered. Would you like to move PulseMonitor to the left side?",
+  "Taskbar.MoveLeftYes": "Move left",
+  "Taskbar.MoveLeftNo": "Keep right"
 }

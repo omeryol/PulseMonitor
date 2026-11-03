@@ -6,6 +6,7 @@ using PulseMonitor.Core;
 using PulseMonitor.Interop;
 using PulseMonitor.Settings;
 using PulseMonitor.Platform;
+using PulseMonitor.Views;
 
 namespace PulseMonitor.Taskbar;
 
@@ -28,6 +29,11 @@ internal sealed class TaskbarDocker : IDisposable
     private DateTime _burstUntil;
     private User32.WinEventProc? _fgProc;
     private bool _wanted;
+    private Rect _lastStartBounds = Rect.Empty;
+    private readonly TaskbarAlignmentTransition _alignmentTransition = new();
+
+    /// <summary>Simgeler sol hizadan ortaya geçince, sağdaki panel için sol yerleşim önerilebilir.</summary>
+    public event Action? CenteredAfterLeftAlignment;
 
     public TaskbarDocker(Window window, AppSettings settings)
     {
@@ -101,8 +107,42 @@ internal sealed class TaskbarDocker : IDisposable
         }
 
         bool fullscreen = _settings.HideInFullscreen && FullscreenDetector.IsActive(bar.Monitor, _hwnd);
-        SetShown(bar.IsOnScreen && !fullscreen);
+        bool centered = TaskbarAlignment.IsCentered();
+        if (_alignmentTransition.EnteredCentered(centered))
+        {
+            Log.Info("Görev çubuğu simgeleri sola hizadan ortaya alındı; panel konumu soruluyor.");
+            CenteredAfterLeftAlignment?.Invoke();
+        }
+        bool left = _settings.TaskbarLeft && centered;
+        if (!left && _window is TaskbarWindow taskbarWindow) taskbarWindow.RestoreRequestedScale();
+        bool hasSpace = !left || FitLeftPlacement(bar);
+        SetShown(bar.IsOnScreen && !fullscreen && hasSpace);
         if (_window.IsVisible) Place(bar);
+    }
+
+    private bool FitLeftPlacement(TaskbarSnapshot bar)
+    {
+        if (!TaskbarStartButtonLocator.TryGetBounds(bar, out Rect start))
+        {
+            _lastStartBounds = Rect.Empty;
+            Log.Warn("Başlat düğmesinin konumu doğrulanamadı; sol görev çubuğu paneli geçici olarak gizlendi.");
+            return false;
+        }
+
+        if (start != _lastStartBounds)
+        {
+            Log.Info($"Başlat düğmesi doğrulandı: {start.Left:0},{start.Top:0} {start.Width:0}x{start.Height:0}");
+            _lastStartBounds = start;
+        }
+
+        double dpi = User32.GetDpiForWindow(_hwnd) / 96.0;
+        // Düğme ile panel arasında bir fiziksel piksel bırakılır; kenara değme ve yuvarlama
+        // nedeniyle oluşabilecek tek piksellik çakışmayı da engeller.
+        int available = Math.Max(0, (int)Math.Floor(start.Left - bar.Bounds.Left) - 1);
+        bool fits = _window is TaskbarWindow taskbarWindow && taskbarWindow.FitToTaskbarWidth(available, dpi);
+        if (!fits)
+            Log.Warn($"Başlat düğmesinin solunda yalnızca {available}px var; %55 altına inmeden panel sığmadığı için gizlendi.");
+        return fits;
     }
 
     private void Place(TaskbarSnapshot bar)
