@@ -12,6 +12,7 @@ namespace PulseMonitor.ViewModels;
 public sealed class MetricLine : ObservableObject
 {
     private string _value = "--";
+    private string _placeholder;
     private FontWeight _valueWeight = FontWeights.SemiBold, _placeholderWeight = FontWeights.SemiBold;
     private double _valueSize = 11, _placeholderSize = 11;
     private string _labelText;
@@ -27,13 +28,13 @@ public sealed class MetricLine : ObservableObject
     {
         DefaultLabel = label;
         _labelText = label;
-        Placeholder = placeholder;
+        _placeholder = placeholder;
         BrushKey = brushKey;
         _itemBrush = _labelBrush = _valueBrush = ThemeBrushes.Get(brushKey);
     }
 
     public string DefaultLabel { get; }
-    public string Placeholder { get; }
+    public string Placeholder { get => _placeholder; internal set => Set(ref _placeholder, value); }
     public string BrushKey { get; }
     public string Value { get => _value; set => Set(ref _value, value); }
 

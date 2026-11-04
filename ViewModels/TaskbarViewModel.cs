@@ -164,9 +164,17 @@ public sealed class TaskbarViewModel
 
         SetPercent(Cpu, m.CpuPercent);
         SetPercent(Ram, m.RamPercent);
-        SetPercent(Gpu, m.GpuPercent);
         SetPercent(Disk, m.DiskPercent);
-        GpuTemp.Value = ValueFormat.Celsius(m.GpuTempC);
+        string gpuUsage = ValueFormat.Percent(m.GpuPercent);
+        string gpuTemp = ValueFormat.Celsius(m.PrimaryGpu is { } primary ? primary.Temperature : m.GpuTempC);
+        var secondary = m.SecondaryGpu;
+        Gpu.Placeholder = secondary is null ? ValueFormat.PercentPlaceholder
+            : $"{ValueFormat.PercentPlaceholder} / {ValueFormat.PercentPlaceholder}";
+        GpuTemp.Placeholder = secondary is null ? ValueFormat.TemperaturePlaceholder
+            : $"{ValueFormat.TemperaturePlaceholder} / {ValueFormat.TemperaturePlaceholder}";
+        Gpu.Value = secondary is null ? gpuUsage : $"{gpuUsage} / {ValueFormat.Percent(secondary.Usage)}";
+        GpuTemp.Value = secondary is null ? gpuTemp : $"{gpuTemp} / {ValueFormat.Celsius(secondary.Temperature)}";
+        Gpu.SetLoad(m.GpuPercent >= secondary?.Usage || secondary?.Usage is null ? m.GpuPercent : secondary.Usage);
         GpuTemp.SetLevel(m.GpuTempC, 70, 85);
         DiskTemp.Value = ValueFormat.Celsius(m.DiskTempC);
         DiskTemp.SetLevel(m.DiskTempC, 55, 70);

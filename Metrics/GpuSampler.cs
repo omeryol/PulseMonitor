@@ -1,8 +1,10 @@
+using System.Globalization;
+using PulseMonitor.Interop;
+
 namespace PulseMonitor.Metrics;
 
 /// <summary>
-/// GPU yükü: her GPU için tüm süreçlerin 3D motor kullanımı toplanır, en yüklü GPU gösterilir
-/// (Görev Yöneticisi ile aynı yaklaşım). Yalnızca gösterge açıkken çalışır.
+/// GPU yükü: her GPU için tüm süreçlerin 3D motor kullanımı toplanır, adaptör kimliğine göre döndürülür. Yalnızca gösterge açıkken çalışır.
 /// </summary>
 internal sealed class GpuSampler : IDisposable
 {
@@ -10,7 +12,7 @@ internal sealed class GpuSampler : IDisposable
     private PdhCounter? _counter;
     private bool _unavailable;
 
-    public double? Sample()
+    public Dictionary<string, double>? Sample()
     {
         if (_unavailable) return null;
         _counter ??= PdhCounter.TryOpen(CounterPath);
@@ -21,13 +23,14 @@ internal sealed class GpuSampler : IDisposable
         }
         if (!_counter.Collect()) return null;
 
-        var perGpu = new Dictionary<string, double>(StringComparer.Ordinal);
+        var perGpu = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
         foreach (var (name, value) in _counter.ReadArray())
         {
             string key = GpuKey(name);
+            if (key.Length == 0) continue;
             perGpu[key] = perGpu.GetValueOrDefault(key) + value;
         }
-        return perGpu.Count == 0 ? 0 : Math.Clamp(perGpu.Values.Max(), 0, 100);
+        return perGpu;
     }
 
     /// <summary>"pid_12_luid_0x0_0xD1A3_phys_0_eng_0_engtype_3D" → "luid_0x0_0xD1A3"</summary>
@@ -35,7 +38,16 @@ internal sealed class GpuSampler : IDisposable
     {
         int start = instance.IndexOf("luid_", StringComparison.Ordinal);
         int end = start < 0 ? -1 : instance.IndexOf("_phys", start, StringComparison.Ordinal);
-        return end > start ? instance[start..end] : string.Empty;
+        if (end <= start) return string.Empty;
+        const string separator = "_0x";
+        int lowStart = instance.IndexOf(separator, start + "luid_0x".Length, StringComparison.OrdinalIgnoreCase);
+        int highStart = start + "luid_0x".Length;
+        if (lowStart < highStart || lowStart + separator.Length >= end) return string.Empty;
+        return uint.TryParse(instance.AsSpan(highStart, lowStart - highStart), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint high)
+            && uint.TryParse(instance.AsSpan(lowStart + separator.Length, end - lowStart - separator.Length),
+                NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint low)
+            ? GraphicsAdapter.LuidKey(unchecked((int)high), low)
+            : string.Empty;
     }
 
     public void Dispose()

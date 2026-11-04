@@ -17,13 +17,16 @@ internal sealed class TemperatureSampler
     private int _driveIndex = -1;
     private DateTime _lastDriveScan = DateTime.MinValue;
 
-    /// <summary>En sıcak GPU (°C); okunamazsa null.</summary>
-    public static double? ReadGpu()
+    /// <summary>Geçerli sıcaklık bildiren GPU’ların sıcaklıkları (°C).</summary>
+    public static Dictionary<string, double> ReadGpu()
     {
-        var adapters = new D3DKMT_ENUMADAPTERS { Adapters = new D3DKMT_ADAPTERINFO[Gdi32.MaxAdapters] };
-        if (Gdi32.D3DKMTEnumAdapters(ref adapters) != 0) return null;
-
-        double? hottest = null;
+        var adapters = new D3DKMT_ENUMADAPTERS
+        {
+            NumAdapters = Gdi32.MaxAdapters,
+            Adapters = new D3DKMT_ADAPTERINFO[Gdi32.MaxAdapters],
+        };
+        var temperatures = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        if (Gdi32.D3DKMTEnumAdapters(ref adapters) != 0) return temperatures;
         int size = Marshal.SizeOf<D3DKMT_ADAPTER_PERFDATA>();
         IntPtr buffer = Marshal.AllocHGlobal(size);
         try
@@ -40,14 +43,18 @@ internal sealed class TemperatureSampler
                 };
                 if (Gdi32.D3DKMTQueryAdapterInfo(ref query) != 0) continue;
                 uint tenths = Marshal.PtrToStructure<D3DKMT_ADAPTER_PERFDATA>(buffer).Temperature;
-                if (tenths is > 0 and < 1500) hottest = Math.Max(hottest ?? 0, tenths / 10.0);
+                var adapter = adapters.Adapters[i];
+                if (tenths is > 0 and < 1500)
+                    temperatures[GraphicsAdapter.LuidKey(adapter.LuidHigh, adapter.LuidLow)] = tenths / 10.0;
             }
         }
         finally
         {
             Marshal.FreeHGlobal(buffer);
+            for (int i = 0; i < Math.Min(adapters.NumAdapters, (uint)Gdi32.MaxAdapters); i++)
+                Gdi32.D3DKMTCloseAdapter(in adapters.Adapters[i].hAdapter);
         }
-        return hottest;
+        return temperatures;
     }
 
     /// <summary>Sıcaklık bildiren ilk diskin sıcaklığı (°C); bulunan disk hatırlanır, okunamazsa 5 dk sonra yeniden aranır.</summary>

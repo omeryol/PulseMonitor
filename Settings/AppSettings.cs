@@ -15,6 +15,7 @@ public sealed class AppSettings
     public bool HideInFullscreen { get; set; } = true;
 
     /// <summary>Pencere ile sistem tepsisi arasındaki boşluk (96 DPI'da piksel).</summary>
+    public string? GpuSelection { get; set; }
     public int TrayGapPx { get; set; } = 0;
 
     /// <summary>Boş: birincil görev çubuğu; aksi halde Windows ekran aygıtı.</summary>

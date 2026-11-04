@@ -93,6 +93,11 @@
                             <Slider AutomationProperties.Name="{DynamicResource Settings.Gap}" Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"
                                     Value="{Binding TrayGapPx}" VerticalAlignment="Center" />
                         </DockPanel>
+                        <StackPanel Visibility="{Binding HasGpuOptions, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{DynamicResource Settings.Gpu}" Style="{StaticResource Heading}" />
+                            <ComboBox AutomationProperties.Name="{DynamicResource Settings.Gpu}" ItemsSource="{Binding GpuOptions}"
+                                      SelectedItem="{Binding SelectedGpu}" DisplayMemberPath="Display" />
+                        </StackPanel>
                         <TextBlock Text="{DynamicResource Backup.Title}" Style="{StaticResource Heading}" />
                         <WrapPanel>
                             <Button Content="{DynamicResource Backup.ExportSettings}" Click="ExportSettings_Click" Margin="0,0,8,8" />

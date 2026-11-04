@@ -23,8 +23,11 @@ internal static class WeatherIcons
 
     public static WeatherIcon Resolve(string set, string iconKey)
     {
+        if (set == StyleOptions.IconCinematicStatic && Load($"Weather/Cinematic3D/{iconKey}.png") is { } cinematic)
+            return new WeatherIcon(cinematic, null, null, null);
+
         if (StyleOptions.AnimatedIconSets.Contains(set))
-            return new WeatherIcon(null, null, Load($"{set}/{iconKey}.png"), Load($"{set}/{iconKey}.static.png"));
+            return new WeatherIcon(null, null, Load($"WeatherAnim/{set}/{iconKey}.png"), Load($"WeatherAnim/{set}/{iconKey}.static.png"));
 
         string key = set switch
         {
@@ -47,7 +50,7 @@ internal static class WeatherIcons
         {
             var image = new BitmapImage();
             image.BeginInit();
-            image.UriSource = new Uri($"pack://application:,,,/Assets/WeatherAnim/{path}");
+            image.UriSource = new Uri($"pack://application:,,,/Assets/{path}");
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.EndInit();
             image.Freeze();

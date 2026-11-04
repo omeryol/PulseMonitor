@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using PulseMonitor.Core;
+using PulseMonitor.Interop;
 using PulseMonitor.Settings;
 using PulseMonitor.Traffic;
 
@@ -22,7 +23,10 @@ internal sealed class MetricsHub : IDisposable
     private static readonly TimeSpan TemperatureInterval = TimeSpan.FromSeconds(5);
     private readonly TemperatureSampler _temps = new();
     private readonly Stopwatch _tempClock = new();
-    private double? _gpuTemp, _diskTemp;
+    private Dictionary<string, double> _gpuTemperatures = new(StringComparer.OrdinalIgnoreCase);
+    private List<GraphicsAdapter> _graphicsAdapters = [];
+    private string? _lastGpuSelection;
+    private double? _diskTemp;
     private readonly CancellationTokenSource _cts = new();
     private Task? _loop;
     private string? _lastError;
@@ -68,9 +72,27 @@ internal sealed class MetricsHub : IDisposable
             NetworkSample net = _network.Sample(_settings.NetworkAdapterId);
             _history.Add(DateOnly.FromDateTime(DateTime.Now), net.DownBytes, net.UpBytes);
 
-            SampleTemperatures();
-            Sampled?.Invoke(new MetricsSnapshot(cpu, ram, SampleGpu(), SampleDisk(), net, _gpuTemp, _diskTemp,
-                _cpuRam.RamTotal, _cpuRam.RamAvailable, _network.AdapterNames));
+            var selection = _settings.GpuSelection;
+            SampleTemperatures(selection);
+            var usage = SampleGpu();
+            double? gpu = usage is null ? null : Math.Clamp(usage.Values.DefaultIfEmpty().Max(), 0, 100);
+            double? gpuTemp = _gpuTemperatures.Values.Select(t => (double?)t).Max();
+            GpuReading? primary = null, secondary = null;
+            if (!string.IsNullOrEmpty(selection) && _graphicsAdapters.Count > 1)
+            {
+                string[] ids = selection.Split('|', 2);
+                primary = ReadSelectedGpu(ids[0], usage);
+                if (ids.Length == 2) secondary = ReadSelectedGpu(ids[1], usage);
+                gpu = primary.Usage;
+                gpuTemp = new[] { primary.Temperature, secondary?.Temperature }.Max();
+            }
+
+            Sampled?.Invoke(new MetricsSnapshot(cpu, ram, gpu, SampleDisk(), net, gpuTemp, _diskTemp,
+                _cpuRam.RamTotal, _cpuRam.RamAvailable, _network.AdapterNames)
+            {
+                PrimaryGpu = primary,
+                SecondaryGpu = secondary,
+            });
             _lastError = null;
         }
         catch (Exception ex)
@@ -82,15 +104,30 @@ internal sealed class MetricsHub : IDisposable
     }
 
     /// <summary>Sıcaklıklar yavaş değişir: 5 saniyede bir ve yalnızca öğe açıkken okunur.</summary>
-    private void SampleTemperatures()
+    private void SampleTemperatures(string? gpuSelection)
     {
-        if (_tempClock.IsRunning && _tempClock.Elapsed < TemperatureInterval) return;
+        if (gpuSelection == _lastGpuSelection && _tempClock.IsRunning && _tempClock.Elapsed < TemperatureInterval) return;
+        _lastGpuSelection = gpuSelection;
         _tempClock.Restart();
-        _gpuTemp = _settings.IsShown(TaskbarItemId.GpuTemp) || _settings.Alerts.GpuTempEnabled ? TemperatureSampler.ReadGpu() : null;
+        if (!string.IsNullOrEmpty(gpuSelection))
+            _graphicsAdapters = GraphicsAdapter.Read();
+        _gpuTemperatures = _settings.IsShown(TaskbarItemId.GpuTemp) || _settings.Alerts.GpuTempEnabled
+            ? TemperatureSampler.ReadGpu()
+            : new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
         _diskTemp = _settings.IsShown(TaskbarItemId.DiskTemp) || _settings.Alerts.DiskTempEnabled ? _temps.ReadDisk() : null;
     }
 
-    private double? SampleGpu()
+    private GpuReading ReadSelectedGpu(string id, Dictionary<string, double>? usage)
+    {
+        var adapter = _graphicsAdapters.Find(a => a.Id == id);
+        if (adapter is null) return new GpuReading(Strings.Get("Settings.GpuMissing"), null, null);
+
+        double? load = usage is null ? null : Math.Clamp(usage.GetValueOrDefault(adapter.Luid), 0, 100);
+        double? temperature = _gpuTemperatures.TryGetValue(adapter.Luid, out double value) ? value : null;
+        return new GpuReading(adapter.Name, load, temperature);
+    }
+
+    private Dictionary<string, double>? SampleGpu()
     {
         if (_settings.IsShown(TaskbarItemId.Gpu)) return _gpu.Sample();
         _gpu.Dispose();

@@ -8,6 +8,7 @@ namespace PulseMonitor.Interop;
 /// </summary>
 internal static class Gdi32
 {
+    public const int KMTQAITYPE_ADAPTERTYPE = 15;
     public const int KMTQAITYPE_ADAPTERPERFDATA = 62;
     public const int MaxAdapters = 16;
 
@@ -16,6 +17,12 @@ internal static class Gdi32
 
     [DllImport("gdi32.dll")]
     public static extern int D3DKMTQueryAdapterInfo(ref D3DKMT_QUERYADAPTERINFO info);
+
+    [DllImport("gdi32.dll")]
+    public static extern int D3DKMTOpenAdapterFromLuid(ref D3DKMT_OPENADAPTERFROMLUID adapter);
+
+    [DllImport("gdi32.dll")]
+    public static extern int D3DKMTCloseAdapter(in uint adapter);
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -58,4 +65,12 @@ internal struct D3DKMT_ADAPTER_PERFDATA
     public uint Power;
     public uint Temperature;
     public byte PowerStateOverride;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct D3DKMT_OPENADAPTERFROMLUID
+{
+    public uint LuidLow;
+    public int LuidHigh;
+    public uint hAdapter;
 }

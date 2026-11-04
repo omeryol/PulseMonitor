@@ -33,6 +33,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     private WeatherTooltipModel? _tooltip;
     private Func<WeatherTooltipModel>? _buildTooltip; // tema değişince şekil simgeleri ve renkler yeniden alınır
     private double _opacity = 1;
+    private bool _isCinematicIcon;
     private WeatherAnimationKind _animation;
 
     public bool IsVisible { get => _isVisible; private set => Set(ref _isVisible, value); }
@@ -44,6 +45,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     /// <summary>Animasyonlu setlerde film şeridi ve sabit hâli; animasyon ayarı kapalıysa sabit gösterilir.</summary>
     public BitmapSource? IconStrip { get => _strip; private set => Set(ref _strip, value); }
     public BitmapSource? IconStill { get => _still; private set => Set(ref _still, value); }
+    public bool IsCinematicIcon { get => _isCinematicIcon; private set => Set(ref _isCinematicIcon, value); }
     public bool AnimateIcon { get => _animateIcon; private set => Set(ref _animateIcon, value); }
 
     /// <summary>"Karakter" setinde simge yerine yazı karakteri (☀ ☁ ☂ …).</summary>
@@ -109,6 +111,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
             return;
         }
 
+        IsCinematicIcon = st.WeatherIcons == StyleOptions.IconCinematicStatic;
         WeatherIcon icon = WeatherIcons.Resolve(st.WeatherIcons, WeatherCodes.IconKey(report.WeatherCode, report.IsDay));
         (Icon, IconShape, IconStrip, IconStill) = (icon.Image, icon.Shape, icon.Strip, icon.Still);
         IconGlyph = st.WeatherIcons == StyleOptions.IconGlyph ? WeatherCodes.Glyph(report.WeatherCode, report.IsDay) : "";
@@ -121,9 +124,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         };
         TemperatureText = ValueFormat.Degrees(report.Temperature, f);
         FeelsLikeText = st.ShowFeelsLike ? FeelsLike(ValueFormat.Degrees(report.ApparentTemperature, f)) : "";
-        // Animasyonlu simge kendisi hareket ettiği için kart animasyonu o setlerde kapalı (üst üste binmesin).
-        bool animatedSet = icon.Strip is not null;
-        AnimateIcon = st.WeatherAnimation && animatedSet;
+        AnimateIcon = st.WeatherAnimation && icon.Strip is not null;
         Animation = st.WeatherAnimation ? WeatherCodes.Animation(report.WeatherCode, report.IsDay) : WeatherAnimationKind.None;
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;

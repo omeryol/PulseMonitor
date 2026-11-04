@@ -7,8 +7,7 @@ namespace PulseMonitor.Core;
 
 /// <summary>
 /// "Masaüstünü göster" sonrası WPF açılır pencerelerin (kart, sağ tık menüsü) konumunu yanlış hesaplayıp
-/// ekranın sol üstüne koyuyor; tıklayınca düzeliyor. Açıldıktan sonra sol üstteyse Windows’un gerçek
-/// konumlarıyla yeniden yerleştirilir; doğru yerdeyse dokunulmaz.
+/// ekranın sol üstüne koyuyor. Konum düzeltilir ve menü görev çubuğunun üstünde tutulur.
 /// </summary>
 internal static class PopupPlacementFix
 {
@@ -47,9 +46,26 @@ internal static class PopupPlacementFix
 
     private static void FixMenu(ContextMenu menu)
     {
-        if (!TryGetMisplaced(menu, out IntPtr hwnd, out RECT rect)) return;
-        if (!User32.GetCursorPos(out POINT cursor)) return;
-        Move(hwnd, rect, cursor.X, cursor.Y - rect.Height, below: cursor.Y, cursor);
+        if (PresentationSource.FromVisual(menu) is not HwndSource source) return;
+
+        uint flags = User32.SWP_NOSIZE | User32.SWP_NOACTIVATE;
+        if (User32.GetWindowRect(source.Handle, out RECT rect) && User32.GetCursorPos(out POINT cursor))
+        {
+            var info = new MONITORINFO { cbSize = System.Runtime.InteropServices.Marshal.SizeOf<MONITORINFO>() };
+            IntPtr monitor = User32.MonitorFromPoint(cursor, User32.MONITOR_DEFAULTTOPRIMARY);
+            if (User32.GetMonitorInfo(monitor, ref info))
+            {
+                RECT area = info.rcWork;
+                bool misplaced = Math.Abs(rect.Left) <= 2 && Math.Abs(rect.Top) <= 2;
+                int x = misplaced ? cursor.X : rect.Left;
+                int y = misplaced ? cursor.Y - rect.Height : rect.Top;
+                x = Math.Clamp(x, area.Left, Math.Max(area.Left, area.Right - rect.Width));
+                y = Math.Clamp(y, area.Top, Math.Max(area.Top, area.Bottom - rect.Height));
+                User32.SetWindowPos(source.Handle, User32.HWND_TOPMOST, x, y, 0, 0, flags);
+                return;
+            }
+        }
+        User32.SetWindowPos(source.Handle, User32.HWND_TOPMOST, 0, 0, 0, 0, flags | User32.SWP_NOMOVE);
     }
 
     /// <summary>Açılır pencerenin gerçek konumu sol üst köşedeyse (yanlış yerleşim) true.</summary>

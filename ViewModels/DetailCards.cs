@@ -53,6 +53,8 @@ internal static class DetailCards
                 R("Free", ValueFormat.Size(m.RamAvailable)),
                 R("Total", ValueFormat.Size(m.RamTotal)),
             ],
+            TaskbarItemId.Gpu when m.PrimaryGpu is { } gpu => GpuRows(gpu, m.SecondaryGpu, false),
+            TaskbarItemId.GpuTemp when m.PrimaryGpu is { } gpu => GpuRows(gpu, m.SecondaryGpu, true),
             TaskbarItemId.Gpu => [R("Usage", ValueFormat.Percent(m.GpuPercent)), R("Temperature", ValueFormat.Celsius(m.GpuTempC))],
             TaskbarItemId.Disk => [R("Activity", ValueFormat.Percent(m.DiskPercent)), R("Temperature", ValueFormat.Celsius(m.DiskTempC))],
             TaskbarItemId.GpuTemp => [R("Temperature", ValueFormat.Celsius(m.GpuTempC)), R("Thresholds", "70° / 85°")],
@@ -73,6 +75,17 @@ internal static class DetailCards
             ],
             _ => Array.Empty<DetailRow>(),
         };
+    }
+
+    private static IReadOnlyList<DetailRow> GpuRows(Metrics.GpuReading primary, Metrics.GpuReading? secondary, bool temperatureOnly)
+    {
+        string Format(Metrics.GpuReading gpu) => temperatureOnly
+            ? ValueFormat.Celsius(gpu.Temperature)
+            : $"{ValueFormat.Percent(gpu.Usage)} / {ValueFormat.Celsius(gpu.Temperature)}";
+
+        return secondary is null
+            ? [new(primary.Name, Format(primary))]
+            : [new(primary.Name, Format(primary)), new(secondary.Name, Format(secondary))];
     }
 
     private static string Uptime()

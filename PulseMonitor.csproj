@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\PulseMonitor.ico</ApplicationIcon>
-    <Version>0.17.0</Version>
+    <Version>0.17.1</Version>
     <!-- Sürüm adı Hakkında'da gösterilir; release-notes/v<sürüm>.md başındaki ad satırıyla aynı olmalı (test denetler) -->
     <ReleaseName>Alize</ReleaseName>
     <Product>PulseMonitor</Product>
@@ -39,6 +39,7 @@
     <EmbeddedResource Include="lang\tr.json" LogicalName="PulseMonitor.lang.tr.json" />
     <!-- Fluent Emoji 3D (MIT), tools/fetch_icons.ps1 ile 64 px'e küçültüldü -->
     <Resource Include="Assets\Weather\*.png" />
+    <Resource Include="Assets\Weather\Cinematic3D\*.png" />
     <!-- Meteocons ve Makin-Things (MIT), tools/render_icons.ps1 ile film şeridine çevrildi -->
     <Resource Include="Assets\WeatherAnim\**\*.png" />
     <!-- Hakkında penceresinde gösterilen lisans metinleri ve simge -->

@@ -11,4 +11,10 @@ public sealed record MetricsSnapshot(
     double? DiskTempC = null,
     ulong RamTotal = 0,
     ulong RamAvailable = 0,
-    string Adapters = "--");
+    string Adapters = "--")
+{
+    public GpuReading? PrimaryGpu { get; init; }
+    public GpuReading? SecondaryGpu { get; init; }
+}
+
+public sealed record GpuReading(string Name, double? Usage, double? Temperature);

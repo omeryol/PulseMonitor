@@ -1,5 +1,6 @@
 using PulseMonitor.Core;
 using PulseMonitor.Formatting;
+using PulseMonitor.Interop;
 using PulseMonitor.Metrics;
 using PulseMonitor.Platform;
 using PulseMonitor.Settings;
@@ -28,6 +29,19 @@ public sealed class SettingsViewModel : ObservableObject
         Weather = new WeatherSettingsViewModel(store);
         Items = new ItemsSettingsViewModel(store);
         Style = new StyleSettingsViewModel(store);
+        var gpus = GraphicsAdapter.Read().OrderBy(gpu => gpu.Id, StringComparer.Ordinal).ToList();
+        var gpuOptions = new List<AdapterOption> { new("", Strings.Get("Settings.GpuAuto")) };
+        for (int i = 0; i < gpus.Count; i++)
+        {
+            var gpu = gpus[i];
+            gpuOptions.Add(new AdapterOption(gpu.Id, gpu.Name));
+            for (int j = i + 1; j < gpus.Count; j++)
+                gpuOptions.Add(new AdapterOption($"{gpu.Id}|{gpus[j].Id}", $"{gpu.Name} + {gpus[j].Name}"));
+        }
+        if (!string.IsNullOrEmpty(S.GpuSelection) && gpuOptions.All(o => o.Id != S.GpuSelection))
+            gpuOptions.Add(new AdapterOption(S.GpuSelection, Strings.Get("Settings.GpuMissing")));
+        GpuOptions = gpuOptions;
+        HasGpuOptions = gpus.Count > 1;
         Adapters = BuildAdapterOptions(S.NetworkAdapterId);
         var monitors = new List<MonitorOption> { new("", Strings.Get("Taskbar.MonitorAuto")) };
         int number = 0;
@@ -60,7 +74,14 @@ public sealed class SettingsViewModel : ObservableObject
     public int TrayGapPx
     {
         get => S.TrayGapPx;
-        set => Update(() => S.TrayGapPx = Math.Clamp(value, 0, 200));
+        set
+        {
+            int gap = Math.Clamp(value, 0, 200);
+            if (gap == S.TrayGapPx) return;
+            S.TrayGapPx = gap;
+            Raise(nameof(TrayGapPx));
+            _store.Save();
+        }
     }
 
     public bool StartWithWindows
@@ -79,6 +100,18 @@ public sealed class SettingsViewModel : ObservableObject
         {
             if (value is null || value.Code == S.Language) return;
             Update(() => S.Language = value.Code);
+        }
+    }
+
+    public IReadOnlyList<AdapterOption> GpuOptions { get; }
+    public bool HasGpuOptions { get; }
+    public AdapterOption SelectedGpu
+    {
+        get => GpuOptions.FirstOrDefault(o => o.Id == S.GpuSelection) ?? GpuOptions[0];
+        set
+        {
+            if (value is not null && value.Id != (S.GpuSelection ?? ""))
+                Update(() => S.GpuSelection = value.Id.Length == 0 ? null : value.Id);
         }
     }
 
