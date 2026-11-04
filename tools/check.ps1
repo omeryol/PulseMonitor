@@ -45,7 +45,7 @@ foreach ($f in $textFiles) {
 }
 
 # Language guard: every lang/*.json must be valid JSON with string values, and use only keys that exist in tr.json
-# (the source language). Missing keys are allowed (English, then Turkish is shown) but reported.
+# (the source language). Missing keys fail the release check.
 $langDir = Join-Path $root 'lang'
 $keysOf = { param($path) (Get-Content $path -Raw -Encoding UTF8 | ConvertFrom-Json).PSObject.Properties | Where-Object { $_.Name -notlike '_*' } }
 $baseKeys = @(& $keysOf (Join-Path $langDir 'tr.json') | ForEach-Object Name)
@@ -56,7 +56,7 @@ foreach ($f in Get-ChildItem $langDir -Filter *.json) {
     $missing = @($baseKeys | Where-Object { ($props | ForEach-Object Name) -notcontains $_ })
     if ($extra) { Write-Host "UNKNOWN KEYS in lang/$($f.Name): $($extra -join ', ')" -ForegroundColor Red; $failed = $true }
     if ($notText) { Write-Host "NON-TEXT VALUES in lang/$($f.Name): $($notText -join ', ')" -ForegroundColor Red; $failed = $true }
-    if ($missing) { Write-Host "lang/$($f.Name): $($missing.Count) untranslated ($(($missing | Select-Object -First 5) -join ', ')...)" -ForegroundColor Yellow }
+    if ($missing) { Write-Host "lang/$($f.Name): $($missing.Count) untranslated ($(($missing | Select-Object -First 5) -join ', ')...)" -ForegroundColor Red; $failed = $true }
 }
 
 # Unit tests (pure logic: weather warnings, notification ledger). A failing test fails the check.
