@@ -12,18 +12,18 @@
     <!-- Solda simgeli dikey sekmeler, sağda içerik kartı (Resources/WindowStyles.xaml).
          Her değişiklik hemen uygulanır ve kaydedilir. Sekme simgeleri: Segoe Fluent Icons. -->
     <Window.Resources>
-        <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource Ui.Heading}" />
+        <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource Ui.SectionHeading}" />
         <!-- Standart denetimlerin (Fluent) sıkılaştırılması: Core/WindowTheme.cs -->
     </Window.Resources>
 
     <DockPanel Margin="14">
         <DockPanel DockPanel.Dock="Top" Margin="4,0,0,14">
             <Image Source="/Assets/AppIcon.png" Width="28" Height="28" Margin="0,0,10,0" />
-            <TextBlock Text="{DynamicResource Settings.Title}" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Settings.Title}" Style="{StaticResource Ui.WindowTitle}" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
-            <TextBlock Text="{DynamicResource Settings.AutoSave}" Foreground="{DynamicResource Ui.Muted}" FontSize="12" VerticalAlignment="Center" />
-            <Button Content="{DynamicResource Settings.Close}" HorizontalAlignment="Right" MinWidth="100" Tag="Primary"
+            <TextBlock Text="{DynamicResource Settings.AutoSave}" Style="{StaticResource Ui.Caption}" VerticalAlignment="Center" />
+            <Button Content="{DynamicResource Settings.Close}" Style="{StaticResource Ui.PrimaryButton}" HorizontalAlignment="Right" MinWidth="100"
                     IsCancel="True" Click="Close_Click" />
         </DockPanel>
 

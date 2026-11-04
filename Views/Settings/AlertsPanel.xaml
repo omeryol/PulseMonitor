@@ -15,7 +15,7 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <TextBlock Text="{DynamicResource Alerts.Hint}" TextWrapping="Wrap" Foreground="{DynamicResource Ui.Muted}" Margin="0,0,0,8" />
+        <TextBlock Text="{DynamicResource Alerts.Hint}" Style="{StaticResource Ui.Caption}" Margin="0,0,0,8" />
 
         <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.Traffic}" IsChecked="{Binding TrafficEnabled}" />
@@ -44,14 +44,14 @@
         </DockPanel>
 
         <!-- Hava durumu uyarıları: seviye + sessiz saatler. Resmî uyarı olmadığı notu her zaman görünür. -->
-        <TextBlock Text="{DynamicResource Alerts.Weather}" FontWeight="SemiBold" Margin="0,16,0,0" />
+        <TextBlock Text="{DynamicResource Alerts.Weather}" Style="{StaticResource Ui.SectionHeading}" Margin="0,16,0,0" />
         <DockPanel>
-            <TextBlock Text="{DynamicResource Alerts.WeatherLevel}" Width="190" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Alerts.WeatherLevel}" Style="{StaticResource Ui.FormLabel}" Width="190" />
             <ComboBox AutomationProperties.Name="{DynamicResource Alerts.WeatherLevel}" ItemsSource="{Binding WeatherLevel.Options}" SelectedItem="{Binding WeatherLevel.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
-        <TextBlock Text="{DynamicResource Alerts.WeatherLevels}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Ui.Muted}" Margin="0,2,0,6" />
+        <TextBlock Text="{DynamicResource Alerts.WeatherLevels}" Style="{StaticResource Ui.Caption}" FontSize="11" Margin="0,2,0,6" />
         <CheckBox Content="{DynamicResource Alerts.WeatherQuiet}" IsChecked="{Binding WeatherQuietHours}" Margin="0,3" />
-        <TextBlock Text="{DynamicResource Alerts.WeatherNote}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Ui.Muted}" Margin="0,4,0,0" />
+        <TextBlock Text="{DynamicResource Alerts.WeatherNote}" Style="{StaticResource Ui.Caption}" FontSize="11" Margin="0,4,0,0" />
 
         <Button Content="{DynamicResource Alerts.Test}" Command="{Binding TestCommand}" HorizontalAlignment="Left"
                 Padding="12,4" Margin="0,14,0,0" />

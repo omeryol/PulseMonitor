@@ -6,97 +6,100 @@
     <!-- DataContext: AboutViewModel. Ayarlar → Hakkında sekmesinde ve Hakkında penceresinde kullanılır.
          Kaynak gösterimi lisans gereğidir (Open-Meteo CC BY 4.0, OSM ODbL, GeoNames CC BY 4.0, simgeler MIT). -->
     <UserControl.Resources>
-        <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource Ui.Heading}" />
-        <Style TargetType="TextBlock">
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="Margin" Value="0,2" />
-        </Style>
-        <Style x:Key="Small" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Foreground" Value="{DynamicResource Ui.Muted}" />
-            <Setter Property="FontSize" Value="12" />
-        </Style>
-        <Style x:Key="DocCard" TargetType="Border">
-            <Setter Property="Background" Value="{DynamicResource Ui.Card}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource Ui.Border}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
+        <Style x:Key="Heading" TargetType="TextBlock" BasedOn="{StaticResource Ui.SectionHeading}" />
+        <Style x:Key="Small" TargetType="TextBlock" BasedOn="{StaticResource Ui.Caption}" />
+        <Style x:Key="DocCard" TargetType="Border" BasedOn="{StaticResource Ui.DocumentCard}" />
+        <Style x:Key="AboutCard" TargetType="Border" BasedOn="{StaticResource Ui.InsetCard}">
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="MinHeight" Value="76" />
         </Style>
     </UserControl.Resources>
 
-    <StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-            <Image Source="/Assets/AppIcon.png" Width="40" Height="40" Margin="0,0,12,0" />
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock FontSize="20" FontWeight="SemiBold">
-                    <Run Text="PulseMonitor" />
-                    <Run Text="{Binding Version, Mode=OneWay}" FontSize="13" FontWeight="Normal" Foreground="{DynamicResource Ui.Muted}" />
-                </TextBlock>
-                <TextBlock Text="{DynamicResource About.Tagline}" Style="{StaticResource Small}" />
-            </StackPanel>
-        </StackPanel>
-        <TextBlock Margin="0,10,0,0">
-            <Run Text="{DynamicResource About.Project}" />
-            <Hyperlink NavigateUri="https://github.com/omeryol/PulseMonitor">github.com/omeryol/PulseMonitor</Hyperlink>
-        </TextBlock>
-        <TextBlock>
-            <Run Text="{DynamicResource About.License}" />
-            <Hyperlink NavigateUri="https://opensource.org/license/mit">MIT</Hyperlink>
-            <Run Text="· © 2026 omeryol" />
-        </TextBlock>
-        <TextBlock Style="{StaticResource Small}">
+    <StackPanel Margin="0,2,0,0">
+        <!-- Kimlik kartı: ürün adı, sürümü ve vaadi ilk bakışta görünür. -->
+        <Border Style="{StaticResource Ui.SurfaceCard}" Padding="16" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="58" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="/Assets/AppIcon.png" Width="48" Height="48" VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource Ui.WindowTitle}" Text="PulseMonitor" />
+                        <Border Style="{StaticResource Ui.StatusPill}" Margin="10,2,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Version, Mode=OneWay}" />
+                        </Border>
+                    </StackPanel>
+                    <TextBlock Text="{DynamicResource About.Tagline}" Style="{StaticResource Small}" Margin="0,2,0,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Proje ve lisans bilgileri kısa kartlar hâlinde. -->
+        <Grid Margin="0,0,0,4">
+            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+            <Border Style="{StaticResource AboutCard}">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource About.Project}" Style="{StaticResource Small}" />
+                    <TextBlock Margin="0,4,0,0" TextTrimming="CharacterEllipsis">
+                        <Hyperlink NavigateUri="https://github.com/omeryol/PulseMonitor">github.com/omeryol/PulseMonitor</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource AboutCard}" Margin="0">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource About.License}" Style="{StaticResource Small}" />
+                    <TextBlock Margin="0,4,0,0">
+                        <Hyperlink NavigateUri="https://opensource.org/license/mit">MIT</Hyperlink>
+                        <Run Text=" · © 2026 omeryol" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <TextBlock Style="{StaticResource Small}" Margin="0,2,0,6">
             <Run Text="{DynamicResource About.Inspired}" />
             <Hyperlink NavigateUri="https://github.com/zhongyang219/TrafficMonitor">TrafficMonitor</Hyperlink>
             <Run Text="{DynamicResource About.InspiredRest}" />
         </TextBlock>
 
-        <DockPanel Margin="0,10,0,0">
-            <Button DockPanel.Dock="Right" Content="{DynamicResource Update.CheckNow}" Command="{Binding CheckCommand}" Padding="10,2" />
-            <Button DockPanel.Dock="Right" Content="{DynamicResource Update.Download}" Command="{Binding DownloadCommand}" Padding="10,2"
-                    Margin="0,0,8,0" Visibility="{Binding UpdateAvailable, Converter={StaticResource BoolToVisibility}}" />
-            <TextBlock Text="{Binding UpdateText}" VerticalAlignment="Center" />
-        </DockPanel>
+        <!-- Güncelleme eylemi kendi yüzeyinde: durum ve sonraki eylem aynı yerde. -->
+        <Border Style="{StaticResource Ui.InsetCard}" Margin="0,6,0,2">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="{DynamicResource Update.Download}" Command="{Binding DownloadCommand}"
+                            Style="{StaticResource Ui.PrimaryButton}" Margin="8,0,0,0"
+                            Visibility="{Binding UpdateAvailable, Converter={StaticResource BoolToVisibility}}" />
+                    <Button Content="{DynamicResource Update.CheckNow}" Command="{Binding CheckCommand}" Margin="8,0,0,0" />
+                </StackPanel>
+                <TextBlock Text="{Binding UpdateText}" Style="{StaticResource Ui.Body}" VerticalAlignment="Center" />
+            </DockPanel>
+        </Border>
 
         <TextBlock Text="{DynamicResource About.DataHeading}" Style="{StaticResource Heading}" />
-        <TextBlock>
-            <Hyperlink NavigateUri="https://open-meteo.com">Open-Meteo</Hyperlink>
-            <Run Text="{DynamicResource About.Data.OpenMeteo}" />
-            <Hyperlink NavigateUri="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Hyperlink>
-        </TextBlock>
-        <TextBlock>
-            <Hyperlink NavigateUri="https://www.openstreetmap.org/copyright">© OpenStreetMap</Hyperlink>
-            <Run Text="{DynamicResource About.Data.Osm}" />
-            <Hyperlink NavigateUri="https://opendatacommons.org/licenses/odbl/">ODbL</Hyperlink>
-        </TextBlock>
-        <TextBlock>
-            <Hyperlink NavigateUri="https://www.geonames.org">GeoNames</Hyperlink>
-            <Run Text="{DynamicResource About.Data.GeoNames}" />
-            <Hyperlink NavigateUri="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Hyperlink>
-        </TextBlock>
-        <TextBlock>
-            <Hyperlink NavigateUri="https://www.ipify.org">ipify</Hyperlink>
-            <Run Text="{DynamicResource About.Data.Ipify}" />
-        </TextBlock>
+        <Border Style="{StaticResource Ui.InsetCard}">
+            <StackPanel>
+                <TextBlock Margin="0,1"><Hyperlink NavigateUri="https://open-meteo.com">Open-Meteo</Hyperlink><Run Text="{DynamicResource About.Data.OpenMeteo}" /><Hyperlink NavigateUri="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Hyperlink></TextBlock>
+                <TextBlock Margin="0,5,0,0"><Hyperlink NavigateUri="https://www.openstreetmap.org/copyright">© OpenStreetMap</Hyperlink><Run Text="{DynamicResource About.Data.Osm}" /><Hyperlink NavigateUri="https://opendatacommons.org/licenses/odbl/">ODbL</Hyperlink></TextBlock>
+                <TextBlock Margin="0,5,0,0"><Hyperlink NavigateUri="https://www.geonames.org">GeoNames</Hyperlink><Run Text="{DynamicResource About.Data.GeoNames}" /><Hyperlink NavigateUri="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Hyperlink></TextBlock>
+                <TextBlock Margin="0,5,0,0"><Hyperlink NavigateUri="https://www.ipify.org">ipify</Hyperlink><Run Text="{DynamicResource About.Data.Ipify}" /></TextBlock>
+            </StackPanel>
+        </Border>
 
         <TextBlock Text="{DynamicResource About.IconsHeading}" Style="{StaticResource Heading}" />
-        <TextBlock>
-            <Hyperlink NavigateUri="https://github.com/basmilius/meteocons">Meteocons</Hyperlink>
-            <Run Text="— MIT, © 2020-present Bas Milius" />
-        </TextBlock>
-        <TextBlock>
-            <Hyperlink NavigateUri="https://github.com/Makin-Things/weather-icons">Makin-Things weather-icons</Hyperlink>
-            <Run Text="— MIT, © 2019 Custom cards for Home Assistant" />
-        </TextBlock>
-        <TextBlock>
-            <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-emoji">Microsoft Fluent Emoji</Hyperlink>
-            <Run Text="— MIT, © Microsoft Corporation" />
-        </TextBlock>
-        <TextBlock>
-            <Hyperlink NavigateUri="https://github.com/microsoft/fluentui-system-icons">Microsoft Fluent UI System Icons</Hyperlink>
-            <Run Text="— MIT, © 2020 Microsoft Corporation" />
-        </TextBlock>
+        <Border Style="{StaticResource Ui.InsetCard}">
+            <WrapPanel>
+                <TextBlock Margin="0,0,14,5"><Hyperlink NavigateUri="https://github.com/basmilius/meteocons">Meteocons</Hyperlink><Run Text=" · MIT" /></TextBlock>
+                <TextBlock Margin="0,0,14,5"><Hyperlink NavigateUri="https://github.com/Makin-Things/weather-icons">Makin-Things</Hyperlink><Run Text=" · MIT" /></TextBlock>
+                <TextBlock Margin="0,0,14,5"><Hyperlink NavigateUri="https://github.com/microsoft/fluentui-emoji">Fluent Emoji</Hyperlink><Run Text=" · MIT" /></TextBlock>
+                <TextBlock Margin="0,0,14,5"><Hyperlink NavigateUri="https://github.com/microsoft/fluentui-system-icons">Fluent UI Icons</Hyperlink><Run Text=" · MIT" /></TextBlock>
+            </WrapPanel>
+        </Border>
 
         <TextBlock Text="{DynamicResource About.PrivacyHeading}" Style="{StaticResource Heading}" />
-        <TextBlock Text="{DynamicResource About.Privacy}" />
+        <Border Style="{StaticResource Ui.Notice}">
+            <TextBlock Text="{DynamicResource About.Privacy}" Style="{StaticResource Ui.Body}" />
+        </Border>
 
         <Expander Header="{DynamicResource About.FullTexts}" Margin="0,16,0,0">
             <StackPanel Margin="0,8,0,0">

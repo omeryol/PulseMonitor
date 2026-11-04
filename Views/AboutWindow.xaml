@@ -9,9 +9,9 @@
 
     <!-- DataContext: AboutViewModel -->
     <DockPanel Margin="10">
-        <Button DockPanel.Dock="Bottom" Content="{DynamicResource Settings.Close}" HorizontalAlignment="Right" MinWidth="90"
-                Padding="12,4" Margin="0,10,0,0" IsCancel="True" Tag="Primary" Click="Close_Click" />
-        <Border Background="{DynamicResource Ui.Card}" BorderBrush="{DynamicResource Ui.Border}" BorderThickness="1" CornerRadius="10"><ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20,12,20,18">
+        <Button DockPanel.Dock="Bottom" Content="{DynamicResource Settings.Close}" Style="{StaticResource Ui.PrimaryButton}" HorizontalAlignment="Right" MinWidth="90"
+                Margin="0,10,0,0" IsCancel="True" Click="Close_Click" />
+        <Border Style="{StaticResource Ui.SurfaceCard}"><ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20,12,20,18">
             <views:AboutPanel />
         </ScrollViewer></Border>
     </DockPanel>

@@ -20,11 +20,12 @@ Kullanım hacmi: dış IP 15 dakikada bir ve ağ değişince; hava durumu 15 dak
 | [Microsoft Fluent UI System Icons](https://github.com/microsoft/fluentui-system-icons) | `Resources/WeatherIconsFluent.xaml` — "Düz çizgi" (regular) ve "Monokrom" (filled) hava simgeleri, SVG yolları XAML'e çevrildi | MIT, Copyright (c) 2020 Microsoft Corporation |
 | [Meteocons](https://github.com/basmilius/meteocons) (@meteocons/svg ve svg-static 0.1.0; fill, flat, line) | `Assets/WeatherAnim/Meteocons*/` — animasyonlu SVG'lerden üretilmiş film şeridi PNG'leri ve sabit PNG'ler | MIT, Copyright (c) 2020-present Bas Milius |
 | [Makin-Things weather-icons](https://github.com/Makin-Things/weather-icons) (animated, static) | `Assets/WeatherAnim/MakinThings/` — aynı yöntemle | MIT, Copyright (c) 2019 Custom cards for Home Assistant |
+| [ScottPlot](https://github.com/ScottPlot/ScottPlot) | Trafik geçmişi grafik yüzeyi (`ScottPlot.WPF` 5.1.59) | MIT, Copyright (c) Scott Harden / Harden Technologies, LLC |
 
 Fluent dosyaları `tools/fetch_icons.ps1`, Meteocons ve Makin-Things dosyaları `tools/render_icons.ps1` ile yeniden üretilebilir.
 Telif satırları ilgili depoların LICENSE dosyalarındaki gibidir.
 
-MIT Lisansı (dört proje için aynı metin):
+MIT Lisansı (beş proje için aynı metin):
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 >

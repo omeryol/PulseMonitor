@@ -10,20 +10,20 @@
     <!-- DataContext: UpdateViewModel. Menüdeki güncelleme satırı, bildirim ve Hakkında → İndir bu pencereyi açar. -->
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Top" Margin="6,4,6,10">
-            <TextBlock Text="{Binding Heading}" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource Ui.Text}" />
-            <TextBlock Text="{Binding CurrentVersion}" Foreground="{DynamicResource Ui.Muted}" Margin="0,2,0,0" />
+            <TextBlock Text="{Binding Heading}" Style="{StaticResource Ui.WindowTitle}" />
+            <TextBlock Text="{Binding CurrentVersion}" Style="{StaticResource Ui.Caption}" Margin="0,2,0,0" />
         </StackPanel>
 
         <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0" LastChildFill="False">
-            <Button DockPanel.Dock="Left" Content="{DynamicResource Update.ReleasePage}" Command="{Binding ReleasePageCommand}" Padding="12,4" />
+            <Button DockPanel.Dock="Left" Content="{DynamicResource Update.ReleasePage}" Command="{Binding ReleasePageCommand}" />
             <Button DockPanel.Dock="Right" Content="{DynamicResource Update.Download}" Command="{Binding DownloadCommand}"
-                    Click="Close_Click" Tag="Primary" IsDefault="True" MinWidth="110" Padding="12,4" Margin="8,0,0,0" />
-            <Button DockPanel.Dock="Right" Content="{DynamicResource Update.Later}" Click="Close_Click" IsCancel="True" MinWidth="90" Padding="12,4" />
+                    Click="Close_Click" Style="{StaticResource Ui.PrimaryButton}" IsDefault="True" MinWidth="110" Margin="8,0,0,0" />
+            <Button DockPanel.Dock="Right" Content="{DynamicResource Update.Later}" Click="Close_Click" IsCancel="True" MinWidth="90" />
         </DockPanel>
 
-        <Border Background="{DynamicResource Ui.Card}" BorderBrush="{DynamicResource Ui.Border}" BorderThickness="1" CornerRadius="10">
+        <Border Style="{StaticResource Ui.SurfaceCard}">
             <DockPanel>
-                <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Update.WhatsNew}" FontWeight="SemiBold" Foreground="{DynamicResource Ui.Accent}"
+                <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Update.WhatsNew}" Style="{StaticResource Ui.SectionHeading}"
                            Margin="16,12,16,0" />
                 <FlowDocumentScrollViewer Document="{Binding Notes, Converter={StaticResource MarkdownDocument}}"
                                           VerticalScrollBarVisibility="Auto" IsToolBarVisible="False" />

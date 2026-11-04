@@ -5,19 +5,19 @@
     <!-- DataContext: StyleSettingsViewModel. Ayarlar → Hava durumu sekmesinin görünüm kısmı. -->
     <StackPanel>
         <DockPanel Margin="0,3">
-            <TextBlock Text="{DynamicResource Style.Label.WeatherIcons}" Width="190" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Style.Label.WeatherIcons}" Style="{StaticResource Ui.FormLabel}" Width="190" />
             <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherIcons}" ItemsSource="{Binding WeatherIcons.Options}" SelectedItem="{Binding WeatherIcons.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <DockPanel Margin="0,3">
-            <TextBlock Text="{DynamicResource Style.Label.WeatherLabel}" Width="190" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Style.Label.WeatherLabel}" Style="{StaticResource Ui.FormLabel}" Width="190" />
             <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherLabel}" ItemsSource="{Binding WeatherLabel.Options}" SelectedItem="{Binding WeatherLabel.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <DockPanel Margin="0,3">
-            <TextBlock Text="{DynamicResource Style.Label.WeatherForecast}" Width="190" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Style.Label.WeatherForecast}" Style="{StaticResource Ui.FormLabel}" Width="190" />
             <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.WeatherForecast}" ItemsSource="{Binding WeatherForecast.Options}" SelectedItem="{Binding WeatherForecast.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <DockPanel Margin="0,3">
-            <TextBlock Text="{DynamicResource Style.Label.TemperatureUnit}" Width="190" VerticalAlignment="Center" />
+            <TextBlock Text="{DynamicResource Style.Label.TemperatureUnit}" Style="{StaticResource Ui.FormLabel}" Width="190" />
             <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.TemperatureUnit}" ItemsSource="{Binding TemperatureUnit.Options}" SelectedItem="{Binding TemperatureUnit.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
         <CheckBox Content="{DynamicResource Style.Label.FeelsLike}" IsChecked="{Binding ShowFeelsLike}" Margin="0,6,0,3" />

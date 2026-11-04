@@ -26,6 +26,8 @@ public sealed class HistoryViewModel : ObservableObject
     private bool _rangeView;
     private string _title = "", _down = "", _up = "", _average = "", _peak = "", _peakName = "", _averageLabel = "";
     private double _averageOffset;
+    private HistoryChartOption? _selectedChart;
+    private int _trafficVersion;
 
     internal HistoryViewModel(TrafficHistory history)
     {
@@ -38,16 +40,38 @@ public sealed class HistoryViewModel : ObservableObject
             _period = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, 1);
             Refresh();
         });
+        ChartTypes =
+        [
+            new(HistoryChartType.StackedColumns, "History.Chart.Stacked"),
+            new(HistoryChartType.GroupedColumns, "History.Chart.Grouped"),
+            new(HistoryChartType.Lines, "History.Chart.Line"),
+            new(HistoryChartType.Areas, "History.Chart.Area"),
+            new(HistoryChartType.Dots, "History.Chart.Dot"),
+            new(HistoryChartType.Heatmap, "History.Chart.Heatmap"),
+        ];
+        _selectedChart = ChartTypes[0];
         Refresh();
     }
 
     public ObservableCollection<HistoryBar> Bars { get; } = new();
     public ObservableCollection<GridLine> GridLines { get; } = new();
+    public IReadOnlyList<HistoryChartOption> ChartTypes { get; }
     public ICommand PreviousCommand { get; }
     public ICommand NextCommand { get; }
     public ICommand TodayCommand { get; }
     public DateTime? RangeStart { get => _rangeStart; set => Set(ref _rangeStart, value); }
     public DateTime? RangeEnd { get => _rangeEnd; set => Set(ref _rangeEnd, value); }
+    public HistoryChartOption? SelectedChart
+    {
+        get => _selectedChart;
+        set
+        {
+            if (value is null || !Set(ref _selectedChart, value)) return;
+            Raise(nameof(ChartType));
+        }
+    }
+    public HistoryChartType ChartType => SelectedChart?.Type ?? HistoryChartType.StackedColumns;
+    public int TrafficVersion { get => _trafficVersion; private set => Set(ref _trafficVersion, value); }
 
     internal bool ApplyRange()
     {
@@ -135,6 +159,7 @@ public sealed class HistoryViewModel : ObservableObject
         Peak = peak.Total == 0 ? "—" : ValueFormat.Size(peak.Total);
         PeakName = peak.Total == 0 ? Strings.Get("History.Empty") : peak.Name;
         Raise(nameof(AverageCaption));
+        TrafficVersion++;
     }
 
     /// <summary>Ekseni okunur bir üst değere yuvarlar (ör. 7,6 GB → 8 GB), değer çizgileri düzgün sayılar olsun.</summary>
@@ -153,3 +178,14 @@ public sealed record HistoryBar(string Label, double DownHeight, double UpHeight
 
 /// <summary>Yatay değer çizgisi: alttan uzaklık (piksel) ve etiketi.</summary>
 public sealed record GridLine(double Offset, string Label);
+
+public enum HistoryChartType { StackedColumns, GroupedColumns, Lines, Areas, Dots, Heatmap }
+
+public sealed class HistoryChartOption
+{
+    public HistoryChartOption(HistoryChartType type, string resourceKey) { Type = type; ResourceKey = resourceKey; }
+    public HistoryChartType Type { get; }
+    public string ResourceKey { get; }
+    public string Display => Strings.Get(ResourceKey);
+    public override string ToString() => Display;
+}

@@ -4,7 +4,7 @@
 
     <!-- DataContext: ItemsSettingsViewModel -->
     <StackPanel>
-        <TextBlock Text="{DynamicResource Items.Hint}" TextWrapping="Wrap" Foreground="{DynamicResource Ui.Muted}" Margin="0,0,0,6" />
+        <TextBlock Text="{DynamicResource Items.Hint}" Style="{StaticResource Ui.Caption}" Margin="0,0,0,6" />
         <DockPanel>
             <StackPanel DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Top">
                 <Button Content="{DynamicResource Items.MoveUp}" Command="{Binding MoveUpCommand}"
@@ -12,7 +12,7 @@
                 <Button Content="{DynamicResource Items.MoveDown}" Command="{Binding MoveDownCommand}"
                         MinWidth="90" Padding="8,3" />
             </StackPanel>
-            <ListBox AutomationProperties.Name="{DynamicResource Settings.Tab.Items}" ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}">
+            <ListBox Style="{StaticResource Ui.List}" AutomationProperties.Name="{DynamicResource Settings.Tab.Items}" ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <CheckBox Content="{Binding Name}" IsChecked="{Binding Visible}" Margin="0,2" />
