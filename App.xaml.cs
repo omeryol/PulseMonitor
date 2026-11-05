@@ -84,6 +84,7 @@ public partial class App : Application
         _ping = new PingMonitor(_settings.Current);
         _ping.Changed += () => Dispatcher.BeginInvoke(() => _viewModel.UpdatePing(_ping.LatencyMs));
         _alerts.Raised += (title, text) => _tray?.ShowNotification(title, text, warning: true);
+        _alerts.QuotaNotificationRecorded += () => _settings?.Save();
         _weatherWarnings.Raised += (title, text, iconKey) =>
             _tray?.ShowNotification(title, text, warning: true, Resources[$"Wx.{iconKey}"] as System.Windows.Media.ImageSource);
         _updates = new UpdateChecker(_settings.Current);
@@ -214,7 +215,7 @@ public partial class App : Application
         if (_settings is null) return;
         StyleSettings style = _settings.Current.Style;
         StyleResources.Apply(this, style);
-        WindowTheme.Apply(this);
+        WindowTheme.Apply(this, style);
         ThemeBrushes.Apply(this, ThemeBrushes.IsLight(style, SystemTheme.IsTaskbarLight()), style);
         _viewModel?.ApplyStyle(style);
         UpdateWeather();

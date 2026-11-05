@@ -14,14 +14,18 @@ public sealed class AlertsSettingsViewModel : ObservableObject
         _store = store;
         TestCommand = new RelayCommand(testNotification);
         WeatherLevel = new Choice("WeatherWarnings", () => A.WeatherLevel, v => Update(() => A.WeatherLevel = v));
+        TrafficWarningPercent = new Choice("TrafficWarning", () => A.TrafficWarningPercent.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            v => Update(() => A.TrafficWarningPercent = int.Parse(v, System.Globalization.CultureInfo.InvariantCulture)));
     }
 
     public ICommand TestCommand { get; }
     public Choice WeatherLevel { get; }
+    public Choice TrafficWarningPercent { get; }
     public bool WeatherQuietHours { get => A.WeatherQuietHours; set => Update(() => A.WeatherQuietHours = value); }
 
     public bool TrafficEnabled { get => A.TrafficEnabled; set => Update(() => A.TrafficEnabled = value); }
     public int TrafficLimitGb { get => A.TrafficLimitGb; set => Update(() => A.TrafficLimitGb = value); }
+    public int TrafficCycleStartDay { get => A.TrafficCycleStartDay; set => Update(() => A.TrafficCycleStartDay = value); }
     public bool CpuEnabled { get => A.CpuEnabled; set => Update(() => A.CpuEnabled = value); }
     public int CpuPercent { get => A.CpuPercent; set => Update(() => A.CpuPercent = value); }
     public bool RamEnabled { get => A.RamEnabled; set => Update(() => A.RamEnabled = value); }

@@ -21,9 +21,10 @@ internal sealed class AlertMonitor
 
     private readonly Dictionary<string, DateTime> _lastFired = new();
     private DateTime? _cpuHighSince;
-    private DateOnly _trafficNotifiedDay;
 
     public event Action<string, string>? Raised;
+    /// <summary>Kota bildirimi kalıcı işaretini ayarlara yazmak için çağrılır.</summary>
+    public event Action? QuotaNotificationRecorded;
 
     public void Check(MetricsSnapshot m, TrafficHistory history, AlertSettings a)
     {
@@ -31,13 +32,16 @@ internal sealed class AlertMonitor
 
         if (a.TrafficEnabled)
         {
-            DateOnly today = DateOnly.FromDateTime(now);
-            DayTraffic t = history.Get(today);
-            double gb = (t.Down + t.Up) / BytesPerGb;
-            if (gb >= a.TrafficLimitGb && _trafficNotifiedDay != today)
+            var period = TrafficPeriod.For(DateOnly.FromDateTime(now), a.TrafficCycleStartDay);
+            DayTraffic t = TrafficPeriod.Total(history, period);
+            ulong total = TrafficPeriod.Add(t.Down, t.Up);
+            double gb = total / BytesPerGb;
+            string periodKey = period.Start.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            if (a.TrafficWarningPercent > 0 && gb * 100 >= a.TrafficLimitGb * a.TrafficWarningPercent && a.LastTrafficQuotaNotificationPeriod != periodKey)
             {
-                _trafficNotifiedDay = today;
-                Raise("Alert.Traffic", ValueFormat.Size(t.Down + t.Up), a.TrafficLimitGb);
+                a.LastTrafficQuotaNotificationPeriod = periodKey;
+                QuotaNotificationRecorded?.Invoke();
+                Raise("Alert.Traffic", ValueFormat.Size(total), a.TrafficLimitGb, a.TrafficWarningPercent);
             }
         }
 

@@ -5,6 +5,7 @@ namespace PulseMonitor.Settings;
 /// <summary>Görünüm seçeneklerinin kimlikleri, sınırları ve doğrulaması. Ekrandaki adlar: lang/tr.json → "Style.&lt;grup&gt;.&lt;kimlik&gt;".</summary>
 public static class StyleOptions
 {
+    public const string SkinClassic = "Classic", SkinNightPanel = "NightPanel";
     public const string ThemeAuto = "Auto", ThemeDark = "Dark", ThemeLight = "Light";
     public const string PaletteVivid = "Vivid", PaletteSoft = "Soft", PaletteMono = "Mono", PalettePlain = "Plain", PaletteCustom = "Custom";
     public const string TargetValue = "Value", TargetLabel = "Label", TargetBoth = "Both";
@@ -27,6 +28,8 @@ public static class StyleOptions
 
     public static readonly Dictionary<string, string[]> Groups = new()
     {
+        ["InterfaceSkin"] = [SkinClassic, SkinNightPanel],
+        ["TrafficWarning"] = ["0", "50", "80", "90", "100"],
         ["Theme"] = [ThemeAuto, ThemeDark, ThemeLight],
         ["Palette"] = [PaletteVivid, PaletteSoft, PaletteMono, PalettePlain, PaletteCustom],
         ["ColorTarget"] = [TargetValue, TargetLabel, TargetBoth],
@@ -60,6 +63,7 @@ public static class StyleOptions
         if (string.IsNullOrWhiteSpace(settings.PingHost)) settings.PingHost = "1.1.1.1";
         StyleSettings s = settings.Style ??= new StyleSettings();
         var d = new StyleSettings();
+        s.InterfaceSkin = Valid("InterfaceSkin", s.InterfaceSkin, d.InterfaceSkin);
         s.Theme = Valid("Theme", s.Theme, d.Theme);
         s.Palette = Valid("Palette", s.Palette, d.Palette);
         s.ColorTarget = Valid("ColorTarget", s.ColorTarget, d.ColorTarget);

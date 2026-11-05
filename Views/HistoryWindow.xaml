@@ -36,7 +36,7 @@
         </WrapPanel>
 
         <!-- Özet kartları -->
-        <UniformGrid DockPanel.Dock="Top" Columns="4" Margin="0,0,-10,18">
+        <UniformGrid DockPanel.Dock="Top" Columns="5" Margin="0,0,-10,18">
             <Border Style="{StaticResource Card}">
                 <StackPanel>
                     <TextBlock Text="{DynamicResource History.Down}" Style="{StaticResource Caption}" />
@@ -60,6 +60,12 @@
                     <TextBlock Text="{DynamicResource History.PeakCaption}" Style="{StaticResource Caption}" />
                     <TextBlock Text="{Binding Peak}" Style="{StaticResource Figure}" />
                     <TextBlock Text="{Binding PeakName}" Style="{StaticResource Caption}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource History.Comparison}" Style="{StaticResource Caption}" />
+                    <TextBlock Text="{Binding Comparison}" Style="{StaticResource Figure}" Foreground="{DynamicResource Brush.History.Average}" TextTrimming="CharacterEllipsis" />
                 </StackPanel>
             </Border>
         </UniformGrid>

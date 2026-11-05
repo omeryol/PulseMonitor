@@ -38,5 +38,5 @@ public sealed record DetailContext(
     string LocalIp,
     string PublicIp,
     string PingHost,
-    (double? Min, double? Avg, double? Max, double LossPercent) Ping,
+    PingQuality Ping,
     double? PingLast);

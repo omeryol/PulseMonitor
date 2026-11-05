@@ -62,7 +62,8 @@ internal static class DetailCards
             TaskbarItemId.Ping =>
             [
                 R("Server", c.PingHost), R("Last", ValueFormat.Milliseconds(c.PingLast)),
-                R("MinAvgMax", $"{ValueFormat.Milliseconds(c.Ping.Min)} / {ValueFormat.Milliseconds(c.Ping.Avg)} / {ValueFormat.Milliseconds(c.Ping.Max)}"),
+                R("MinAvgMax", $"{ValueFormat.Milliseconds(c.Ping.Min)} / {ValueFormat.Milliseconds(c.Ping.Average)} / {ValueFormat.Milliseconds(c.Ping.Max)}"),
+                R("Jitter", ValueFormat.Milliseconds(c.Ping.Jitter)),
                 R("Loss", ValueFormat.Percent(c.Ping.LossPercent)),
             ],
             TaskbarItemId.LocalIp or TaskbarItemId.PublicIp =>

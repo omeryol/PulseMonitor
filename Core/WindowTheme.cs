@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using PulseMonitor.Platform;
+using PulseMonitor.Settings;
 
 namespace PulseMonitor.Core;
 
@@ -17,11 +19,28 @@ internal static class WindowTheme
 
     private static readonly Uri StylesUri = new("pack://application:,,,/Resources/WindowStyles.xaml");
 
-    public static void Apply(Application app)
+    public static void Apply(Application app, StyleSettings style)
     {
+        if (style.InterfaceSkin == StyleOptions.SkinNightPanel)
+        {
+            ApplyNightPanel(app);
+            return;
+        }
         string sfx = SystemTheme.IsAppsLight() ? "OnLight" : "OnDark";
         foreach (string key in Keys)
             app.Resources[$"Ui.{key}"] = app.FindResource($"Ui.{key}.{sfx}");
+    }
+
+    private static void ApplyNightPanel(Application app)
+    {
+        var colors = new Dictionary<string, string>
+        {
+            ["Window"] = "#10141C", ["Card"] = "#181F2B", ["Border"] = "#2B3850", ["Text"] = "#E6EDF7",
+            ["Muted"] = "#9AA9BE", ["Hover"] = "#222D3E", ["Accent"] = "#43B8FF", ["AccentHover"] = "#7DCCFF",
+            ["AccentSoft"] = "#17354B", ["AccentOnSoft"] = "#9DDCFF", ["OnAccent"] = "#07121C",
+        };
+        foreach (var (key, hex) in colors)
+            app.Resources[$"Ui.{key}"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)!);
     }
 
     /// <summary>

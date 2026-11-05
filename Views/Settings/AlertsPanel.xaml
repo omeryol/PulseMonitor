@@ -23,6 +23,15 @@
             <Slider Minimum="1" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" AutomationProperties.Name="{DynamicResource Alerts.Traffic}" VerticalAlignment="Center" />
         </DockPanel>
         <DockPanel>
+            <TextBlock Text="{DynamicResource Alerts.TrafficCycleDay}" Style="{StaticResource Ui.FormLabel}" Width="190" />
+            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding TrafficCycleStartDay}" />
+            <Slider Minimum="1" Maximum="28" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficCycleStartDay}" AutomationProperties.Name="{DynamicResource Alerts.TrafficCycleDay}" VerticalAlignment="Center" />
+        </DockPanel>
+        <DockPanel>
+            <TextBlock Text="{DynamicResource Alerts.TrafficThreshold}" Style="{StaticResource Ui.FormLabel}" Width="190" />
+            <ComboBox ItemsSource="{Binding TrafficWarningPercent.Options}" SelectedItem="{Binding TrafficWarningPercent.Selected}" DisplayMemberPath="Display" AutomationProperties.Name="{DynamicResource Alerts.TrafficThreshold}" />
+        </DockPanel>
+        <DockPanel>
             <CheckBox Width="250" VerticalAlignment="Center" Content="{DynamicResource Alerts.Cpu}" IsChecked="{Binding CpuEnabled}" />
             <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding CpuPercent, StringFormat=% {0}}" />
             <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding CpuPercent}" AutomationProperties.Name="{DynamicResource Alerts.Cpu}" VerticalAlignment="Center" />

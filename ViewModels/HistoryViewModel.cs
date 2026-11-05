@@ -24,7 +24,7 @@ public sealed class HistoryViewModel : ObservableObject
     private DateTime? _rangeStart = DateTime.Today.AddDays(-29), _rangeEnd = DateTime.Today;
     private DateOnly _appliedStart, _appliedEnd;
     private bool _rangeView;
-    private string _title = "", _down = "", _up = "", _average = "", _peak = "", _peakName = "", _averageLabel = "";
+    private string _title = "", _down = "", _up = "", _average = "", _peak = "", _peakName = "", _averageLabel = "", _comparison = "";
     private double _averageOffset;
     private HistoryChartOption? _selectedChart;
     private int _trafficVersion;
@@ -117,6 +117,8 @@ public sealed class HistoryViewModel : ObservableObject
     public string PeakName { get => _peakName; private set => Set(ref _peakName, value); }
     public double AverageOffset { get => _averageOffset; private set => Set(ref _averageOffset, value); }
     public string AverageLabel { get => _averageLabel; private set => Set(ref _averageLabel, value); }
+    /// <summary>Aynı uzunluktaki önceki döneme göre toplam trafik değişimi.</summary>
+    public string Comparison { get => _comparison; private set => Set(ref _comparison, value); }
 
     private void Move(int step)
     {
@@ -158,6 +160,12 @@ public sealed class HistoryViewModel : ObservableObject
         HistoryRow peak = rows.MaxBy(r => r.Total);
         Peak = peak.Total == 0 ? "—" : ValueFormat.Size(peak.Total);
         PeakName = peak.Total == 0 ? Strings.Get("History.Empty") : peak.Name;
+        DateOnly comparisonStart = _rangeView ? _appliedStart : YearView ? new DateOnly(_period.Year, 1, 1) : _period;
+        DateOnly comparisonEnd = _rangeView ? _appliedEnd : YearView ? new DateOnly(_period.Year, 12, 31) : _period.AddMonths(1).AddDays(-1);
+        TrafficComparison comparison = TrafficComparison.For(_history, comparisonStart, comparisonEnd);
+        Comparison = comparison.PercentChange is { } change
+            ? $"{(change >= 0 ? "+" : "")}{change:0.#}%"
+            : Strings.Get("History.NoComparison");
         Raise(nameof(AverageCaption));
         TrafficVersion++;
     }

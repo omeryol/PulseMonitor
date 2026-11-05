@@ -18,6 +18,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
         Choice C(string group, Func<StyleSettings, string> get, Action<StyleSettings, string> set) =>
             new(group, () => get(S), v => Update(() => set(S, v)));
 
+        InterfaceSkin = C("InterfaceSkin", s => s.InterfaceSkin, (s, v) => s.InterfaceSkin = v);
         Theme = C("Theme", s => s.Theme, (s, v) => s.Theme = v);
         Palette = C("Palette", s => s.Palette, (s, v) => s.Palette = v);
         ColorTarget = C("ColorTarget", s => s.ColorTarget, (s, v) => s.ColorTarget = v);
@@ -39,6 +40,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
         UndoResetCommand = new RelayCommand(UndoReset);
     }
 
+    public Choice InterfaceSkin { get; }
     public Choice Theme { get; }
     public Choice Palette { get; }
     public Choice ColorTarget { get; }
@@ -119,7 +121,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
         _store.Current.Style = style;
         _store.Save();
         Raise(null); // tüm özellikler yeniden okunur
-        foreach (Choice c in new[] { Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel, WeatherForecast })
+        foreach (Choice c in new[] { InterfaceSkin, Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel, WeatherForecast })
             c.Refresh();
         RefreshColorRows();
     }

@@ -6,6 +6,17 @@ namespace PulseMonitor.WindowsTests;
 public sealed class PingOutagesTests
 {
     [Fact]
+    public void QualityComputesJitterAndLossWithoutTreatingMissingSamplesAsZero()
+    {
+        var quality = PingQuality.FromSamples([10, null, 30, 50]);
+        Assert.Equal(25, quality.LossPercent);
+        Assert.Equal(20, quality.Jitter);
+        Assert.Equal(10, quality.Min);
+        Assert.Equal(30, quality.Average);
+        Assert.Equal(50, quality.Max);
+    }
+
+    [Fact]
     public void FailurePeriodIsRecordedOnceAndClosedOnRecovery()
     {
         string path = Path.Combine(Path.GetTempPath(), $"pm-ping-{Guid.NewGuid():N}.json");

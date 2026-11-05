@@ -4,8 +4,14 @@ namespace PulseMonitor.Settings;
 public sealed class AlertSettings
 {
     public bool TrafficEnabled { get; set; }
-    /// <summary>Günlük toplam trafik sınırı (indirme + yükleme), GB.</summary>
+    /// <summary>Aylık kota (indirme + yükleme), GB.</summary>
     public int TrafficLimitGb { get; set; } = 20;
+    /// <summary>Kota döneminin her ay başladığı gün; 1–28 arası tutulur.</summary>
+    public int TrafficCycleStartDay { get; set; } = 1;
+    /// <summary>Bildirim eşiği: 0 kapalı, aksi halde kota yüzdesi.</summary>
+    public int TrafficWarningPercent { get; set; } = 80;
+    /// <summary>Aynı dönem için tekrar bildirim göndermemek üzere kalıcı dönem anahtarı.</summary>
+    public string? LastTrafficQuotaNotificationPeriod { get; set; }
 
     public bool CpuEnabled { get; set; }
     /// <summary>CPU bu yüzdenin üstünde 30 saniye kalırsa.</summary>
@@ -33,6 +39,8 @@ public sealed class AlertSettings
     {
         if (!StyleOptions.Groups["WeatherWarnings"].Contains(WeatherLevel)) WeatherLevel = StyleOptions.WarnExtreme;
         TrafficLimitGb = Math.Clamp(TrafficLimitGb, 1, 10000);
+        TrafficCycleStartDay = Math.Clamp(TrafficCycleStartDay, 1, 28);
+        TrafficWarningPercent = TrafficWarningPercent is 0 or 50 or 80 or 90 or 100 ? TrafficWarningPercent : 80;
         CpuPercent = Math.Clamp(CpuPercent, 10, 100);
         RamPercent = Math.Clamp(RamPercent, 10, 100);
         GpuTempC = Math.Clamp(GpuTempC, 30, 120);

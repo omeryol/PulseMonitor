@@ -24,17 +24,14 @@ internal sealed class PingMonitor : IDisposable
     private const int HistorySize = 12; // son 1 dakika (5 sn aralıkla)
     private readonly Queue<double?> _history = new();
 
-    /// <summary>Son 1 dakika: en düşük, ortalama, en yüksek (ms) ve kayıp oranı (%); ayrıntı kartı için.</summary>
-    public (double? Min, double? Avg, double? Max, double LossPercent) Stats
+    /// <summary>Son 1 dakikanın gecikme, jitter ve kayıp özeti; ayrıntı kartı için.</summary>
+    public PingQuality Stats
     {
         get
         {
             lock (_history)
             {
-                if (_history.Count == 0) return (null, null, null, 0);
-                var ok = _history.Where(v => v.HasValue).Select(v => v!.Value).ToList();
-                double loss = 100.0 * (_history.Count - ok.Count) / _history.Count;
-                return ok.Count == 0 ? (null, null, null, loss) : (ok.Min(), ok.Average(), ok.Max(), loss);
+                return PingQuality.FromSamples(_history);
             }
         }
     }
@@ -82,4 +79,17 @@ internal sealed class PingMonitor : IDisposable
     }
 
     public void Dispose() => _timer.Dispose();
+}
+
+public readonly record struct PingQuality(double? Min, double? Average, double? Max, double? Jitter, double LossPercent, int SampleCount)
+{
+    public static PingQuality FromSamples(IEnumerable<double?> samples)
+    {
+        var all = samples.ToList();
+        if (all.Count == 0) return new(null, null, null, null, 0, 0);
+        var ok = all.Where(x => x.HasValue).Select(x => x!.Value).ToList();
+        double loss = 100.0 * (all.Count - ok.Count) / all.Count;
+        double? jitter = ok.Count < 2 ? null : ok.Zip(ok.Skip(1), (a, b) => Math.Abs(b - a)).Average();
+        return ok.Count == 0 ? new(null, null, null, null, loss, all.Count) : new(ok.Min(), ok.Average(), ok.Max(), jitter, loss, all.Count);
+    }
 }
