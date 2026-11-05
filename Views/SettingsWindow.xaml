@@ -44,6 +44,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <StackPanel>
                         <settings:WeatherSettingsPanel DataContext="{Binding Weather}" />
+                        <Button Content="{DynamicResource Weather.History}" Click="WeatherHistory_Click" HorizontalAlignment="Left" Margin="0,10,0,6" />
                         <TextBlock Text="{DynamicResource Style.Section.Weather}" Style="{StaticResource Heading}" />
                         <settings:WeatherStylePanel DataContext="{Binding Style}" />
                     </StackPanel>

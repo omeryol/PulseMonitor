@@ -28,6 +28,12 @@ public partial class SettingsWindow : Window
         new PingHistoryWindow(vm.PingMonitor.Outages) { Owner = this }.ShowDialog();
     }
 
+    private void WeatherHistory_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not SettingsViewModel vm || vm.Store.Current.Weather.Active is not { } location) return;
+        new WeatherHistoryWindow(location) { Owner = this }.ShowDialog();
+    }
+
     private void Export(bool settings)
     {
         if (DataContext is not SettingsViewModel vm) return;

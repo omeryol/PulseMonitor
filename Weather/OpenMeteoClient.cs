@@ -25,6 +25,45 @@ internal static class OpenMeteoClient
         return Parse(doc.RootElement, lat, lon, model);
     }
 
+    /// <summary>Yalnızca kullanıcı istediğinde çağrılan, en fazla 366 günlük günlük geçmiş isteği.</summary>
+    public static async Task<HistoricalWeatherReport> FetchHistoryAsync(double lat, double lon, HistoricalWeatherRange range, CancellationToken token)
+    {
+        if (lat is < -90 or > 90 || lon is < -180 or > 180) throw new ArgumentOutOfRangeException(nameof(lat));
+        string url = FormattableString.Invariant(
+            $"https://archive-api.open-meteo.com/v1/archive?latitude={lat:0.####}&longitude={lon:0.####}&start_date={range.Start:yyyy-MM-dd}&end_date={range.End:yyyy-MM-dd}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto");
+        using HttpResponseMessage response = await Http.Client.GetAsync(url, token);
+        response.EnsureSuccessStatusCode();
+        using JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStreamAsync(token));
+        return ParseHistory(doc.RootElement);
+    }
+
+    internal static HistoricalWeatherReport ParseHistory(JsonElement root)
+    {
+        if (!root.TryGetProperty("daily", out JsonElement daily) ||
+            !daily.TryGetProperty("time", out JsonElement times) ||
+            !daily.TryGetProperty("temperature_2m_max", out JsonElement highs) ||
+            !daily.TryGetProperty("temperature_2m_min", out JsonElement lows) ||
+            !daily.TryGetProperty("precipitation_sum", out JsonElement precipitation) ||
+            !daily.TryGetProperty("weather_code", out JsonElement codes))
+            throw new InvalidDataException("Open-Meteo tarihsel yanıtı eksik günlük alan içeriyor.");
+
+        int count = times.GetArrayLength();
+        if (count > HistoricalWeatherRange.MaxDays || highs.GetArrayLength() != count || lows.GetArrayLength() != count ||
+            precipitation.GetArrayLength() != count || codes.GetArrayLength() != count)
+            throw new InvalidDataException("Open-Meteo tarihsel yanıt uzunluğu geçersiz.");
+
+        var days = new List<HistoricalWeatherDay>(count);
+        for (int i = 0; i < count; i++)
+        {
+            if (times[i].ValueKind != JsonValueKind.String || highs[i].ValueKind != JsonValueKind.Number ||
+                lows[i].ValueKind != JsonValueKind.Number || precipitation[i].ValueKind != JsonValueKind.Number || codes[i].ValueKind != JsonValueKind.Number)
+                continue;
+            if (!DateOnly.TryParse(times[i].GetString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly date)) continue;
+            days.Add(new HistoricalWeatherDay(date, lows[i].GetDouble(), highs[i].GetDouble(), Math.Max(0, precipitation[i].GetDouble()), codes[i].GetInt32()));
+        }
+        return new HistoricalWeatherReport(days);
+    }
+
     private static WeatherReport Parse(JsonElement root, double lat, double lon, string model)
     {
         JsonElement current = root.GetProperty("current");
