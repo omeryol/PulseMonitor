@@ -34,6 +34,23 @@
                 </ScrollViewer>
             </TabItem>
 
+            <TabItem Header="{DynamicResource Settings.Tab.Traffic}" Tag="&#xE7F4;">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Quota.Heading}" Style="{StaticResource Heading}" Margin="0,2,0,6" />
+                        <Border Style="{StaticResource Ui.SurfaceCard}" Padding="14" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Quota.ThisPeriod}" Style="{StaticResource Ui.Caption}" />
+                                <TextBlock Text="{Binding QuotaUsageText}" Style="{StaticResource Ui.WindowTitle}" Margin="0,2,0,0" />
+                                <TextBlock Text="{Binding QuotaPeriodText}" Style="{StaticResource Ui.Caption}" />
+                            </StackPanel>
+                        </Border>
+                        <settings:TrafficQuotaPanel DataContext="{Binding Alerts}" />
+                        <Button Content="{DynamicResource Settings.OpenHistory}" Command="{Binding OpenHistoryCommand}" HorizontalAlignment="Left" Margin="0,14,0,0" />
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
             <TabItem Header="{DynamicResource Settings.Tab.Style}" Tag="&#xE790;">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <settings:StylePanel DataContext="{Binding Style}" />

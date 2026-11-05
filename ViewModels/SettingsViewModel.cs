@@ -52,6 +52,12 @@ public sealed class SettingsViewModel : ObservableObject
         Monitors = monitors;
         DayTraffic today = history.Get(DateOnly.FromDateTime(DateTime.Now));
         TodayText = $"↓ {ValueFormat.Size(today.Down)}    ↑ {ValueFormat.Size(today.Up)}";
+        var period = TrafficPeriod.For(DateOnly.FromDateTime(DateTime.Now), S.Alerts.TrafficCycleStartDay);
+        DayTraffic used = TrafficPeriod.Total(history, period);
+        ulong usedTotal = TrafficPeriod.Add(used.Down, used.Up);
+        double limitBytes = S.Alerts.TrafficLimitGb * 1024d * 1024 * 1024;
+        QuotaUsageText = $"{ValueFormat.Size(usedTotal)} / {S.Alerts.TrafficLimitGb} GB  (% {usedTotal * 100 / limitBytes:0.#})";
+        QuotaPeriodText = $"{period.Start.ToDateTime(TimeOnly.MinValue):d} – {period.EndExclusive.AddDays(-1).ToDateTime(TimeOnly.MinValue):d}";
     }
 
     public ItemsSettingsViewModel Items { get; }
@@ -135,6 +141,8 @@ public sealed class SettingsViewModel : ObservableObject
     }
 
     public string TodayText { get; }
+    public string QuotaUsageText { get; }
+    public string QuotaPeriodText { get; }
 
     public WeatherSettingsViewModel Weather { get; }
 
