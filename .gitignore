@@ -18,3 +18,9 @@ tools/translate.ps1
 
 # Claude Code yerel ayarlari (kisisel izinler; depoya girmez)
 .claude/
+
+# Ajan kurallari ve tasarim taslaklari (yerel, depoya girmez)
+AGENTS.md
+GEMINI.md
+.superdesign/
+design-system/

@@ -59,6 +59,10 @@ foreach ($f in Get-ChildItem $langDir -Filter *.json) {
     if ($missing) { Write-Host "lang/$($f.Name): $($missing.Count) untranslated ($(($missing | Select-Object -First 5) -join ', ')...)" -ForegroundColor Red; $failed = $true }
 }
 
+# Repository hygiene: only build/install/license/presentation files may be tracked (tools/check_tracked.ps1).
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'check_tracked.ps1') | Out-Host
+if ($LASTEXITCODE -ne 0) { Write-Host 'TRACKED FILES CHECK FAILED' -ForegroundColor Red; $failed = $true }
+
 # Unit tests (pure logic: weather warnings, notification ledger). A failing test fails the check.
 $testProject = Join-Path $root 'tests\PulseMonitor.Tests'
 if (Test-Path $testProject) {
