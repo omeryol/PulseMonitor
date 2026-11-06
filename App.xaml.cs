@@ -116,6 +116,8 @@ public partial class App : Application
         };
 
         _hub = new MetricsHub(_settings.Current, _history);
+        _window.ProcessDetailsHoverChanged += hovered => _hub.ProcessDetailsHovered = hovered;
+        _hub.ProcessDetailsUpdated += details => Dispatcher.BeginInvoke(() => _viewModel.UpdateProcessDetails(details));
         _hub.Sampled += snapshot => Dispatcher.BeginInvoke(() =>
         {
             KeyboardSnapshot keys = KeyboardState.Read();

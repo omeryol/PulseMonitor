@@ -20,6 +20,7 @@ internal sealed class MetricsHub : IDisposable
     private readonly NetworkSampler _network = new();
     private readonly GpuSampler _gpu = new();
     private readonly DiskSampler _disk = new();
+    private readonly ProcessCpuSampler _processes = new();
     private static readonly TimeSpan TemperatureInterval = TimeSpan.FromSeconds(5);
     private readonly TemperatureSampler _temps = new();
     private readonly Stopwatch _tempClock = new();
@@ -30,13 +31,27 @@ internal sealed class MetricsHub : IDisposable
     private readonly CancellationTokenSource _cts = new();
     private Task? _loop;
     private string? _lastError;
+    private int _processDetailsHovered;
+
+    /// <summary>CPU/RAM ayrıntı kartı görünürken işlem listesi kısa aralıklarla ölçülür.</summary>
+    public bool ProcessDetailsHovered
+    {
+        get => Volatile.Read(ref _processDetailsHovered) != 0;
+        set
+        {
+            if (Interlocked.Exchange(ref _processDetailsHovered, value ? 1 : 0) == (value ? 1 : 0)) return;
+            _processes.SetActive(value);
+        }
+    }
 
     public event Action<MetricsSnapshot>? Sampled;
+    public event Action<ProcessDetailsSnapshot>? ProcessDetailsUpdated;
 
     public MetricsHub(AppSettings settings, TrafficHistory history)
     {
         _settings = settings;
         _history = history;
+        _processes.Updated += details => ProcessDetailsUpdated?.Invoke(details);
         if (!NetworkAdapters.LayoutIsValid) Log.Error("MIB_IF_ROW2 boyutu beklenenden farklı; ağ ölçümü hatalı olabilir.");
     }
 
@@ -150,6 +165,7 @@ internal sealed class MetricsHub : IDisposable
         TrafficHistoryStore.Save(_history);
         _gpu.Dispose();
         _disk.Dispose();
+        _processes.Dispose();
         _cts.Dispose();
     }
 }

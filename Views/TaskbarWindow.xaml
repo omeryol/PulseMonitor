@@ -103,7 +103,8 @@
                             BorderBrush="{DynamicResource Brush.Separator}"
                             BorderThickness="{DynamicResource Thickness.ColumnSeparator}"
                             ToolTipService.IsEnabled="{DynamicResource DetailCards.Enabled}"
-                            ToolTipService.InitialShowDelay="400" ToolTipService.ShowDuration="60000">
+                            ToolTipService.InitialShowDelay="400" ToolTipService.ShowDuration="60000"
+                            MouseEnter="OnColumnMouseEnter" MouseLeave="OnColumnMouseLeave">
                         <Grid>
                             <Grid VerticalAlignment="Center" Margin="{DynamicResource Thickness.ColumnPadding}">
                                 <ContentControl Content="{Binding Tall}" Focusable="False" VerticalAlignment="Center" />

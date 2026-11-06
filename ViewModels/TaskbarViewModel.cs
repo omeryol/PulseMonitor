@@ -17,6 +17,8 @@ public sealed class TaskbarViewModel
     private readonly SpeedWeight _upWeight, _downWeight;
     private bool _weightBySpeed;
     private double _fontSize = 11;
+    private DetailContext? _lastDetailContext;
+    private ProcessDetailsSnapshot _processDetails = ProcessDetailsSnapshot.Empty;
 
     public TaskbarViewModel()
     {
@@ -51,7 +53,25 @@ public sealed class TaskbarViewModel
     public void UpdateDetails(DetailContext context)
     {
         DetailCards.TrackPeaks(context.Metrics.Network.DownBps, context.Metrics.Network.UpBps);
-        foreach (DetailCard card in _cards.Values) card.Rows = DetailCards.Rows(card.Id, context);
+        _lastDetailContext = context;
+        RefreshDetails();
+    }
+
+    /// <summary>CPU/RAM kartı açıkken gelen hızlı işlem listesini son ölçümle birleştirir.</summary>
+    public void UpdateProcessDetails(ProcessDetailsSnapshot details)
+    {
+        _processDetails = details;
+        if (_lastDetailContext is not null) RefreshDetails();
+    }
+
+    private void RefreshDetails()
+    {
+        if (_lastDetailContext is null) return;
+        foreach (DetailCard card in _cards.Values)
+        {
+            card.IsLoading = card.Id == TaskbarItemId.Cpu && _processDetails.CpuLoading;
+            card.Rows = DetailCards.Rows(card.Id, _lastDetailContext, _processDetails);
+        }
     }
 
     public WeatherViewModel Weather { get; } = new();

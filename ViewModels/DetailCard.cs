@@ -9,6 +9,7 @@ namespace PulseMonitor.ViewModels;
 public sealed class DetailCard : ObservableObject
 {
     private IReadOnlyList<DetailRow> _rows = Array.Empty<DetailRow>();
+    private bool _isLoading;
 
     public DetailCard(string id, string title, string brushKey)
     {
@@ -22,13 +23,14 @@ public sealed class DetailCard : ObservableObject
     public string BrushKey { get; }
     public Brush Accent => ThemeBrushes.Get(BrushKey);
     public IReadOnlyList<DetailRow> Rows { get => _rows; set => Set(ref _rows, value); }
+    public bool IsLoading { get => _isLoading; set => Set(ref _isLoading, value); }
 
     /// <summary>Tema değişince başlık rengi yeniden okunur.</summary>
     public void RefreshAccent() => Raise(nameof(Accent));
 }
 
 /// <summary>Ayrıntı kartında bir satır: etiket ve değer.</summary>
-public sealed record DetailRow(string Label, string Value);
+public sealed record DetailRow(string Label, string Value, bool IsProcess = false, bool IsPlaceholder = false);
 
 /// <summary>Ayrıntı kartlarının o anki verileri (App her ölçümde doldurur).</summary>
 public sealed record DetailContext(

@@ -1,5 +1,9 @@
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using PulseMonitor.Settings;
+using PulseMonitor.ViewModels;
 
 namespace PulseMonitor.Views;
 
@@ -7,6 +11,8 @@ public partial class TaskbarWindow : Window
 {
     private double _requestedScale = 1;
     private double _effectiveScale = 1;
+
+    public event Action<bool>? ProcessDetailsHoverChanged;
 
     public TaskbarWindow()
     {
@@ -35,6 +41,18 @@ public partial class TaskbarWindow : Window
     }
 
     public void RestoreRequestedScale() => SetEffectiveScale(_requestedScale);
+
+    private void OnColumnMouseEnter(object sender, MouseEventArgs e) => SetProcessDetailsHovered(sender, true);
+
+    private void OnColumnMouseLeave(object sender, MouseEventArgs e) => SetProcessDetailsHovered(sender, false);
+
+    private void SetProcessDetailsHovered(object sender, bool hovered)
+    {
+        if (Application.Current.TryFindResource("DetailCards.Enabled") is true &&
+            sender is FrameworkElement { DataContext: TaskbarColumn column } &&
+            column.Cards.Any(card => card.Id is TaskbarItemId.Cpu or TaskbarItemId.Ram))
+            ProcessDetailsHoverChanged?.Invoke(hovered);
+    }
 
     private void SetEffectiveScale(double scale)
     {

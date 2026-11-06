@@ -1,6 +1,7 @@
 using System.Globalization;
 using PulseMonitor.Core;
 using PulseMonitor.Formatting;
+using PulseMonitor.Metrics;
 using PulseMonitor.Settings;
 
 namespace PulseMonitor.ViewModels;
@@ -22,7 +23,7 @@ internal static class DetailCards
         _peakUp = Math.Max(_peakUp, upBps);
     }
 
-    public static IReadOnlyList<DetailRow> Rows(string id, DetailContext c)
+    public static IReadOnlyList<DetailRow> Rows(string id, DetailContext c, ProcessDetailsSnapshot processes)
     {
         var m = c.Metrics;
         DetailRow R(string key, string value) => new(Strings.Get($"Detail.{key}"), value);
@@ -40,19 +41,8 @@ internal static class DetailCards
                 R("Now", ValueFormat.Speed(m.Network.DownBps)), R("PeakToday", ValueFormat.Speed(_peakDown)),
                 R("TotalToday", ValueFormat.Size(c.Today.Down)), R("Adapter", m.Adapters),
             ],
-            TaskbarItemId.Cpu =>
-            [
-                R("Usage", ValueFormat.Percent(m.CpuPercent)),
-                R("Cores", Environment.ProcessorCount.ToString(Tr)),
-                R("Uptime", Uptime()),
-            ],
-            TaskbarItemId.Ram =>
-            [
-                R("Usage", ValueFormat.Percent(m.RamPercent)),
-                R("Used", ValueFormat.Size(m.RamTotal - m.RamAvailable)),
-                R("Free", ValueFormat.Size(m.RamAvailable)),
-                R("Total", ValueFormat.Size(m.RamTotal)),
-            ],
+            TaskbarItemId.Cpu => CpuRows(c, processes),
+            TaskbarItemId.Ram => RamRows(c, processes),
             TaskbarItemId.Gpu when m.PrimaryGpu is { } gpu => GpuRows(gpu, m.SecondaryGpu, false),
             TaskbarItemId.GpuTemp when m.PrimaryGpu is { } gpu => GpuRows(gpu, m.SecondaryGpu, true),
             TaskbarItemId.Gpu => [R("Usage", ValueFormat.Percent(m.GpuPercent)), R("Temperature", ValueFormat.Celsius(m.GpuTempC))],
@@ -88,6 +78,40 @@ internal static class DetailCards
             ? [new(primary.Name, Format(primary))]
             : [new(primary.Name, Format(primary)), new(secondary.Name, Format(secondary))];
     }
+
+    private static IReadOnlyList<DetailRow> CpuRows(DetailContext context, ProcessDetailsSnapshot processes)
+    {
+        var rows = new List<DetailRow>
+        {
+            new(Strings.Get("Detail.Usage"), ValueFormat.Percent(context.Metrics.CpuPercent)),
+            new(Strings.Get("Detail.Cores"), Environment.ProcessorCount.ToString(Tr)),
+            new(Strings.Get("Detail.Uptime"), Uptime()),
+        };
+        rows.AddRange(processes.CpuLoading
+            ? Enumerable.Range(0, 5).Select(_ => new DetailRow("", "", IsPlaceholder: true))
+            : processes.Cpu.Select(process =>
+                new DetailRow(ProcessLabel(process.Name, process.Count), ValueFormat.Percent(process.Percent), IsProcess: true)));
+        return rows;
+    }
+
+    private static IReadOnlyList<DetailRow> RamRows(DetailContext context, ProcessDetailsSnapshot processes)
+    {
+        var m = context.Metrics;
+        var rows = new List<DetailRow>
+        {
+            new(Strings.Get("Detail.Usage"), ValueFormat.Percent(m.RamPercent)),
+            new(Strings.Get("Detail.Used"), ValueFormat.Size(m.RamTotal - m.RamAvailable)),
+            new(Strings.Get("Detail.Free"), ValueFormat.Size(m.RamAvailable)),
+            new(Strings.Get("Detail.Total"), ValueFormat.Size(m.RamTotal)),
+        };
+        rows.AddRange(processes.Memory.Select(process =>
+            new DetailRow(ProcessLabel(process.Name, process.Count), ValueFormat.Size(process.WorkingSet), IsProcess: true)));
+        return rows;
+    }
+
+    // Aynı adlı işlemler tek satırda toplanır; birden fazlaysa adın yanında kaç tane olduğu görünür (chrome ×12).
+    private static string ProcessLabel(string name, int count) =>
+        count > 1 ? string.Format(Tr, "{0} ×{1}", name, count) : name;
 
     private static string Uptime()
     {
