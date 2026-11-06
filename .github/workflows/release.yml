@@ -21,6 +21,10 @@ jobs:
         with:
           dotnet-version: '10.0.403'
 
+      - name: Tracked files guard
+        shell: powershell
+        run: .\tools\check_tracked.ps1
+
       - name: Unit tests
         run: dotnet test tests/PulseMonitor.Tests --nologo -v q
       - name: Windows feature tests

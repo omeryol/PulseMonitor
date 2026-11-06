@@ -1,0 +1,28 @@
+# Depo bekçisi: main'e her gönderimde ve her PR'da çalışır. İzinsiz üst düzey yol, çalışma notu, taslak,
+# günlük, ikili ya da 2 MB üstü dosya depoya girerse kırmızı yanar (tools/check_tracked.ps1).
+name: Guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tracked-files:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Guard files present
+        shell: powershell
+        run: |
+          foreach ($f in 'tools/check_tracked.ps1', 'tools/check.ps1') {
+            if (-not (Test-Path $f)) { Write-Error "$f is missing"; exit 1 }
+          }
+
+      - name: Tracked files guard
+        shell: powershell
+        run: .\tools\check_tracked.ps1
