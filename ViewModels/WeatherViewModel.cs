@@ -35,6 +35,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     private double _opacity = 1;
     private bool _isCinematicIcon;
     private WeatherAnimationKind _animation;
+    private WeatherLocation? _activeLocation;
 
     public bool IsVisible { get => _isVisible; private set => Set(ref _isVisible, value); }
 
@@ -78,11 +79,15 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     /// <summary>Öğeye tıklandı ve birden fazla konum var: App sıradaki konuma geçer.</summary>
     public event Action? SwitchRequested;
     public void RequestSwitch() => SwitchRequested?.Invoke();
+    public event Action<WeatherLocation?>? HistoryRequested;
+    public void RequestHistory(WeatherLocation? location = null) => HistoryRequested?.Invoke(location ?? _activeLocation);
     public bool CanSwitch { get; private set; }
+    internal WeatherLocation? ActiveLocation => _activeLocation;
 
     internal void Update(AppSettings s, Func<WeatherLocation, WeatherReport?> reportFor)
     {
         WeatherLocation? loc = s.Weather.Active;
+        _activeLocation = loc;
         IsVisible = s.IsShown(TaskbarItemId.Weather) && loc is not null;
         CanSwitch = s.Weather.Locations.Count > 1;
         if (loc is null) return;

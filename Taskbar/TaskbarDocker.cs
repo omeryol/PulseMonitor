@@ -114,10 +114,16 @@ internal sealed class TaskbarDocker : IDisposable
             CenteredAfterLeftAlignment?.Invoke();
         }
         bool left = _settings.TaskbarLeft && centered;
+        // Sol alan ölçülemez ya da yeterli değilse pencereyi gizlemek yerine sağdaki
+        // güvenilir konuma dön. Bir yerleşim tercihi uygulamayı kaybettirmemeli.
+        if (left && !FitLeftPlacement(bar))
+        {
+            left = false;
+            Log.Warn("Sol görev çubuğu konumu sığmadı; panel sağdaki güvenli konuma alındı.");
+        }
         if (!left && _window is TaskbarWindow taskbarWindow) taskbarWindow.RestoreRequestedScale();
-        bool hasSpace = !left || FitLeftPlacement(bar);
-        SetShown(bar.IsOnScreen && !fullscreen && hasSpace);
-        if (_window.IsVisible) Place(bar);
+        SetShown(bar.IsOnScreen && !fullscreen);
+        if (_window.IsVisible) Place(bar, left);
     }
 
     private bool FitLeftPlacement(TaskbarSnapshot bar)
@@ -125,8 +131,10 @@ internal sealed class TaskbarDocker : IDisposable
         if (!TaskbarStartButtonLocator.TryGetBounds(bar, out Rect start))
         {
             _lastStartBounds = Rect.Empty;
-            Log.Warn("Başlat düğmesinin konumu doğrulanamadı; sol görev çubuğu paneli geçici olarak gizlendi.");
-            return false;
+            // Explorer'ın erişilebilirlik ağacı bazen geç hazırlanır. Simgeler merkezdeyse
+            // gerçek sol kenar yine en iyi konumdur; uygulamayı sırf ölçüm yok diye gizleme.
+            Log.Warn("Başlat düğmesinin konumu doğrulanamadı; panel sol kenarda ölçeksiz gösteriliyor.");
+            return true;
         }
 
         if (start != _lastStartBounds)
@@ -145,7 +153,7 @@ internal sealed class TaskbarDocker : IDisposable
         return fits;
     }
 
-    private void Place(TaskbarSnapshot bar)
+    private void Place(TaskbarSnapshot bar, bool left)
     {
         double scale = User32.GetDpiForWindow(_hwnd) / 96.0;
         int w = (int)Math.Ceiling(_window.ActualWidth * scale);
@@ -153,7 +161,6 @@ internal sealed class TaskbarDocker : IDisposable
         if (w <= 0 || h <= 0) return;
 
         int gap = (int)Math.Round(_settings.TrayGapPx * scale);
-        bool left = _settings.TaskbarLeft && TaskbarAlignment.IsCentered();
         int x, y;
         if (bar.IsHorizontal)
         {

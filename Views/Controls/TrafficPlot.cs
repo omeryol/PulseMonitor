@@ -12,7 +12,11 @@ public sealed class TrafficPlot : WpfPlot
 {
     public TrafficPlot()
     {
-        Loaded += (_, _) => RenderTraffic();
+        Loaded += (_, _) =>
+        {
+            UserInputProcessor.Disable();
+            RenderTraffic();
+        };
     }
 
     public IEnumerable? Items { get => (IEnumerable?)GetValue(ItemsProperty); set => SetValue(ItemsProperty, value); }

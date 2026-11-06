@@ -12,7 +12,7 @@ public sealed class HistoricalWeatherTests
         DateTime yesterday = DateTime.Today.AddDays(-1);
         Assert.True(HistoricalWeatherRange.TryCreate(yesterday.AddDays(-29), yesterday, out var valid));
         Assert.Equal(30, valid.End.DayNumber - valid.Start.DayNumber + 1);
-        Assert.False(HistoricalWeatherRange.TryCreate(yesterday.AddDays(-366), yesterday, out _));
+        Assert.False(HistoricalWeatherRange.TryCreate(yesterday.AddDays(-HistoricalWeatherRange.MaxDays), yesterday, out _));
         Assert.False(HistoricalWeatherRange.TryCreate(yesterday, DateTime.Today, out _));
     }
 
@@ -27,5 +27,25 @@ public sealed class HistoricalWeatherTests
         var day = Assert.Single(report.Days);
         Assert.Equal(new DateOnly(2026, 1, 1), day.Date);
         Assert.Equal(1.5, day.PrecipitationMm);
+    }
+
+    [Fact]
+    public void AnalysisUsesLocationHemisphereAndComparesPriorYear()
+    {
+        var current = new HistoricalWeatherReport([
+            new(new DateOnly(2026, 1, 5), 2, 10, 3, 0),
+            new(new DateOnly(2026, 7, 5), 18, 30, 1, 1),
+        ]);
+        var previous = new HistoricalWeatherReport([
+            new(new DateOnly(2025, 1, 5), 1, 8, 4, 0),
+            new(new DateOnly(2025, 7, 5), 17, 28, 1, 1),
+        ]);
+
+        HistoricalWeatherAnalysis north = HistoricalWeatherAnalytics.Analyze(current, previous, 41);
+        Assert.Equal(2, north.AverageHighDifference);
+        Assert.Equal(-1, north.PrecipitationDifference);
+        Assert.Contains(north.Seasons, season => season.Season == WeatherSeason.Winter);
+        Assert.Contains(north.Seasons, season => season.Season == WeatherSeason.Summer);
+        Assert.Equal(WeatherSeason.Summer, HistoricalWeatherAnalytics.SeasonFor(1, -33));
     }
 }

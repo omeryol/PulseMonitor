@@ -90,6 +90,7 @@ public partial class App : Application
         _updates = new UpdateChecker(_settings.Current);
         _windows = new AppWindows(_settings, _history, _updates, _ping,
             () => _tray?.ShowNotification(Strings.Get("Alert.Title"), Strings.Get("Alert.Test"), warning: false));
+        _viewModel.Weather.HistoryRequested += location => _windows?.OpenWeatherHistory(location);
         _settings.Changed += OnSettingsChanged;
 
         var menu = new AppMenu(_settings, _windows.OpenSettings, _windows.OpenHistory, () => _weather.RefreshSoon(),

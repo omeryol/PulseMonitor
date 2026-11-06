@@ -31,7 +31,7 @@ public partial class SettingsWindow : Window
     private void WeatherHistory_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not SettingsViewModel vm || vm.Store.Current.Weather.Active is not { } location) return;
-        new WeatherHistoryWindow(location) { Owner = this }.ShowDialog();
+        new WeatherHistoryWindow(location, vm.Store.Current.Style) { Owner = this }.ShowDialog();
     }
 
     private void Export(bool settings)

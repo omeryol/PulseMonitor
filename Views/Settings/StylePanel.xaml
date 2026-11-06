@@ -24,6 +24,8 @@
         <TextBlock Text="{DynamicResource Style.Section.Color}" Style="{StaticResource Section}" Margin="0,2,0,6" />
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.InterfaceSkin}" Style="{StaticResource RowLabel}" />
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.InterfaceSkin}" Content="{Binding InterfaceSkin}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <TextBlock Text="{DynamicResource Style.InterfaceSkin.Hint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11"
+                   TextWrapping="Wrap" Margin="190,1,0,5" />
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.Theme}" Style="{StaticResource RowLabel}" />
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.Theme}" Content="{Binding Theme}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.Palette}" Style="{StaticResource RowLabel}" />

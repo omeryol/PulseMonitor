@@ -25,16 +25,23 @@ internal static class OpenMeteoClient
         return Parse(doc.RootElement, lat, lon, model);
     }
 
-    /// <summary>Yalnızca kullanıcı istediğinde çağrılan, en fazla 366 günlük günlük geçmiş isteği.</summary>
+    /// <summary>Yalnızca kullanıcı istediğinde çağrılan, en fazla 20 yıllık günlük geçmiş isteği.</summary>
     public static async Task<HistoricalWeatherReport> FetchHistoryAsync(double lat, double lon, HistoricalWeatherRange range, CancellationToken token)
     {
         if (lat is < -90 or > 90 || lon is < -180 or > 180) throw new ArgumentOutOfRangeException(nameof(lat));
+        if (HistoricalWeatherCache.TryGet(lat, lon, range, out HistoricalWeatherReport cached))
+        {
+            Log.Info($"Tarihsel hava önbellekten yüklendi: {range.Start:yyyy-MM-dd} – {range.End:yyyy-MM-dd}");
+            return cached;
+        }
         string url = FormattableString.Invariant(
             $"https://archive-api.open-meteo.com/v1/archive?latitude={lat:0.####}&longitude={lon:0.####}&start_date={range.Start:yyyy-MM-dd}&end_date={range.End:yyyy-MM-dd}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto");
         using HttpResponseMessage response = await Http.Client.GetAsync(url, token);
         response.EnsureSuccessStatusCode();
         using JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStreamAsync(token));
-        return ParseHistory(doc.RootElement);
+        HistoricalWeatherReport report = ParseHistory(doc.RootElement);
+        HistoricalWeatherCache.Store(lat, lon, report);
+        return report;
     }
 
     internal static HistoricalWeatherReport ParseHistory(JsonElement root)

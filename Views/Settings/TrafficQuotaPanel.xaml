@@ -5,6 +5,7 @@
         <Style TargetType="DockPanel"><Setter Property="Margin" Value="0,6" /></Style>
         <Style TargetType="TextBlock" x:Key="Value"><Setter Property="Width" Value="64" /><Setter Property="TextAlignment" Value="Right" /><Setter Property="VerticalAlignment" Value="Center" /></Style>
     </UserControl.Resources>
+    <Border Background="{DynamicResource Ui.Card}" BorderBrush="{DynamicResource Ui.Border}" BorderThickness="1" CornerRadius="8" Padding="12">
     <StackPanel>
         <CheckBox Content="{DynamicResource Alerts.Traffic}" IsChecked="{Binding TrafficEnabled}" Margin="0,0,0,4" />
         <DockPanel>
@@ -22,4 +23,5 @@
             <ComboBox ItemsSource="{Binding TrafficWarningPercent.Options}" SelectedItem="{Binding TrafficWarningPercent.Selected}" DisplayMemberPath="Display" />
         </DockPanel>
     </StackPanel>
+    </Border>
 </UserControl>

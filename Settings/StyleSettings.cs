@@ -6,7 +6,7 @@ namespace PulseMonitor.Settings;
 /// </summary>
 public sealed class StyleSettings
 {
-    /// <summary>Varsayılan görünüm veya isteğe bağlı koyu izleme paneli. Varsayılan mevcut görünümü korur.</summary>
+    /// <summary>Varsayılan görünüm veya isteğe bağlı analitik izleme paneli. Varsayılan mevcut görünümü korur.</summary>
     public string InterfaceSkin { get; set; } = StyleOptions.SkinClassic;
     // Renk
     public string Theme { get; set; } = StyleOptions.ThemeAuto;

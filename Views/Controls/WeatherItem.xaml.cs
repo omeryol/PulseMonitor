@@ -1,13 +1,14 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using PulseMonitor.Weather;
 using PulseMonitor.ViewModels;
 
 namespace PulseMonitor.Views.Controls;
 
 public partial class WeatherItem : UserControl
 {
-    /// <summary>Kart tıklamadan sonra elle açıldı; fare çıkınca elle kapatılır (ToolTipService kapatmaz).</summary>
+    private WeatherLocation? _firstClickLocation;
     private bool _openedByClick;
 
     public WeatherItem()
@@ -15,19 +16,32 @@ public partial class WeatherItem : UserControl
         InitializeComponent();
     }
 
-    /// <summary>Tıklayınca sıradaki konum; çift tık burada görev yöneticisini açmaz (pencereye iletilmez).</summary>
+    /// <summary>Tek tık konumu gecikmeden değiştirir; çift tık ilk tıklanan konumun geçmişini açar.</summary>
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (DataContext is not WeatherViewModel vm || !vm.CanSwitch) return;
+        if (DataContext is not WeatherViewModel vm) return;
         if (e.ClickCount == 1)
         {
-            vm.RequestSwitch();
-            KeepCardOpen();
+            // Geçmiş isteği ikinci tıkta geldiğinde ilk konum çoktan değişmiş olabilir.
+            // Bu yüzden hedefi ilk tıklama anında saklarız; tek tık yine eski sürümdeki gibi anındadır.
+            _firstClickLocation = vm.ActiveLocation;
+            if (vm.CanSwitch)
+            {
+                vm.RequestSwitch();
+                KeepCardOpen(); // konum değişse de ayrıntı kartı yeni veriyle görünür kalır
+            }
+            e.Handled = true;
+            return;
+        }
+        if (e.ClickCount == 2)
+        {
+            vm.RequestHistory(_firstClickLocation ?? vm.ActiveLocation);
+            _firstClickLocation = null;
         }
         e.Handled = true;
     }
 
-    /// <summary>WPF fareye basılınca ipucunu kapatır; kart yeni konumla hemen yeniden açılır.</summary>
+    /// <summary>WPF tık sonrası ipucunu kapatır; aktif konum yenilendiğinde kart tekrar açılır.</summary>
     private void KeepCardOpen()
     {
         if (ToolTip is not ToolTip card || !ToolTipService.GetIsEnabled(this)) return;

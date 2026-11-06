@@ -4,6 +4,7 @@ using PulseMonitor.Settings;
 using PulseMonitor.Traffic;
 using PulseMonitor.ViewModels;
 using PulseMonitor.Metrics;
+using PulseMonitor.Weather;
 
 namespace PulseMonitor.Views;
 
@@ -17,6 +18,7 @@ internal sealed class AppWindows
     private readonly PingMonitor _ping;
     private SettingsWindow? _settingsWindow;
     private HistoryWindow? _historyWindow;
+    private WeatherHistoryWindow? _weatherHistoryWindow;
     private AboutWindow? _aboutWindow;
     private UpdateWindow? _updateWindow;
 
@@ -37,6 +39,13 @@ internal sealed class AppWindows
     public bool IsSettingsOpen => _settingsWindow is not null;
 
     public void OpenHistory() => Open(ref _historyWindow, () => new HistoryWindow { DataContext = new HistoryViewModel(_history) });
+
+    public void OpenWeatherHistory(WeatherLocation? requestedLocation = null)
+    {
+        WeatherLocation? location = requestedLocation ?? _settings.Current.Weather.Active;
+        if (location is null) return;
+        Open(ref _weatherHistoryWindow, () => new WeatherHistoryWindow(location, _settings.Current.Style));
+    }
 
     public void OpenAbout() => Open(ref _aboutWindow, () => new AboutWindow { DataContext = new AboutViewModel(_updates, OpenUpdate) });
 
@@ -66,6 +75,7 @@ internal sealed class AppWindows
     {
         if (ReferenceEquals(window, _settingsWindow)) _settingsWindow = null;
         if (ReferenceEquals(window, _historyWindow)) _historyWindow = null;
+        if (ReferenceEquals(window, _weatherHistoryWindow)) _weatherHistoryWindow = null;
         if (ReferenceEquals(window, _aboutWindow)) _aboutWindow = null;
         if (ReferenceEquals(window, _updateWindow)) _updateWindow = null;
     }

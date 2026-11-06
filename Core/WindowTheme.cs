@@ -31,6 +31,8 @@ internal static class WindowTheme
             app.Resources[$"Ui.{key}"] = app.FindResource($"Ui.{key}.{sfx}");
     }
 
+    // SkinNightPanel kimliği önceki sürümlerde de ayarlara yazıldığı için korunur;
+    // ekranda "Analitik panel" olarak sunulan tasarım paketidir.
     private static void ApplyNightPanel(Application app)
     {
         var colors = new Dictionary<string, string>
