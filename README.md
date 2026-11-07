@@ -49,7 +49,7 @@ Screenshots are generated with sample data.
 - **Built into the taskbar**: sits left of the system tray by itself and moves when the tray grows; hides while an app
   is full screen; recovers when Explorer restarts; no flicker (value columns have a fixed width).
 - **Indicators** (each can be turned on/off and reordered): upload/download speed (with a mini chart behind the value),
-  CPU, RAM, GPU, disk activity, GPU and NVMe temperature, ping, local/external IP, Caps/Num/Scroll Lock, weather.
+  CPU, RAM, GPU, disk activity (card: read/write speed and a used/free bar per drive), GPU (card: engine load, video memory, top apps) and NVMe temperature, ping, local/external IP, Caps/Num/Scroll Lock, weather.
 - **Weather**: search villages, neighbourhoods and towns anywhere in the world (Open-Meteo + OpenStreetMap; places in
   your own country first); forecast for the chosen spot with an hourly and/or 5-day strip; feels-like temperature, description, °C/°F;
   up to 8 locations (click the weather item to switch, the card lists the others); choice of forecast model (ECMWF,

@@ -32,15 +32,44 @@ internal sealed class MetricsHub : IDisposable
     private Task? _loop;
     private string? _lastError;
     private int _processDetailsHovered;
+    private int _diskDetailsHovered;
+    private readonly DiskSpaceReader _space = new();
+    private int _gpuDetailsHovered;
+    private readonly GpuDetailsSampler _gpuDetails = new();
 
     /// <summary>CPU/RAM ayrıntı kartı görünürken işlem listesi kısa aralıklarla ölçülür.</summary>
-    public bool ProcessDetailsHovered
+    private bool ProcessDetailsHovered
     {
         get => Volatile.Read(ref _processDetailsHovered) != 0;
         set
         {
             if (Interlocked.Exchange(ref _processDetailsHovered, value ? 1 : 0) == (value ? 1 : 0)) return;
             _processes.SetActive(value);
+        }
+    }
+
+    /// <summary>Disk ayrıntı kartı görünürken disk hızları ve sürücü doluluğu ölçülür; kart kapanınca ölçüm durur.</summary>
+    private bool DiskDetailsHovered
+    {
+        get => Volatile.Read(ref _diskDetailsHovered) != 0;
+        set => Volatile.Write(ref _diskDetailsHovered, value ? 1 : 0);
+    }
+
+    /// <summary>GPU ayrıntı kartı görünürken motor yükleri, video belleği ve işlem listesi ölçülür.</summary>
+    private bool GpuDetailsHovered
+    {
+        get => Volatile.Read(ref _gpuDetailsHovered) != 0;
+        set => Volatile.Write(ref _gpuDetailsHovered, value ? 1 : 0);
+    }
+
+    /// <summary>Bir ayrıntı kartı açıldı/kapandı: kartın ihtiyaç duyduğu ek ölçümler (işlem, disk, GPU) açılır/kapanır.</summary>
+    public void SetCardHovered(string cardId, bool hovered)
+    {
+        switch (cardId)
+        {
+            case TaskbarItemId.Cpu or TaskbarItemId.Ram: ProcessDetailsHovered = hovered; break;
+            case TaskbarItemId.Disk: DiskDetailsHovered = hovered; break;
+            case TaskbarItemId.Gpu: GpuDetailsHovered = hovered; break;
         }
     }
 
@@ -102,11 +131,17 @@ internal sealed class MetricsHub : IDisposable
                 gpuTemp = new[] { primary.Temperature, secondary?.Temperature }.Max();
             }
 
-            Sampled?.Invoke(new MetricsSnapshot(cpu, ram, gpu, SampleDisk(), net, gpuTemp, _diskTemp,
+            bool diskCard = DiskDetailsHovered;
+            DiskReading disk = SampleDisk(diskCard);
+            Sampled?.Invoke(new MetricsSnapshot(cpu, ram, gpu, disk.Percent, net, gpuTemp, _diskTemp,
                 _cpuRam.RamTotal, _cpuRam.RamAvailable, _network.AdapterNames)
             {
                 PrimaryGpu = primary,
                 SecondaryGpu = secondary,
+                DiskReadBps = disk.ReadBps,
+                DiskWriteBps = disk.WriteBps,
+                Drives = diskCard ? _space.ReadAll() : [],
+                GpuDetails = SampleGpuDetails(selection),
             });
             _lastError = null;
         }
@@ -149,11 +184,21 @@ internal sealed class MetricsHub : IDisposable
         return null;
     }
 
-    private double? SampleDisk()
+    private GpuDetails? SampleGpuDetails(string? selection)
     {
-        if (_settings.IsShown(TaskbarItemId.Disk)) return _disk.Sample();
-        _disk.Dispose();
+        if (GpuDetailsHovered) return _gpuDetails.Sample(selection);
+        _gpuDetails.Dispose();
         return null;
+    }
+
+    /// <summary>Etkinlik Disk öğesi açıkken, okuma/yazma hızı yalnızca Disk kartı açıkken ölçülür.</summary>
+    private DiskReading SampleDisk(bool card)
+    {
+        bool activity = _settings.IsShown(TaskbarItemId.Disk);
+        if (activity || card) return _disk.Sample(activity, card);
+        _disk.Dispose();
+        _gpuDetails.Dispose();
+        return new DiskReading(null, null, null);
     }
 
     /// <summary>Döngüyü durdurur ve trafiği son kez diske yazar.</summary>
@@ -165,6 +210,7 @@ internal sealed class MetricsHub : IDisposable
         TrafficHistoryStore.Save(_history);
         _gpu.Dispose();
         _disk.Dispose();
+        _gpuDetails.Dispose();
         _processes.Dispose();
         _cts.Dispose();
     }

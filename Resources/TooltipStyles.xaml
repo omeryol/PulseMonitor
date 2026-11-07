@@ -32,11 +32,30 @@
                             <ItemsControl ItemsSource="{Binding Rows}" Tag="{Binding Accent}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <DockPanel x:Name="Row" Margin="0,1">
-                                            <TextBlock x:Name="Value" DockPanel.Dock="Right" Text="{Binding Value}" FontWeight="SemiBold" Margin="16,0,0,0" />
-                                            <TextBlock x:Name="Label" Text="{Binding Label}" Foreground="{DynamicResource Brush.Muted}" />
-                                        </DockPanel>
+                                        <StackPanel>
+                                            <DockPanel x:Name="Row" Margin="0,1">
+                                                <TextBlock x:Name="Value" DockPanel.Dock="Right" Text="{Binding Value}" FontWeight="SemiBold" Margin="16,0,0,0" />
+                                                <TextBlock x:Name="Label" Text="{Binding Label}" Foreground="{DynamicResource Brush.Muted}" />
+                                            </DockPanel>
+                                            <!-- Doluluk çubuğu (sürücüler): dolu kısım kartın vurgu renginde -->
+                                            <ProgressBar x:Name="Bar" Minimum="0" Maximum="100" Value="{Binding BarValue, Mode=OneWay}" Height="4"
+                                                         Margin="0,1,0,5" Visibility="Collapsed"
+                                                         Foreground="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                                                <ProgressBar.Template>
+                                                    <ControlTemplate TargetType="ProgressBar">
+                                                        <Grid>
+                                                            <Border Background="{DynamicResource Brush.Muted}" Opacity="0.25" CornerRadius="2" />
+                                                            <Border x:Name="PART_Track" />
+                                                            <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}" CornerRadius="2" HorizontalAlignment="Left" />
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </ProgressBar.Template>
+                                            </ProgressBar>
+                                        </StackPanel>
                                         <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding HasBar}" Value="True">
+                                                <Setter TargetName="Bar" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding IsProcess}" Value="True">
                                                 <Setter TargetName="Label" Property="Foreground" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                                 <Setter TargetName="Value" Property="Foreground" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />

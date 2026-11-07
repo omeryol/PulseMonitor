@@ -2,7 +2,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using ScottPlot;
 using ScottPlot.WPF;
 using PulseMonitor.Core;
 using PulseMonitor.Formatting;

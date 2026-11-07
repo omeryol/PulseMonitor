@@ -14,8 +14,10 @@ public sealed class AppSettings
     /// <summary>Tam ekran uygulama (oyun, video, sunum) açıkken gizlen.</summary>
     public bool HideInFullscreen { get; set; } = true;
 
-    /// <summary>Pencere ile sistem tepsisi arasındaki boşluk (96 DPI'da piksel).</summary>
+    /// <summary>Seçili ekran kartı: boş = otomatik (tümü); kart kimliği ya da "kimlik|kimlik" (iki kart birlikte).</summary>
     public string? GpuSelection { get; set; }
+
+    /// <summary>Pencere ile sistem tepsisi arasındaki boşluk (96 DPI'da piksel).</summary>
     public int TrayGapPx { get; set; } = 0;
 
     /// <summary>Boş: birincil görev çubuğu; aksi halde Windows ekran aygıtı.</summary>

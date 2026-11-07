@@ -66,7 +66,7 @@ public partial class ColorPicker : UserControl
 
     private void OnSwatchClick(object sender, RoutedEventArgs e)
     {
-        if (sender is FrameworkElement { Tag: string hex } && StyleOptions.TryParseColor(hex, out Color c))
+        if (sender is FrameworkElement { Tag: string hex } && StyleOptions.TryParseColor(hex, out _))
         {
             _syncing = false;
             SelectedColor = hex;   // kaydırıcılar da yeni renge geçer

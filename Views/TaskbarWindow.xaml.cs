@@ -1,8 +1,6 @@
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using PulseMonitor.Settings;
 using PulseMonitor.ViewModels;
 
 namespace PulseMonitor.Views;
@@ -12,7 +10,8 @@ public partial class TaskbarWindow : Window
     private double _requestedScale = 1;
     private double _effectiveScale = 1;
 
-    public event Action<bool>? ProcessDetailsHoverChanged;
+    /// <summary>Fare bir sütuna girince/çıkınca, sütundaki her ayrıntı kartı için (kart kimliği, üzerinde mi). Kart açıkken ölçülenler için.</summary>
+    public event Action<string, bool>? DetailCardHoverChanged;
 
     public TaskbarWindow()
     {
@@ -42,16 +41,16 @@ public partial class TaskbarWindow : Window
 
     public void RestoreRequestedScale() => SetEffectiveScale(_requestedScale);
 
-    private void OnColumnMouseEnter(object sender, MouseEventArgs e) => SetProcessDetailsHovered(sender, true);
+    private void OnColumnMouseEnter(object sender, MouseEventArgs e) => NotifyCardsHovered(sender, true);
 
-    private void OnColumnMouseLeave(object sender, MouseEventArgs e) => SetProcessDetailsHovered(sender, false);
+    private void OnColumnMouseLeave(object sender, MouseEventArgs e) => NotifyCardsHovered(sender, false);
 
-    private void SetProcessDetailsHovered(object sender, bool hovered)
+    private void NotifyCardsHovered(object sender, bool hovered)
     {
-        if (Application.Current.TryFindResource("DetailCards.Enabled") is true &&
-            sender is FrameworkElement { DataContext: TaskbarColumn column } &&
-            column.Cards.Any(card => card.Id is TaskbarItemId.Cpu or TaskbarItemId.Ram))
-            ProcessDetailsHoverChanged?.Invoke(hovered);
+        if (Application.Current.TryFindResource("DetailCards.Enabled") is not true ||
+            sender is not FrameworkElement { DataContext: TaskbarColumn column })
+            return;
+        foreach (DetailCard card in column.Cards) DetailCardHoverChanged?.Invoke(card.Id, hovered);
     }
 
     private void SetEffectiveScale(double scale)

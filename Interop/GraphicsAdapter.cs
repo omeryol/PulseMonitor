@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace PulseMonitor.Interop;
 
-internal sealed record GraphicsAdapter(string Id, string Name, string Luid)
+internal sealed record GraphicsAdapter(string Id, string Name, string Luid, ulong DedicatedMemory = 0)
 {
     private const uint DxgiSoftware = 1u << 1;
     private const uint RenderSupported = 1u << 0;
@@ -35,7 +35,7 @@ internal sealed record GraphicsAdapter(string Id, string Name, string Luid)
                     int ordinal = occurrences.GetValueOrDefault(hardwareId) + 1;
                     occurrences[hardwareId] = ordinal;
                     string name = ordinal == 1 ? desc.Description : $"{desc.Description} ({ordinal})";
-                    result.Add(new GraphicsAdapter($"{hardwareId}:{ordinal}", name, LuidKey(desc.LuidHigh, desc.LuidLow)));
+                    result.Add(new GraphicsAdapter($"{hardwareId}:{ordinal}", name, LuidKey(desc.LuidHigh, desc.LuidLow), (ulong)desc.DedicatedVideoMemory));
                 }
                 finally { Marshal.Release(adapter); }
             }

@@ -15,6 +15,17 @@ internal static class ValueFormat
     public const string TemperaturePlaceholder = "188°";
     public const string PingPlaceholder = "8888 ms";
 
+    /// <summary>Kapasite (sürücü, video belleği): 512 MB · 93,5 GB · 465 GB · 1,82 TB (büyüdükçe ondalık azalır).</summary>
+    public static string Capacity(double bytes)
+    {
+        const double gb = 1024d * 1024 * 1024;
+        double b = Math.Max(0, bytes);
+        if (b >= 1024 * gb) return string.Format(Tr, "{0:0.00} TB", b / (1024 * gb));
+        if (b >= 100 * gb) return string.Format(Tr, "{0:0} GB", b / gb);
+        if (b >= gb) return string.Format(Tr, "{0:0.0} GB", b / gb);
+        return string.Format(Tr, "{0:0} MB", b / (1024 * 1024));
+    }
+
     /// <summary>41° · okunamıyorsa --</summary>
     public static string Celsius(double? value) =>
         value is { } v ? string.Format(Tr, "{0:0}°", v) : "--";

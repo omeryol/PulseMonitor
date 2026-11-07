@@ -15,6 +15,16 @@ public sealed record MetricsSnapshot(
 {
     public GpuReading? PrimaryGpu { get; init; }
     public GpuReading? SecondaryGpu { get; init; }
+
+    /// <summary>Disk okuma/yazma hızı (bayt/sn); yalnızca Disk kartı açıkken ölçülür, aksi halde null.</summary>
+    public double? DiskReadBps { get; init; }
+    public double? DiskWriteBps { get; init; }
+
+    /// <summary>Sabit disklerin boş/dolu alanı; yalnızca Disk kartı açıkken doldurulur.</summary>
+    public IReadOnlyList<DiskSpace> Drives { get; init; } = [];
+
+    /// <summary>GPU motor yükleri, video belleği ve en çok kullanan işlemler; yalnızca GPU kartı açıkken ölçülür, aksi halde null.</summary>
+    public GpuDetails? GpuDetails { get; init; }
 }
 
 public sealed record GpuReading(string Name, double? Usage, double? Temperature);

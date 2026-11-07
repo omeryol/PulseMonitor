@@ -43,10 +43,9 @@ internal static class DetailCards
             ],
             TaskbarItemId.Cpu => CpuRows(c, processes),
             TaskbarItemId.Ram => RamRows(c, processes),
-            TaskbarItemId.Gpu when m.PrimaryGpu is { } gpu => GpuRows(gpu, m.SecondaryGpu, false),
             TaskbarItemId.GpuTemp when m.PrimaryGpu is { } gpu => GpuRows(gpu, m.SecondaryGpu, true),
-            TaskbarItemId.Gpu => [R("Usage", ValueFormat.Percent(m.GpuPercent)), R("Temperature", ValueFormat.Celsius(m.GpuTempC))],
-            TaskbarItemId.Disk => [R("Activity", ValueFormat.Percent(m.DiskPercent)), R("Temperature", ValueFormat.Celsius(m.DiskTempC))],
+            TaskbarItemId.Gpu => GpuCardRows(m),
+            TaskbarItemId.Disk => DiskRows(m),
             TaskbarItemId.GpuTemp => [R("Temperature", ValueFormat.Celsius(m.GpuTempC)), R("Thresholds", "70° / 85°")],
             TaskbarItemId.DiskTemp => [R("Temperature", ValueFormat.Celsius(m.DiskTempC)), R("Thresholds", "55° / 70°"), R("DiskNote", "NVMe")],
             TaskbarItemId.Ping =>
@@ -67,6 +66,63 @@ internal static class DetailCards
             _ => Array.Empty<DetailRow>(),
         };
     }
+
+    /// <summary>
+    /// Etkinlik, okuma/yazma hızı, sıcaklık (tek NVMe'den; sürücüye özgü değil) ve her sürücü için "boş / toplam" + doluluk çubuğu.
+    /// Hız ve sürücüler kart açılınca ilk saniyede henüz ölçülmemiştir ("--", sürücüler sonra gelir).
+    /// </summary>
+    private static IReadOnlyList<DetailRow> DiskRows(MetricsSnapshot m)
+    {
+        string Speed(double? bps) => bps is { } v ? ValueFormat.Speed(v) : "--";
+        var rows = new List<DetailRow>
+        {
+            new(Strings.Get("Detail.Activity"), ValueFormat.Percent(m.DiskPercent)),
+            new(Strings.Get("Detail.Read"), Speed(m.DiskReadBps)),
+            new(Strings.Get("Detail.Write"), Speed(m.DiskWriteBps)),
+            new(Strings.Get("Detail.Temperature"), ValueFormat.Celsius(m.DiskTempC)),
+        };
+        rows.AddRange(m.Drives.Select(drive => new DetailRow(
+            drive.Drive,
+            string.Format(UiLanguage.Culture, Strings.Get("Detail.DriveSpace"), ValueFormat.Capacity(drive.Free), ValueFormat.Capacity(drive.Total)),
+            Bar: drive.UsedPercent)));
+        return rows;
+    }
+
+    /// <summary>Kullanım/sıcaklık satırları + (kart açıkken ölçülen) motor yükleri, video belleği ve en çok kullanan işlemler.</summary>
+    private static IReadOnlyList<DetailRow> GpuCardRows(MetricsSnapshot m)
+    {
+        var rows = new List<DetailRow>(m.PrimaryGpu is { } gpu
+            ? GpuRows(gpu, m.SecondaryGpu, false)
+            : [new(Strings.Get("Detail.Usage"), ValueFormat.Percent(m.GpuPercent)), new(Strings.Get("Detail.Temperature"), ValueFormat.Celsius(m.GpuTempC))]);
+        if (m.GpuDetails is not { } details) return rows;
+
+        // 3D her zaman, diğer motorlar yalnızca çalışıyorsa (kart kısa kalsın).
+        foreach (GpuEngineLoad engine in details.Engines.Where(e => e.Type == GpuUsage.Engine3D || e.Percent >= 0.5))
+            rows.Add(new(EngineLabel(engine.Type), ValueFormat.Percent(engine.Percent)));
+
+        if (details.DedicatedTotal > 0)
+            rows.Add(new(Strings.Get("Detail.GpuVram"),
+                $"{ValueFormat.Capacity(details.DedicatedUsed)} / {ValueFormat.Capacity(details.DedicatedTotal)}",
+                Bar: Math.Clamp(details.DedicatedUsed * 100.0 / details.DedicatedTotal, 0, 100)));
+        else
+            rows.Add(new(Strings.Get("Detail.GpuVram"), ValueFormat.Capacity(details.DedicatedUsed)));
+        if (details.SharedUsed > 0)
+            rows.Add(new(Strings.Get("Detail.GpuShared"), ValueFormat.Capacity(details.SharedUsed)));
+
+        rows.AddRange(details.Processes.Select(process =>
+            new DetailRow(ProcessLabel(process.Name, process.Count), ValueFormat.Percent(process.Percent), IsProcess: true)));
+        return rows;
+    }
+
+    private static string EngineLabel(string type) => type switch
+    {
+        GpuUsage.VideoDecode => Strings.Get("Detail.GpuVideoDecode"),
+        GpuUsage.VideoEncode => Strings.Get("Detail.GpuVideoEncode"),
+        GpuUsage.VideoProcessing => Strings.Get("Detail.GpuVideoProcessing"),
+        GpuUsage.Copy => Strings.Get("Detail.GpuCopy"),
+        GpuUsage.Compute => Strings.Get("Detail.GpuCompute"),
+        _ => type, // "3D" dilden bağımsız
+    };
 
     private static IReadOnlyList<DetailRow> GpuRows(Metrics.GpuReading primary, Metrics.GpuReading? secondary, bool temperatureOnly)
     {
