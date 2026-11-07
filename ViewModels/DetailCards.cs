@@ -28,6 +28,7 @@ internal static class DetailCards
         var m = c.Metrics;
         DetailRow R(string key, string value) => new(Strings.Get($"Detail.{key}"), value);
         string OnOff(bool on) => Strings.Get(on ? "Detail.On" : "Detail.Off");
+        DetailRow KeyRow(string key, bool on) => new(Strings.Get($"Detail.{key}"), OnOff(on), IsOn: on);
 
         return id switch
         {
@@ -61,7 +62,7 @@ internal static class DetailCards
             ],
             TaskbarItemId.Keyboard =>
             [
-                R("Caps", OnOff(c.Keys.Caps)), R("Num", OnOff(c.Keys.Num)), R("Scroll", OnOff(c.Keys.Scroll)),
+                KeyRow("Caps", c.Keys.Caps), KeyRow("Num", c.Keys.Num), KeyRow("Scroll", c.Keys.Scroll),
             ],
             _ => Array.Empty<DetailRow>(),
         };

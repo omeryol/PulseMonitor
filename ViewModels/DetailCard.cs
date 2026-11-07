@@ -29,8 +29,8 @@ public sealed class DetailCard : ObservableObject
     public void RefreshAccent() => Raise(nameof(Accent));
 }
 
-/// <summary>Ayrıntı kartında bir satır: etiket ve değer; <see cref="Bar"/> doluysa satırın altında doluluk çubuğu (0–100) çizilir.</summary>
-public sealed record DetailRow(string Label, string Value, bool IsProcess = false, bool IsPlaceholder = false, double? Bar = null)
+/// <summary>Ayrıntı kartında bir satır: etiket ve değer; <see cref="IsOn"/> doluysa değer açık (yeşil) ya da kapalı (kırmızı) renginde gösterilir; <see cref="Bar"/> doluysa satırın altında doluluk çubuğu (0–100) çizilir.</summary>
+public sealed record DetailRow(string Label, string Value, bool IsProcess = false, bool IsPlaceholder = false, double? Bar = null, bool? IsOn = null)
 {
     public bool HasBar => Bar is not null;
     public double BarValue => Bar ?? 0;

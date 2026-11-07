@@ -53,7 +53,13 @@
                                             </ProgressBar>
                                         </StackPanel>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding HasBar}" Value="True">
+                                            <DataTrigger Binding="{Binding IsOn}" Value="True">
+                                                <Setter TargetName="Value" Property="Foreground" Value="{DynamicResource Brush.Temp.Mild}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsOn}" Value="False">
+                                                <Setter TargetName="Value" Property="Foreground" Value="{DynamicResource Brush.Load.Hot}" />
+                                            </DataTrigger>
+            <DataTrigger Binding="{Binding HasBar}" Value="True">
                                                 <Setter TargetName="Bar" Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsProcess}" Value="True">
