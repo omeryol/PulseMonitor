@@ -12,6 +12,8 @@ CLAUDE.md
 # Yerel calisma dosyalari (depoya girmez)
 CHANGELOG.md
 docs/KOD-HARITASI.md
+docs/KOD-GRAFI.md
+tools/codegraph.ps1
 tools/publish.ps1
 tools/screenshots.ps1
 tools/translate.ps1
