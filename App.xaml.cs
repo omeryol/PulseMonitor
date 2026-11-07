@@ -117,6 +117,7 @@ public partial class App : Application
 
         _hub = new MetricsHub(_settings.Current, _history);
         _window.DetailCardHoverChanged += _hub.SetCardHovered;
+        _window.SettingsRequested += _windows.OpenSettingsTab;
         _hub.ProcessDetailsUpdated += details => Dispatcher.BeginInvoke(() => _viewModel.UpdateProcessDetails(details));
         _hub.Sampled += snapshot => Dispatcher.BeginInvoke(() =>
         {

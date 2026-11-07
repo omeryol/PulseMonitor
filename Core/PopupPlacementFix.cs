@@ -21,16 +21,20 @@ internal static class PopupPlacementFix
 
     private static void OnEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ToolTip tip && (bool)e.NewValue) tip.Opened += (_, _) => FixCard(tip);
+        if (d is ToolTip tip && (bool)e.NewValue) tip.Opened += (_, _) => FixCard(tip, tip.PlacementTarget as FrameworkElement);
     }
+
+    /// <summary>Kalıcı kart (Popup) için aynı düzeltme (Views/Cards/DetailCardPopup.cs).</summary>
+    public static void Attach(System.Windows.Controls.Primitives.Popup popup) =>
+        popup.Opened += (_, _) => { if (popup.Child is FrameworkElement root) FixCard(root, popup.PlacementTarget as FrameworkElement); };
 
     /// <summary>Sağ tık menüsü için: imlecin yanına (görev çubuğunda yukarı doğru) yerleştirir.</summary>
     public static void AttachMenu(ContextMenu menu) => menu.Opened += (_, _) => FixMenu(menu);
 
-    private static void FixCard(ToolTip tip)
+    private static void FixCard(FrameworkElement tip, FrameworkElement? target)
     {
         if (!TryGetMisplaced(tip, out IntPtr hwnd, out RECT rect)) return;
-        if (tip.PlacementTarget is not FrameworkElement target || Window.GetWindow(target) is not { } window) return;
+        if (target is null || Window.GetWindow(target) is not { } window) return;
 
         IntPtr ownerHwnd = new WindowInteropHelper(window).Handle;
         if (ownerHwnd == IntPtr.Zero || !User32.GetWindowRect(ownerHwnd, out RECT bar)) return;

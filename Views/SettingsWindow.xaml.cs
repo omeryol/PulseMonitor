@@ -15,6 +15,12 @@ public partial class SettingsWindow : Window
         InitializeComponent();
     }
 
+    /// <summary>Ayrıntı kartından gelince ilgili sekmeyi açar.</summary>
+    public void SelectTab(Cards.SettingsTab tab)
+    {
+        if ((int)tab < Tabs.Items.Count) Tabs.SelectedIndex = (int)tab;
+    }
+
     private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
     private void ExportSettings_Click(object sender, RoutedEventArgs e) => Export(true);

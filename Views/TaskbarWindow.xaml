@@ -102,9 +102,7 @@
                             Background="{DynamicResource Brush.Card}"
                             BorderBrush="{DynamicResource Brush.Separator}"
                             BorderThickness="{DynamicResource Thickness.ColumnSeparator}"
-                            ToolTipService.IsEnabled="{DynamicResource DetailCards.Enabled}"
-                            ToolTipService.InitialShowDelay="400" ToolTipService.ShowDuration="60000"
-                            MouseEnter="OnColumnMouseEnter" MouseLeave="OnColumnMouseLeave">
+                            MouseEnter="OnColumnMouseEnter" MouseLeave="OnColumnMouseLeave" MouseLeftButtonDown="OnColumnMouseDown">
                         <Grid>
                             <Grid VerticalAlignment="Center" Margin="{DynamicResource Thickness.ColumnPadding}">
                                 <ContentControl Content="{Binding Tall}" Focusable="False" VerticalAlignment="Center" />
@@ -118,15 +116,6 @@
                         </Grid>
                     </Border>
                     <DataTemplate.Triggers>
-                        <!-- Ayrıntı kartı: yalnızca kartı olan sütunlarda (hava sütununun kendi kartı var) -->
-                        <DataTrigger Binding="{Binding HasCards}" Value="True">
-                            <Setter TargetName="Column" Property="ToolTip">
-                                <Setter.Value>
-                                    <ToolTip Style="{StaticResource Ui.TooltipCard}" Content="{Binding Cards}"
-                                             ContentTemplate="{StaticResource Ui.DetailCardsTemplate}" />
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
                         <!-- İlk sütunun solunda ayırıcı çizgi olmasın -->
                         <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}}" Value="0">
                             <Setter TargetName="Column" Property="BorderThickness" Value="0" />

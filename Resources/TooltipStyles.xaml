@@ -21,6 +21,46 @@
         </Setter>
     </Style>
 
+    <!-- Kart başlığındaki ⚙ düğmesi: ilgili ayar sekmesini açar (Tag = kart kimliği). Odak almaz. -->
+    <Style x:Key="Ui.CardGear" TargetType="Button">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Hit" Background="Transparent" CornerRadius="5" Padding="5,2" Margin="8,-2,-5,0">
+                        <TextBlock x:Name="Glyph" Text="&#xE713;" FontFamily="{DynamicResource Ui.Icons}" FontSize="13"
+                                   Foreground="{DynamicResource Brush.Muted}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource Brush.Text}" />
+                            <Setter TargetName="Hit" Property="Background" Value="#22808080" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Kalıcı kartın çerçevesi (Popup içeriği): ToolTip kartıyla aynı görünüm + gölge. Views/Cards/DetailCardPopup.cs -->
+    <Style x:Key="Ui.PopupCard" TargetType="ContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Border Background="{DynamicResource Brush.Tooltip.Bg}" BorderBrush="{DynamicResource Brush.Tooltip.Border}"
+                            BorderThickness="1" CornerRadius="10" Padding="14,12" Margin="10">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.35" />
+                        </Border.Effect>
+                        <ContentPresenter TextElement.Foreground="{DynamicResource Brush.Text}"
+                                          TextElement.FontFamily="{DynamicResource Font.Ui}" TextElement.FontSize="12" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Bir sütunun kartları (üst ve alt öğe) alt alta -->
     <DataTemplate x:Key="Ui.DetailCardsTemplate">
         <ItemsControl ItemsSource="{Binding}" MinWidth="200" Typography.NumeralAlignment="Tabular">
@@ -28,7 +68,10 @@
                 <DataTemplate>
                     <Grid Margin="0,0,0,10">
                         <StackPanel>
-                            <TextBlock Text="{Binding Title}" Foreground="{Binding Accent}" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,4" />
+                            <DockPanel Margin="0,0,0,4">
+                                <Button DockPanel.Dock="Right" Style="{StaticResource Ui.CardGear}" Tag="{Binding Id}" VerticalAlignment="Top" />
+                                <TextBlock Text="{Binding Title}" Foreground="{Binding Accent}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" />
+                            </DockPanel>
                             <ItemsControl ItemsSource="{Binding Rows}" Tag="{Binding Accent}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -74,7 +117,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
-                        <TextBlock x:Name="Loading" Text="⌛" Foreground="{Binding Accent}" FontSize="15" HorizontalAlignment="Right"
+                        <TextBlock x:Name="Loading" Text="⌛" Foreground="{Binding Accent}" FontSize="15" HorizontalAlignment="Right" Margin="0,0,34,0"
                                    VerticalAlignment="Top" Visibility="Collapsed" />
                     </Grid>
                     <DataTemplate.Triggers>

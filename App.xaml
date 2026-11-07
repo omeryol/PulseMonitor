@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Resources/WindowStyles.xaml" />
                 <ResourceDictionary Source="Resources/StyleBank.xaml" />
                 <ResourceDictionary Source="Resources/TooltipStyles.xaml" />
+                <ResourceDictionary Source="Resources/WeatherCardTemplate.xaml" />
                 <ResourceDictionary Source="Resources/Palettes.xaml" />
                 <ResourceDictionary Source="Resources/LabelIcons.xaml" />
                 <ResourceDictionary Source="Resources/WeatherIcons.xaml" />

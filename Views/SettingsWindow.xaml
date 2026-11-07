@@ -27,7 +27,7 @@
                     IsCancel="True" Click="Close_Click" />
         </DockPanel>
 
-        <TabControl Style="{StaticResource Ui.SideTabs}">
+        <TabControl x:Name="Tabs" Style="{StaticResource Ui.SideTabs}">
             <TabItem Header="{DynamicResource Settings.Tab.Items}" Tag="&#xE8FD;">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,20">
                     <settings:ItemsSettingsPanel DataContext="{Binding Items}" />

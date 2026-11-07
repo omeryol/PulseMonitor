@@ -36,6 +36,13 @@ internal sealed class AppWindows
         DataContext = new SettingsViewModel(_settings, _history, _ping, _testNotification, OpenHistory, new AboutViewModel(_updates, OpenUpdate)),
     });
 
+    /// <summary>Ayarları belirli bir sekmede açar (ayrıntı kartı tıklaması).</summary>
+    public void OpenSettingsTab(Cards.SettingsTab tab)
+    {
+        OpenSettings();
+        _settingsWindow?.SelectTab(tab);
+    }
+
     public bool IsSettingsOpen => _settingsWindow is not null;
 
     public void OpenHistory() => Open(ref _historyWindow, () => new HistoryWindow { DataContext = new HistoryViewModel(_history) });
