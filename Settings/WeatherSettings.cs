@@ -8,7 +8,7 @@ public sealed class WeatherSettings
 {
     public const int MaxLocations = 8;
 
-    /// <summary>Open-Meteo tahmin modeli (<see cref="OpenMeteoModels"/>); "best_match" konuma en uygun modeli seçer.</summary>
+    /// <summary>Hava kaynağı/modeli (<see cref="WeatherSources"/>): Open-Meteo modelleri ya da MET Norway; "best_match" konuma en uygun Open-Meteo modelini seçer.</summary>
     public string Model { get; set; } = OpenMeteoModels.Auto;
 
     /// <summary>Takip edilen konumlar. Değiştirirken liste yerinde değiştirilmez, yenisi atanır (servis arka planda okur).</summary>
@@ -50,6 +50,6 @@ public sealed class WeatherSettings
         }
         if (w.Locations.Count > MaxLocations) w.Locations = w.Locations.Take(MaxLocations).ToList();
         w.ActiveIndex = w.Locations.Count == 0 ? 0 : Math.Clamp(w.ActiveIndex, 0, w.Locations.Count - 1);
-        if (!OpenMeteoModels.Ids.Contains(w.Model)) w.Model = OpenMeteoModels.Auto;
+        if (!WeatherSources.Ids.Contains(w.Model)) w.Model = OpenMeteoModels.Auto;
     }
 }

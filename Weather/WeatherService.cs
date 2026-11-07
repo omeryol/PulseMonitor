@@ -98,7 +98,7 @@ internal sealed class WeatherService : IDisposable
             {
                 try
                 {
-                    fresh.Add(await OpenMeteoClient.FetchAsync(loc.Latitude, loc.Longitude, model, _cts.Token));
+                    fresh.Add(await WeatherSources.FetchAsync(loc.Latitude, loc.Longitude, model, _cts.Token));
                 }
                 catch (Exception ex) when (ex is not OperationCanceledException || !_cts.IsCancellationRequested)
                 {

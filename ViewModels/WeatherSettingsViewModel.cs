@@ -22,7 +22,7 @@ public sealed class WeatherSettingsViewModel : ObservableObject
         SearchCommand = new RelayCommand(Search);
         Results.CollectionChanged += (_, _) => Raise(nameof(HasResults));
         Locations = new WeatherLocationsViewModel(store);
-        Models = OpenMeteoModels.All
+        Models = WeatherSources.All
             .Select(m => new Option(m.Id, m.Id == OpenMeteoModels.Auto ? Strings.Get("Weather.Model.Auto") : m.Name))
             .ToList();
     }

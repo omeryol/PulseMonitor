@@ -6,6 +6,7 @@ lisans gereği gösterilen kaynaklar aşağıdadır. Kaynak satırı ayarlar pen
 | Servis | Kullanım | Lisans / koşul |
 |---|---|---|
 | [Open-Meteo](https://open-meteo.com) | Hava tahmini ve konum araması | Veri CC BY 4.0; ücretsiz API ticari olmayan kullanım içindir, günlük 10 000 istek sınırı |
+| [MET Norway](https://api.met.no) (Locationforecast) | Alternatif hava tahmini kaynağı | Veri CC BY 4.0 ve NLOD; kullanım koşulu: tanımlayıcı User-Agent (boş/genel değer engellenir), `Expires` süresi dolmadan yeniden istenmez (`If-Modified-Since`), sıkıştırma, koordinat en çok 4 ondalık |
 | [GeoNames](https://www.geonames.org) (Open-Meteo konum araması üzerinden) | Köy / kasaba / ilçe adları | CC BY 4.0 |
 | [OpenStreetMap Nominatim](https://nominatim.org) | Mahalle ve köy araması | Veri © OpenStreetMap katkıcıları, ODbL; kullanım koşulu: en fazla saniyede 1 istek, tanımlayıcı User-Agent, toplu sorgu yok |
 | [ipify](https://www.ipify.org) | Dış IP adresi (yalnızca "Dış IP" öğesi açıkken) | Ücretsiz, açık kaynak servis; kayıt tutmadığını beyan eder |

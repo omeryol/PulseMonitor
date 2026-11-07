@@ -53,7 +53,7 @@ Screenshots are generated with sample data.
 - **Weather**: search villages, neighbourhoods and towns anywhere in the world (Open-Meteo + OpenStreetMap; places in
   your own country first); forecast for the chosen spot with an hourly and/or 5-day strip; feels-like temperature, description, °C/°F;
   up to 8 locations (click the weather item to switch, the card lists the others); choice of forecast model (ECMWF,
-  DWD ICON, NOAA GFS, Météo-France, UK Met Office, …); 9 icon sets, 4 of them animated (Meteocons, Makin-Things).
+  DWD ICON, NOAA GFS, Météo-France, UK Met Office, …) or MET Norway as a separate source; 9 icon sets, 4 of them animated (Meteocons, Makin-Things).
 - **Appearance**: theme, palette and per-item colors, color by load, font size/weight, arrow and label style, column cards,
   opacity, spacing, scale. The settings window follows the Windows light/dark app theme.
 - **Languages**: English, Turkish, German, Spanish, French, Italian, Portuguese, Russian, Ukrainian, Polish, Dutch, Japanese, Korean,
@@ -98,7 +98,8 @@ Settings backups may contain personal information such as saved locations and th
 
 | Service | When |
 |---|---|
-| Open-Meteo (forecast) | Every 15 minutes per location while weather is on |
+| Open-Meteo or MET Norway (forecast; your choice in the settings) | Every 15 minutes per location while weather is on |
+| Open-Meteo (time zone of a place, once per place, only with MET Norway) | When the first MET Norway forecast of a place is fetched |
 | Open-Meteo + OpenStreetMap Nominatim (location search) | Only when you press "Search" in the settings |
 | api.ipify.org (external IP) | Only while the "External IP" item is on |
 | Ping server (default 1.1.1.1) | Only while the "Ping" item is on |

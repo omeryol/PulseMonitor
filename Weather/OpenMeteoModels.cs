@@ -21,8 +21,6 @@ public static class OpenMeteoModels
         ("jma_seamless", "JMA"),
     ];
 
-    public static IReadOnlySet<string> Ids { get; } = All.Select(m => m.Id).ToHashSet();
-
     /// <summary>İpucunda kaynak satırı için kısa ad ("Open-Meteo · ECMWF IFS").</summary>
     public static string SourceLabel(string model)
     {

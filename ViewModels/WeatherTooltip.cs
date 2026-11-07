@@ -78,7 +78,7 @@ internal static class WeatherTooltip
         string details = string.Format(Tr, Strings.Get("Weather.FeelsLike"), Deg(r.ApparentTemperature)) + "   ·   " +
                          string.Format(Tr, Strings.Get("Weather.HumidityWind"), r.Humidity, Math.Round(r.WindKmh));
         string updated = string.Format(Tr, Strings.Get("Weather.Updated"), r.FetchedAtUtc.ToLocalTime().ToString("HH:mm", Tr)) +
-                         "   ·   " + OpenMeteoModels.SourceLabel(r.Model);
+                         "   ·   " + WeatherSources.SourceLabel(r.Model);
 
         (string warning, Brush warningBrush, ImageSource? warningIcon) = Warning(r, warningLevel, fahrenheit, set);
         return new WeatherTooltipModel(loc.ShownName, loc.Context, Icon(set, r.WeatherCode, r.IsDay), WeatherCodes.Describe(r.WeatherCode),
