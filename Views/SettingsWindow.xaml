@@ -46,6 +46,7 @@
                             </StackPanel>
                         </Border>
                         <settings:TrafficQuotaPanel DataContext="{Binding Alerts}" />
+                        <settings:SpeedUnitPanel DataContext="{Binding Style}" />
                         <Button Content="{DynamicResource Settings.OpenHistory}" Command="{Binding OpenHistoryCommand}" HorizontalAlignment="Left" Margin="0,14,0,0" />
                     </StackPanel>
                 </ScrollViewer>

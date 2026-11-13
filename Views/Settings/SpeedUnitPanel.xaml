@@ -1,0 +1,18 @@
+<UserControl x:Class="PulseMonitor.Views.Settings.SpeedUnitPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- DataContext: StyleSettingsViewModel. Ayarlar → Trafik ve kota: ağ hızı birimi ve böleni. -->
+    <UserControl.Resources>
+        <Style TargetType="DockPanel"><Setter Property="Margin" Value="0,3" /></Style>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <TextBlock Text="{DynamicResource Style.Section.Speed}" Style="{StaticResource Ui.SectionHeading}" Margin="0,14,0,6" />
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.SpeedUnit}" Style="{StaticResource Ui.FormLabel}" Width="190" VerticalAlignment="Center" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.SpeedUnit}" ItemsSource="{Binding SpeedUnit.Options}" SelectedItem="{Binding SpeedUnit.Selected}" DisplayMemberPath="Display" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.SpeedBase}" Style="{StaticResource Ui.FormLabel}" Width="190" VerticalAlignment="Center" />
+            <ComboBox AutomationProperties.Name="{DynamicResource Style.Label.SpeedBase}" ItemsSource="{Binding SpeedBase.Options}" SelectedItem="{Binding SpeedBase.Selected}" DisplayMemberPath="Display" /></DockPanel>
+        <TextBlock Text="{DynamicResource Style.SpeedBase.Hint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" Margin="190,1,0,4" TextWrapping="Wrap" />
+    </StackPanel>
+</UserControl>

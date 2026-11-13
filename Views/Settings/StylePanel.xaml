@@ -64,13 +64,6 @@
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.KeyboardStyle}" Style="{StaticResource RowLabel}" />
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.KeyboardStyle}" Content="{Binding KeyboardStyle}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
 
-        <TextBlock Text="{DynamicResource Style.Section.Speed}" Style="{StaticResource Section}" />
-        <DockPanel><TextBlock Text="{DynamicResource Style.Label.SpeedUnit}" Style="{StaticResource RowLabel}" />
-            <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.SpeedUnit}" Content="{Binding SpeedUnit}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
-        <DockPanel><TextBlock Text="{DynamicResource Style.Label.SpeedBase}" Style="{StaticResource RowLabel}" />
-            <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.SpeedBase}" Content="{Binding SpeedBase}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
-        <TextBlock Text="{DynamicResource Style.SpeedBase.Hint}" Foreground="{DynamicResource Ui.Muted}" FontSize="11" Margin="190,1,0,4" TextWrapping="Wrap" />
-
         <TextBlock Text="{DynamicResource Style.Section.Surface}" Style="{StaticResource Section}" />
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.Background}" Style="{StaticResource RowLabel}" />
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.Background}" Content="{Binding Background}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
