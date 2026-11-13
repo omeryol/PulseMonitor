@@ -121,6 +121,8 @@ public sealed class TaskbarViewModel
     {
         _weightBySpeed = s.ValueWeight == StyleOptions.WeightBySpeed;
         _fontSize = s.FontSize;
+        SpeedFormat.Current = SpeedFormat.From(s.SpeedUnit, s.SpeedBase);
+        Upload.Placeholder = Download.Placeholder = SpeedFormat.Current.Placeholder;
         foreach (var (id, line) in _items.Where(kv => kv.Value is MetricLine).Select(kv => (kv.Key, (MetricLine)kv.Value)))
         {
             bool speedSized = _weightBySpeed && id is TaskbarItemId.Upload or TaskbarItemId.Download;

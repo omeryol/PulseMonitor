@@ -32,6 +32,8 @@ public sealed class StyleSettingsViewModel : ObservableObject
         TemperatureUnit = C("TemperatureUnit", s => s.TemperatureUnit, (s, v) => s.TemperatureUnit = v);
         WeatherLabel = C("WeatherLabel", s => s.WeatherLabel, (s, v) => s.WeatherLabel = v);
         WeatherForecast = C("WeatherForecast", s => s.WeatherForecast, (s, v) => s.WeatherForecast = v);
+        SpeedUnit = C("SpeedUnit", s => s.SpeedUnit, (s, v) => s.SpeedUnit = v);
+        SpeedBase = C("SpeedBase", s => s.SpeedBase, (s, v) => s.SpeedBase = v);
 
         foreach (string item in StyleOptions.ColorItems)
             CustomColors.Add(new ColorRow(item, Strings.Get($"Style.ColorItem.{item}"), SetCustomColor));
@@ -54,6 +56,8 @@ public sealed class StyleSettingsViewModel : ObservableObject
     public Choice TemperatureUnit { get; }
     public Choice WeatherLabel { get; }
     public Choice WeatherForecast { get; }
+    public Choice SpeedUnit { get; }
+    public Choice SpeedBase { get; }
 
     public bool LoadColors { get => S.LoadColors; set => Update(() => S.LoadColors = value); }
     public bool Separator { get => S.Separator; set => Update(() => S.Separator = value); }
@@ -121,7 +125,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
         _store.Current.Style = style;
         _store.Save();
         Raise(null); // tüm özellikler yeniden okunur
-        foreach (Choice c in new[] { InterfaceSkin, Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel, WeatherForecast })
+        foreach (Choice c in new[] { InterfaceSkin, Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel, WeatherForecast, SpeedUnit, SpeedBase })
             c.Refresh();
         RefreshColorRows();
     }

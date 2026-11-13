@@ -34,6 +34,10 @@ public sealed class StyleSettings
     /// <summary>Fare üzerine gelince öğenin ayrıntı kartı (hava ipucu dahil).</summary>
     public bool DetailCards { get; set; } = true;
 
+    /// <summary>Ağ hızı birimi (bayt/bit) ve böleni (Otomatik/1000/1024). Varsayılan eski davranış: bayt, 1024.</summary>
+    public string SpeedUnit { get; set; } = StyleOptions.SpeedBytes;
+    public string SpeedBase { get; set; } = StyleOptions.BaseAuto;
+
     // Hava durumu
     public string WeatherIcons { get; set; } = StyleOptions.IconMakinThings;
     /// <summary>Hava açıklaması (Güneşli, Sisli…): yer adının yanında / yerine / gösterme.</summary>

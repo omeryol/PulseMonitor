@@ -8,8 +8,8 @@ internal static class ValueFormat
 {
     private static CultureInfo Tr => UiLanguage.Culture;
 
-    /// <summary>En geniş hız metni; sütun genişliğini sabitlemek için (rakamlar sabit genişlikte).</summary>
-    public const string SpeedPlaceholder = "888,8 MB/s";
+    /// <summary>En geniş hız metni (güncel birime göre); sütun genişliğini sabitlemek için.</summary>
+    public static string SpeedPlaceholder => SpeedFormat.Current.Placeholder;
     public const string PercentPlaceholder = "% 100";
     public const string IpPlaceholder = "888.888.888.888";
     public const string TemperaturePlaceholder = "188°";
@@ -34,15 +34,11 @@ internal static class ValueFormat
     public static string Milliseconds(double? value) =>
         value is { } v ? string.Format(Tr, "{0:0} ms", v) : "--";
 
-    /// <summary>12,3 KB/s · 4,5 MB/s · 1,1 GB/s. Yuvarlamada 1000'e ulaşan değer bir üst birime geçer.</summary>
-    public static string Speed(double bytesPerSecond)
-    {
-        double kb = Math.Max(0, bytesPerSecond) / 1024;
-        if (Math.Round(kb, 1) < 1000) return string.Format(Tr, "{0:0.0} KB/s", kb);
-        double mb = kb / 1024;
-        if (Math.Round(mb, 1) < 1000) return string.Format(Tr, "{0:0.0} MB/s", mb);
-        return string.Format(Tr, "{0:0.0} GB/s", mb / 1024);
-    }
+    /// <summary>Hız, ayarlardaki birim ve bölenle (<see cref="SpeedFormat.Current"/>).</summary>
+    public static string Speed(double bytesPerSecond) => SpeedFormat.Current.Format(bytesPerSecond, Tr);
+
+    /// <summary>Hız, verilen biçimle (disk gibi her zaman bayt gösterilenler için <see cref="SpeedFormat.Default"/>).</summary>
+    public static string Speed(double bytesPerSecond, SpeedFormat format) => format.Format(bytesPerSecond, Tr);
 
     /// <summary>512 KB · 12,3 MB · 1,25 GB</summary>
     public static string Size(double bytes)

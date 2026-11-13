@@ -74,7 +74,7 @@ internal static class DetailCards
     /// </summary>
     private static IReadOnlyList<DetailRow> DiskRows(MetricsSnapshot m)
     {
-        string Speed(double? bps) => bps is { } v ? ValueFormat.Speed(v) : "--";
+        string Speed(double? bps) => bps is { } v ? ValueFormat.Speed(v, SpeedFormat.Default) : "--"; // disk her zaman bayt
         var rows = new List<DetailRow>
         {
             new(Strings.Get("Detail.Activity"), ValueFormat.Percent(m.DiskPercent)),

@@ -26,8 +26,13 @@ public static class StyleOptions
     public const string WarnOff = "Off", WarnExtreme = "Extreme", WarnBalanced = "Balanced", WarnSensitive = "Sensitive";
     public const string ForecastHourly = "Hourly", ForecastDaily = "Daily", ForecastBoth = "Both";
 
+    public const string SpeedBytes = "Bytes", SpeedBitsSlash = "BitsSlash", SpeedBitsPs = "BitsPs", SpeedBitsMbit = "BitsMbit";
+    public const string BaseAuto = "Auto", Base1000 = "1000", Base1024 = "1024";
+
     public static readonly Dictionary<string, string[]> Groups = new()
     {
+        ["SpeedUnit"] = [SpeedBytes, SpeedBitsSlash, SpeedBitsPs, SpeedBitsMbit],
+        ["SpeedBase"] = [BaseAuto, Base1000, Base1024],
         ["InterfaceSkin"] = [SkinClassic, SkinNightPanel],
         ["TrafficWarning"] = ["0", "50", "80", "90", "100"],
         ["Theme"] = [ThemeAuto, ThemeDark, ThemeLight],
@@ -77,6 +82,8 @@ public static class StyleOptions
         s.TemperatureUnit = Valid("TemperatureUnit", s.TemperatureUnit, d.TemperatureUnit);
         s.WeatherLabel = Valid("WeatherLabel", s.WeatherLabel, d.WeatherLabel);
         s.WeatherForecast = Valid("WeatherForecast", s.WeatherForecast, d.WeatherForecast);
+        s.SpeedUnit = Valid("SpeedUnit", s.SpeedUnit, d.SpeedUnit);
+        s.SpeedBase = Valid("SpeedBase", s.SpeedBase, d.SpeedBase);
         s.FontSize = Math.Clamp(s.FontSize, MinFont, MaxFont);
         s.BackgroundOpacity = Math.Clamp(s.BackgroundOpacity, MinOpacity, MaxOpacity);
         s.ColumnGap = Math.Clamp(s.ColumnGap, MinColumnGap, MaxColumnGap);
