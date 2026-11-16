@@ -24,6 +24,8 @@ internal readonly record struct TaskbarSnapshot(IntPtr Handle, RECT Bounds, RECT
 
 internal static class TaskbarLocator
 {
+    private const int SecondaryTrayFallbackPx = 110;
+
     public static List<(string Device, bool Primary)> Displays()
     {
         var result = new List<(string, bool)>();
@@ -66,6 +68,13 @@ internal static class TaskbarLocator
         IntPtr notify = User32.FindWindowEx(bar, IntPtr.Zero, "TrayNotifyWnd", null);
         if (notify != IntPtr.Zero && User32.GetWindowRect(notify, out RECT r) && r.Width > 0 && r.Height > 0)
             tray = r;
+        else if (bounds.Width >= bounds.Height)
+        {
+            // İkinci ekranın Windows 11 görev çubuğunda tepsi penceresi yoktur (saat çubuğun içinde çizilir):
+            // saat ve simgelerin üstüne binmemek için yedek boşluk (forum geri bildirimi: ~110 px).
+            int fallback = (int)Math.Round(SecondaryTrayFallbackPx * User32.GetDpiForWindow(bar) / 96.0);
+            tray = new RECT(bounds.Right - fallback, bounds.Top, bounds.Right, bounds.Bottom);
+        }
 
         IntPtr monitor = User32.MonitorFromWindow(bar, User32.MONITOR_DEFAULTTOPRIMARY);
         var info = new MONITORINFO { cbSize = Marshal.SizeOf<MONITORINFO>() };
