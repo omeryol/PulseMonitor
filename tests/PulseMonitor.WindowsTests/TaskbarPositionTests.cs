@@ -35,6 +35,10 @@ public sealed class TaskbarPositionTests
         Assert.Equal(1490, TaskbarPosition.Calculate(0, 1700, 0, 1920, 200, 10, false));
 
     [Fact]
+    public void NegativeGapMovesPanelTowardTray() =>
+        Assert.Equal(1550, TaskbarPosition.Calculate(0, 1700, 0, 1920, 200, -50, false));
+
+    [Fact]
     public void LeftPlacementSupportsNegativeMonitorCoordinates() =>
         Assert.Equal(-1920, TaskbarPosition.Calculate(-1920, -300, -1920, 0, 200, 10, true));
 

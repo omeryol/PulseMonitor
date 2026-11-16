@@ -82,7 +82,7 @@ public sealed class SettingsViewModel : ObservableObject
         get => S.TrayGapPx;
         set
         {
-            int gap = Math.Clamp(value, 0, 200);
+            int gap = Math.Clamp(value, -150, 200);
             if (gap == S.TrayGapPx) return;
             S.TrayGapPx = gap;
             Raise(nameof(TrayGapPx));

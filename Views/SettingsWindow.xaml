@@ -109,7 +109,7 @@
                             <TextBlock DockPanel.Dock="Right" Width="48" TextAlignment="Right"
                                        Text="{Binding TrayGapPx, StringFormat={}{0} px}" />
                             <TextBlock Text="{DynamicResource Settings.Gap}" Margin="0,0,12,0" VerticalAlignment="Center" />
-                            <Slider AutomationProperties.Name="{DynamicResource Settings.Gap}" Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True"
+                            <Slider AutomationProperties.Name="{DynamicResource Settings.Gap}" Minimum="-150" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" IsDirectionReversed="True"
                                     Value="{Binding TrayGapPx}" VerticalAlignment="Center" />
                         </DockPanel>
                         <StackPanel Visibility="{Binding HasGpuOptions, Converter={StaticResource BoolToVisibility}}">
