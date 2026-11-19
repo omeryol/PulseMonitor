@@ -16,11 +16,11 @@ public static class StyleOptions
     public const string KeysDim = "Dim", KeysColor = "Color";
     public const string BgNone = "None", BgSingle = "Single", BgCards = "Cards";
     public const string IconColor = "Color", IconRealistic = "Realistic", IconLine = "Line", IconMono = "Mono", IconGlyph = "Glyph";
-    public const string IconCinematicStatic = "CinematicStatic";
+    public const string IconCinematicStatic = "CinematicStatic", IconCinematic = "Cinematic3D";
     /// <summary>Animasyonlu setler (Assets/WeatherAnim/&lt;set&gt;, tools/render_icons.ps1): klasör adı = kimlik.</summary>
     public const string IconMeteoconsFill = "MeteoconsFill", IconMeteoconsFlat = "MeteoconsFlat",
                         IconMeteoconsLine = "MeteoconsLine", IconMakinThings = "MakinThings";
-    public static readonly string[] AnimatedIconSets = [IconMeteoconsFill, IconMeteoconsFlat, IconMeteoconsLine, IconMakinThings];
+    public static readonly string[] AnimatedIconSets = [IconMeteoconsFill, IconMeteoconsFlat, IconMeteoconsLine, IconMakinThings, IconCinematic];
     public const string Celsius = "C", Fahrenheit = "F";
     public const string WxLabelWithPlace = "WithPlace", WxLabelInstead = "Instead", WxLabelNone = "None";
     public const string WarnOff = "Off", WarnExtreme = "Extreme", WarnBalanced = "Balanced", WarnSensitive = "Sensitive";
@@ -45,7 +45,7 @@ public static class StyleOptions
         ["KeyboardStyle"] = [KeysDim, KeysColor],
         ["Background"] = [BgNone, BgSingle, BgCards],
         ["WeatherIcons"] = [IconMeteoconsFill, IconMeteoconsFlat, IconMeteoconsLine, IconMakinThings,
-                            IconColor, IconRealistic, IconCinematicStatic, IconLine, IconMono, IconGlyph],
+                            IconColor, IconRealistic, IconCinematic, IconCinematicStatic, IconLine, IconMono, IconGlyph],
         ["TemperatureUnit"] = [Celsius, Fahrenheit],
         ["WeatherLabel"] = [WxLabelWithPlace, WxLabelInstead, WxLabelNone],
         ["WeatherForecast"] = [ForecastHourly, ForecastDaily, ForecastBoth],
