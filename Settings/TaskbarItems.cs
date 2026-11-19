@@ -23,9 +23,10 @@ public static class TaskbarItemId
     public const string GpuTemp = "GpuTemp";
     public const string DiskTemp = "DiskTemp";
     public const string Ping = "Ping";
+    public const string Quota = "Quota"; // trafik kotası kullanım yüzdesi
 
     public static readonly string[] DefaultOrder =
-        [Upload, Download, Cpu, Ram, Gpu, Disk, Keyboard, Weather, LocalIp, PublicIp, GpuTemp, DiskTemp, Ping];
+        [Upload, Download, Cpu, Ram, Gpu, Disk, Keyboard, Weather, LocalIp, PublicIp, GpuTemp, DiskTemp, Ping, Quota];
 
     /// <summary>0.4.0'daki ayrı kilit tuşu öğeleri; <see cref="Keyboard"/>'a taşınır.</summary>
     public static readonly string[] LegacyLockKeys = ["CapsLock", "NumLock", "ScrollLock"];

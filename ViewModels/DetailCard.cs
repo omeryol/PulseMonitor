@@ -45,4 +45,5 @@ public sealed record DetailContext(
     string PublicIp,
     string PingHost,
     PingQuality Ping,
-    double? PingLast);
+    double? PingLast,
+    IReadOnlyList<PulseMonitor.Traffic.QuotaUsage>? Quota = null);

@@ -8,6 +8,7 @@
     <Geometry x:Key="LabelIcon.Disk">M2,3.5 A4,1.6 0 1 1 10,3.5 A4,1.6 0 1 1 2,3.5 Z M2,3.5 V8.5 A4,1.6 0 0 0 10,8.5 V3.5</Geometry>
     <Geometry x:Key="LabelIcon.Ip">M10.5,6 A4.5,4.5 0 1 1 1.5,6 A4.5,4.5 0 1 1 10.5,6 Z M1.5,6 H10.5 M6,1.5 C7.6,2.9 7.6,9.1 6,10.5 M6,1.5 C4.4,2.9 4.4,9.1 6,10.5</Geometry>
     <Geometry x:Key="LabelIcon.Temp">M5,1.5 A1.3,1.3 0 0 1 7.6,1.5 V7 A2.4,2.4 0 1 1 5,7 Z M6.3,4.5 V8.4</Geometry>
+    <Geometry x:Key="LabelIcon.Quota">M6,1.5 A4.5,4.5 0 1 0 10.5,6 L6,6 Z M7.2,0.8 A4.5,4.5 0 0 1 11.2,4.8 L7.2,4.8 Z</Geometry>
     <Geometry x:Key="LabelIcon.Ping">M1,9 L3.5,9 L5,4 L7,10.5 L8.5,6 L11,6</Geometry>
     <Geometry x:Key="LabelIcon.Upload">M6,10 V2.5 M2.8,5.5 L6,2.3 L9.2,5.5</Geometry>
     <Geometry x:Key="LabelIcon.Download">M6,2 V9.5 M2.8,6.5 L6,9.7 L9.2,6.5</Geometry>

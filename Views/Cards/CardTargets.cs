@@ -13,7 +13,7 @@ public static class CardTargets
 {
     public static SettingsTab? Tab(string cardId) => cardId switch
     {
-        TaskbarItemId.Upload or TaskbarItemId.Download => SettingsTab.Traffic,
+        TaskbarItemId.Upload or TaskbarItemId.Download or TaskbarItemId.Quota => SettingsTab.Traffic,
         TaskbarItemId.Weather => SettingsTab.Weather,
         TaskbarItemId.Gpu => SettingsTab.General, // ekran kartı seçimi
         TaskbarItemId.GpuTemp or TaskbarItemId.DiskTemp or TaskbarItemId.Ping => SettingsTab.Alerts,

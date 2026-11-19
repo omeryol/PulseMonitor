@@ -131,8 +131,11 @@ public partial class App : Application
         {
             KeyboardSnapshot keys = KeyboardState.Read();
             _viewModel.Update(snapshot, keys);
+            var quota = _settings.Current.Items.Any(i => i.Id == TaskbarItemId.Quota && i.Visible)
+                ? TrafficQuota.Usage(_settings.Current.Alerts, _history, DateOnly.FromDateTime(DateTime.Now)) : null;
+            if (quota is not null) _viewModel.UpdateQuota(quota, _settings.Current.Alerts.TrafficWarningPercent);
             _viewModel.UpdateDetails(new DetailContext(snapshot, keys, _history.Get(DateOnly.FromDateTime(DateTime.Now)),
-                _ip.LocalIp, _ip.PublicIp, _settings.Current.PingHost, _ping.Stats, _ping.LatencyMs));
+                _ip.LocalIp, _ip.PublicIp, _settings.Current.PingHost, _ping.Stats, _ping.LatencyMs, quota));
             _alerts.Check(snapshot, _history, _settings.Current.Alerts);
         });
         _hub.Start();

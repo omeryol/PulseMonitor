@@ -56,6 +56,7 @@ internal static class DetailCards
                 R("Jitter", ValueFormat.Milliseconds(c.Ping.Jitter)),
                 R("Loss", ValueFormat.Percent(c.Ping.LossPercent)),
             ],
+            TaskbarItemId.Quota => QuotaRows(c),
             TaskbarItemId.LocalIp or TaskbarItemId.PublicIp =>
             [
                 R("LocalIp", c.LocalIp), R("PublicIp", c.PublicIp), R("Adapter", m.Adapters),
@@ -176,5 +177,18 @@ internal static class DetailCards
         return t.Days > 0
             ? string.Format(Tr, Strings.Get("Detail.UptimeDays"), t.Days, t.Hours, t.Minutes)
             : string.Format(Tr, Strings.Get("Detail.UptimeHours"), t.Hours, t.Minutes);
+    }
+
+    private static IReadOnlyList<DetailRow> QuotaRows(DetailContext c)
+    {
+        var rows = new List<DetailRow>();
+        foreach (var u in c.Quota ?? [])
+        {
+            string arrow = u.Arrow.Length > 0 ? u.Arrow + " " : "";
+            ulong limit = (ulong)u.LimitGb * 1024UL * 1024 * 1024;
+            rows.Add(new(arrow + Strings.Get("Detail.QuotaUsed"), $"{ValueFormat.Size(u.Used)} / {u.LimitGb} GB"));
+            rows.Add(new(arrow + Strings.Get("Detail.QuotaLeft"), ValueFormat.Size(u.Used >= limit ? 0 : limit - u.Used)));
+        }
+        return rows;
     }
 }

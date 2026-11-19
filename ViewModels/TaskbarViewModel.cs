@@ -39,6 +39,7 @@ public sealed class TaskbarViewModel
             [TaskbarItemId.GpuTemp] = GpuTemp,
             [TaskbarItemId.DiskTemp] = DiskTemp,
             [TaskbarItemId.Ping] = Ping,
+            [TaskbarItemId.Quota] = Quota,
         };
 
         // Ayrıntı kartları: hava hariç her öğe (havanın kendi renkli kartı var). Başlık rengi öğenin rengi.
@@ -88,6 +89,16 @@ public sealed class TaskbarViewModel
     public MetricLine GpuTemp { get; } = Line("Label.GpuTemp", ValueFormat.TemperaturePlaceholder, "Gpu");
     public MetricLine DiskTemp { get; } = Line("Label.DiskTemp", ValueFormat.TemperaturePlaceholder, "Disk");
     public MetricLine Ping { get; } = Line("Label.Ping", ValueFormat.PingPlaceholder, "Ping");
+    public MetricLine Quota { get; } = Line("Label.Quota", ValueFormat.PercentPlaceholder, "Quota");
+
+    /// <summary>Kota kullanım yüzdesi (ayrı ayrı kipte "indirme / yükleme"); uyarı eşiğinde turuncu, dolunca kırmızı.</summary>
+    public void UpdateQuota(IReadOnlyList<PulseMonitor.Traffic.QuotaUsage> usage, int warnPercent)
+    {
+        if (usage.Count == 0) return;
+        Quota.Value = string.Join(" / ", usage.Select(u => ValueFormat.Percent(u.Percent)));
+        Quota.Placeholder = string.Join(" / ", usage.Select(_ => ValueFormat.PercentPlaceholder));
+        Quota.SetLevel(usage.Max(u => u.Percent), warnPercent > 0 ? warnPercent : 80, 100);
+    }
 
     /// <summary>Ping: 100 ms üstü uyarı, 200 ms üstü yüksek.</summary>
     public void UpdatePing(double? ms)

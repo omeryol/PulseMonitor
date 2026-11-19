@@ -57,7 +57,7 @@ public static class StyleOptions
     };
 
     /// <summary>Renklendirilen öğeler (Palettes.xaml anahtarları: Palette.&lt;palet&gt;.&lt;öğe&gt;.OnDark/OnLight).</summary>
-    public static readonly string[] ColorItems = ["Upload", "Download", "Cpu", "Ram", "Gpu", "Disk", "Keyboard", "Ip", "Ping"];
+    public static readonly string[] ColorItems = ["Upload", "Download", "Cpu", "Ram", "Gpu", "Disk", "Keyboard", "Ip", "Ping", "Quota"];
 
     public const int MinFont = 9, MaxFont = 14;
     public const int MinOpacity = 0, MaxOpacity = 100;

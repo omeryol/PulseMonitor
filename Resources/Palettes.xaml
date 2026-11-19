@@ -14,6 +14,7 @@
     <Color x:Key="Palette.Vivid.Keyboard.OnDark">#FBBF24</Color>  <Color x:Key="Palette.Vivid.Keyboard.OnLight">#B45309</Color>
     <Color x:Key="Palette.Vivid.Ip.OnDark">#93C5FD</Color>        <Color x:Key="Palette.Vivid.Ip.OnLight">#1D4ED8</Color>
     <Color x:Key="Palette.Vivid.Ping.OnDark">#A3E635</Color>      <Color x:Key="Palette.Vivid.Ping.OnLight">#4D7C0F</Color>
+    <Color x:Key="Palette.Vivid.Quota.OnDark">#FBBF24</Color>      <Color x:Key="Palette.Vivid.Quota.OnLight">#B45309</Color>
 
     <!-- Yumuşak -->
     <Color x:Key="Palette.Soft.Upload.OnDark">#F6D79B</Color>     <Color x:Key="Palette.Soft.Upload.OnLight">#92611C</Color>
@@ -25,6 +26,7 @@
     <Color x:Key="Palette.Soft.Keyboard.OnDark">#F6D79B</Color>   <Color x:Key="Palette.Soft.Keyboard.OnLight">#92611C</Color>
     <Color x:Key="Palette.Soft.Ip.OnDark">#BFD3F2</Color>         <Color x:Key="Palette.Soft.Ip.OnLight">#3E5E99</Color>
     <Color x:Key="Palette.Soft.Ping.OnDark">#D9F0A8</Color>       <Color x:Key="Palette.Soft.Ping.OnLight">#55732A</Color>
+    <Color x:Key="Palette.Soft.Quota.OnDark">#F3DDA0</Color>      <Color x:Key="Palette.Soft.Quota.OnLight">#8A6A1F</Color>
 
     <!-- Tek vurgu: her şey yazı renginde, yalnızca indirme ve klavye vurgulu -->
     <Color x:Key="Palette.Mono.Upload.OnDark">#FFFFFF</Color>     <Color x:Key="Palette.Mono.Upload.OnLight">#111111</Color>
@@ -36,6 +38,7 @@
     <Color x:Key="Palette.Mono.Keyboard.OnDark">#5EEAD4</Color>   <Color x:Key="Palette.Mono.Keyboard.OnLight">#0F766E</Color>
     <Color x:Key="Palette.Mono.Ip.OnDark">#FFFFFF</Color>         <Color x:Key="Palette.Mono.Ip.OnLight">#111111</Color>
     <Color x:Key="Palette.Mono.Ping.OnDark">#FFFFFF</Color>       <Color x:Key="Palette.Mono.Ping.OnLight">#111111</Color>
+    <Color x:Key="Palette.Mono.Quota.OnDark">#FFFFFF</Color>      <Color x:Key="Palette.Mono.Quota.OnLight">#111111</Color>
 
     <!-- Sade: her öğe yazı rengi (Brush.Text ile aynı); tema değişince beyaz ↔ siyaha geçer, vurgu rengi yok -->
     <Color x:Key="Palette.Plain.Upload.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Upload.OnLight">#111827</Color>
@@ -47,5 +50,6 @@
     <Color x:Key="Palette.Plain.Keyboard.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Keyboard.OnLight">#111827</Color>
     <Color x:Key="Palette.Plain.Ip.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Ip.OnLight">#111827</Color>
     <Color x:Key="Palette.Plain.Ping.OnDark">#F3F4F6</Color>  <Color x:Key="Palette.Plain.Ping.OnLight">#111827</Color>
+    <Color x:Key="Palette.Plain.Quota.OnDark">#F3F4F6</Color>      <Color x:Key="Palette.Plain.Quota.OnLight">#111827</Color>
 
 </ResourceDictionary>
