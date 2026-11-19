@@ -29,6 +29,7 @@ public static class StyleOptions
 
     public const string SpeedBytes = "Bytes", SpeedBitsSlash = "BitsSlash", SpeedBitsPs = "BitsPs", SpeedBitsMbit = "BitsMbit";
     public const string BaseAuto = "Auto", Base1000 = "1000", Base1024 = "1024";
+    public const string QuotaTotal = "Total", QuotaDown = "Down", QuotaUp = "Up", QuotaSplit = "Split";
 
     public static readonly Dictionary<string, string[]> Groups = new()
     {
@@ -36,6 +37,7 @@ public static class StyleOptions
         ["SpeedBase"] = [BaseAuto, Base1000, Base1024],
         ["InterfaceSkin"] = [SkinClassic, SkinNightPanel],
         ["TrafficWarning"] = ["0", "50", "80", "90", "100"],
+        ["TrafficQuotaMode"] = [QuotaTotal, QuotaDown, QuotaUp, QuotaSplit],
         ["Theme"] = [ThemeAuto, ThemeDark, ThemeLight],
         ["Palette"] = [PaletteVivid, PaletteSoft, PaletteMono, PalettePlain, PaletteCustom],
         ["ColorTarget"] = [TargetValue, TargetLabel, TargetBoth],

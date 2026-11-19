@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PulseMonitor.Settings;
 
@@ -14,6 +15,12 @@ public sealed class AlertsSettingsViewModel : ObservableObject
         _store = store;
         TestCommand = new RelayCommand(testNotification);
         WeatherLevel = new Choice("WeatherWarnings", () => A.WeatherLevel, v => Update(() => A.WeatherLevel = v));
+        TrafficQuotaMode = new Choice("TrafficQuotaMode", () => A.TrafficQuotaMode, v =>
+        {
+            Update(() => A.TrafficQuotaMode = v);
+            Raise(nameof(TrafficSplit));
+            Raise(nameof(TrafficSingle));
+        });
         TrafficWarningPercent = new Choice("TrafficWarning", () => A.TrafficWarningPercent.ToString(System.Globalization.CultureInfo.InvariantCulture),
             v => Update(() => A.TrafficWarningPercent = int.Parse(v, System.Globalization.CultureInfo.InvariantCulture)));
     }
@@ -21,10 +28,14 @@ public sealed class AlertsSettingsViewModel : ObservableObject
     public ICommand TestCommand { get; }
     public Choice WeatherLevel { get; }
     public Choice TrafficWarningPercent { get; }
+    public Choice TrafficQuotaMode { get; }
+    public bool TrafficSplit => A.TrafficQuotaMode == StyleOptions.QuotaSplit;
+    public bool TrafficSingle => !TrafficSplit;
     public bool WeatherQuietHours { get => A.WeatherQuietHours; set => Update(() => A.WeatherQuietHours = value); }
 
     public bool TrafficEnabled { get => A.TrafficEnabled; set => Update(() => A.TrafficEnabled = value); }
     public int TrafficLimitGb { get => A.TrafficLimitGb; set => Update(() => A.TrafficLimitGb = value); }
+    public int TrafficUploadLimitGb { get => A.TrafficUploadLimitGb; set => Update(() => A.TrafficUploadLimitGb = value); }
     public int TrafficCycleStartDay { get => A.TrafficCycleStartDay; set => Update(() => A.TrafficCycleStartDay = value); }
     public bool CpuEnabled { get => A.CpuEnabled; set => Update(() => A.CpuEnabled = value); }
     public int CpuPercent { get => A.CpuPercent; set => Update(() => A.CpuPercent = value); }
@@ -35,10 +46,12 @@ public sealed class AlertsSettingsViewModel : ObservableObject
     public bool DiskTempEnabled { get => A.DiskTempEnabled; set => Update(() => A.DiskTempEnabled = value); }
     public int DiskTempC { get => A.DiskTempC; set => Update(() => A.DiskTempC = value); }
 
-    private void Update(Action change)
+    /// <summary>Değeri uygular, kaydeder ve özelliğin değiştiğini bildirir (kaydırıcı yanındaki değer metni güncellensin).</summary>
+    private void Update(Action change, [CallerMemberName] string? property = null)
     {
         change();
         A.Normalize();
         _store.Save();
+        Raise(property);
     }
 }

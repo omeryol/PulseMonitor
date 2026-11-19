@@ -34,14 +34,20 @@ internal sealed class AlertMonitor
         {
             var period = TrafficPeriod.For(DateOnly.FromDateTime(now), a.TrafficCycleStartDay);
             DayTraffic t = TrafficPeriod.Total(history, period);
-            ulong total = TrafficPeriod.Add(t.Down, t.Up);
-            double gb = total / BytesPerGb;
             string periodKey = period.Start.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            if (a.TrafficWarningPercent > 0 && gb * 100 >= a.TrafficLimitGb * a.TrafficWarningPercent && a.LastTrafficQuotaNotificationPeriod != periodKey)
+            foreach (QuotaPart part in TrafficQuota.Parts(a, t.Down, t.Up))
             {
-                a.LastTrafficQuotaNotificationPeriod = periodKey;
-                QuotaNotificationRecorded?.Invoke();
-                Raise("Alert.Traffic", ValueFormat.Size(total), a.TrafficLimitGb, a.TrafficWarningPercent);
+                double gb = part.Used / BytesPerGb;
+                string key = part.Id == TrafficQuota.TotalId ? periodKey : $"{periodKey}|{part.Id}";
+                bool upload = part.Id == "SplitUp";
+                string? last = upload ? a.LastTrafficQuotaUploadNotificationPeriod : a.LastTrafficQuotaNotificationPeriod;
+                if (a.TrafficWarningPercent > 0 && gb * 100 >= part.LimitGb * a.TrafficWarningPercent && last != key)
+                {
+                    if (upload) a.LastTrafficQuotaUploadNotificationPeriod = key;
+                    else a.LastTrafficQuotaNotificationPeriod = key;
+                    QuotaNotificationRecorded?.Invoke();
+                    Raise(part.AlertKey, ValueFormat.Size(part.Used), part.LimitGb, a.TrafficWarningPercent);
+                }
             }
         }
 
