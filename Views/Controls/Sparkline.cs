@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Media;
+using PulseMonitor.Settings;
 
 namespace PulseMonitor.Views.Controls;
 
@@ -15,6 +16,10 @@ public sealed class Sparkline : FrameworkElement
         nameof(Values), typeof(IReadOnlyList<double>), typeof(Sparkline),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
 
+    public static readonly DependencyProperty VariantProperty = DependencyProperty.Register(
+        nameof(Variant), typeof(string), typeof(Sparkline),
+        new FrameworkPropertyMetadata(StyleOptions.SparkArea, FrameworkPropertyMetadataOptions.AffectsRender));
+
     public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
         nameof(Stroke), typeof(Brush), typeof(Sparkline),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
@@ -24,6 +29,13 @@ public sealed class Sparkline : FrameworkElement
     {
         get => (IReadOnlyList<double>?)GetValue(ValuesProperty);
         set => SetValue(ValuesProperty, value);
+    }
+
+    /// <summary>Grafik biçimi (StyleOptions.Spark*): alan, çizgi, yumuşak, çubuk, basamak, solan.</summary>
+    public string Variant
+    {
+        get => (string)GetValue(VariantProperty);
+        set => SetValue(VariantProperty, value);
     }
 
     public Brush? Stroke
@@ -41,29 +53,27 @@ public sealed class Sparkline : FrameworkElement
         double w = ActualWidth, h = ActualHeight;
         if (v is not { Count: > 1 } || stroke is null || w <= 0 || h <= 0) return;
 
-        var area = new StreamGeometry();
-        var line = new StreamGeometry();
-        using (StreamGeometryContext a = area.Open())
-        using (StreamGeometryContext l = line.Open())
-        {
-            a.BeginFigure(new Point(0, h), isFilled: true, isClosed: true);
-            for (int i = 0; i < v.Count; i++)
-            {
-                var p = new Point(i * w / (v.Count - 1), h - Math.Clamp(v[i], 0, 1) * h);
-                a.LineTo(p, isStroked: false, isSmoothJoin: false);
-                if (i == 0) l.BeginFigure(p, isFilled: false, isClosed: false);
-                else l.LineTo(p, isStroked: true, isSmoothJoin: true);
-            }
-            a.LineTo(new Point(w, h), isStroked: false, isSmoothJoin: false);
-        }
-        area.Freeze();
-        line.Freeze();
+        SparklineShapes.Shapes shapes = SparklineShapes.Build(Variant, v, w, h);
 
         dc.PushOpacity(Opacity_);
-        dc.PushOpacity(0.5);
-        dc.DrawGeometry(stroke, null, area);
-        dc.Pop();
-        dc.DrawGeometry(null, new Pen(stroke, 1), line);
+        if (shapes.Fill is not null)
+        {
+            if (shapes.Fade)
+            {
+                var mask = new LinearGradientBrush(Color.FromArgb(255, 0, 0, 0), Color.FromArgb(0, 0, 0, 0), 90);
+                mask.Freeze();
+                dc.PushOpacityMask(mask);
+                dc.DrawGeometry(stroke, null, shapes.Fill);
+                dc.Pop();
+            }
+            else
+            {
+                dc.PushOpacity(shapes.FillOpacity);
+                dc.DrawGeometry(stroke, null, shapes.Fill);
+                dc.Pop();
+            }
+        }
+        if (shapes.Line is not null) dc.DrawGeometry(null, new Pen(stroke, Variant == StyleOptions.SparkLine ? 1.5 : 1), shapes.Line);
         dc.Pop();
     }
 }

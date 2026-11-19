@@ -26,6 +26,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
         Arrows = C("Arrows", s => s.Arrows, (s, v) => s.Arrows = v);
         Labels = C("Labels", s => s.Labels, (s, v) => s.Labels = v);
         Sparkline = C("Sparkline", s => s.Sparkline, (s, v) => s.Sparkline = v);
+        SparklineStyle = C("SparklineStyle", s => s.SparklineStyle, (s, v) => s.SparklineStyle = v);
         KeyboardStyle = C("KeyboardStyle", s => s.KeyboardStyle, (s, v) => s.KeyboardStyle = v);
         Background = C("Background", s => s.Background, (s, v) => s.Background = v);
         WeatherIcons = C("WeatherIcons", s => s.WeatherIcons, (s, v) => s.WeatherIcons = v);
@@ -50,6 +51,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
     public Choice Arrows { get; }
     public Choice Labels { get; }
     public Choice Sparkline { get; }
+    public Choice SparklineStyle { get; }
     public Choice KeyboardStyle { get; }
     public Choice Background { get; }
     public Choice WeatherIcons { get; }
@@ -125,7 +127,7 @@ public sealed class StyleSettingsViewModel : ObservableObject
         _store.Current.Style = style;
         _store.Save();
         Raise(null); // tüm özellikler yeniden okunur
-        foreach (Choice c in new[] { InterfaceSkin, Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel, WeatherForecast, SpeedUnit, SpeedBase })
+        foreach (Choice c in new[] { InterfaceSkin, Theme, Palette, ColorTarget, ValueWeight, Arrows, Labels, Sparkline, SparklineStyle, KeyboardStyle, Background, WeatherIcons, TemperatureUnit, WeatherLabel, WeatherForecast, SpeedUnit, SpeedBase })
             c.Refresh();
         RefreshColorRows();
     }

@@ -30,6 +30,7 @@ internal static class StyleResources
         r["Thickness.ColumnSeparator"] = s.Separator ? new Thickness(1, 0, 0, 0) : new Thickness(0);
 
         r["DetailCards.Enabled"] = s.DetailCards;
+        r["Spark.Style"] = s.SparklineStyle;
         r["Visibility.SparkBehind"] = s.Sparkline == StyleOptions.SparkBehind ? Visibility.Visible : Visibility.Collapsed;
         r["Visibility.SparkSide"] = s.Sparkline == StyleOptions.SparkSide ? Visibility.Visible : Visibility.Collapsed;
     }

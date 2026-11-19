@@ -13,6 +13,7 @@ public static class StyleOptions
     public const string ArrowThin = "Thin", ArrowTriangle = "Triangle", ArrowDashed = "Dashed", ArrowIcon = "Icon", ArrowText = "Text";
     public const string LabelsText = "Text", LabelsIcon = "Icon", LabelsNone = "None";
     public const string SparkNone = "None", SparkBehind = "Behind", SparkSide = "Side";
+    public const string SparkArea = "Area", SparkLine = "Line", SparkSmooth = "Smooth", SparkBars = "Bars", SparkSteps = "Steps", SparkFade = "Fade";
     public const string KeysDim = "Dim", KeysColor = "Color";
     public const string BgNone = "None", BgSingle = "Single", BgCards = "Cards";
     public const string IconColor = "Color", IconRealistic = "Realistic", IconLine = "Line", IconMono = "Mono", IconGlyph = "Glyph";
@@ -42,6 +43,7 @@ public static class StyleOptions
         ["Arrows"] = [ArrowThin, ArrowTriangle, ArrowDashed, ArrowIcon, ArrowText],
         ["Labels"] = [LabelsText, LabelsIcon, LabelsNone],
         ["Sparkline"] = [SparkNone, SparkBehind, SparkSide],
+        ["SparklineStyle"] = [SparkArea, SparkLine, SparkSmooth, SparkBars, SparkSteps, SparkFade],
         ["KeyboardStyle"] = [KeysDim, KeysColor],
         ["Background"] = [BgNone, BgSingle, BgCards],
         ["WeatherIcons"] = [IconMeteoconsFill, IconMeteoconsFlat, IconMeteoconsLine, IconMakinThings,
@@ -76,6 +78,7 @@ public static class StyleOptions
         s.Arrows = Valid("Arrows", s.Arrows, d.Arrows);
         s.Labels = Valid("Labels", s.Labels, d.Labels);
         s.Sparkline = Valid("Sparkline", s.Sparkline, d.Sparkline);
+        s.SparklineStyle = Valid("SparklineStyle", s.SparklineStyle, d.SparklineStyle);
         s.KeyboardStyle = Valid("KeyboardStyle", s.KeyboardStyle, d.KeyboardStyle);
         s.Background = Valid("Background", s.Background, d.Background);
         s.WeatherIcons = Valid("WeatherIcons", s.WeatherIcons, d.WeatherIcons);

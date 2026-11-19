@@ -61,6 +61,8 @@
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.Labels}" Content="{Binding Labels}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.Sparkline}" Style="{StaticResource RowLabel}" />
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.Sparkline}" Content="{Binding Sparkline}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
+        <DockPanel><TextBlock Text="{DynamicResource Style.Label.SparklineStyle}" Style="{StaticResource RowLabel}" />
+            <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.SparklineStyle}" Content="{Binding SparklineStyle}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
         <DockPanel><TextBlock Text="{DynamicResource Style.Label.KeyboardStyle}" Style="{StaticResource RowLabel}" />
             <ContentControl AutomationProperties.Name="{DynamicResource Style.Label.KeyboardStyle}" Content="{Binding KeyboardStyle}" ContentTemplate="{StaticResource ChoiceBox}" Focusable="False" /></DockPanel>
 

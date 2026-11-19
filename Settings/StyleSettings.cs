@@ -22,6 +22,7 @@ public sealed class StyleSettings
     public string Arrows { get; set; } = StyleOptions.ArrowTriangle;
     public string Labels { get; set; } = StyleOptions.LabelsText;
     public string Sparkline { get; set; } = StyleOptions.SparkBehind;
+    public string SparklineStyle { get; set; } = StyleOptions.SparkArea;
     public string KeyboardStyle { get; set; } = StyleOptions.KeysColor;
 
     // Zemin ve boyut
