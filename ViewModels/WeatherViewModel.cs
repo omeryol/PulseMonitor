@@ -144,7 +144,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         };
         TemperatureText = ValueFormat.Degrees(report.Temperature, f);
         FeelsLikeText = st.ShowFeelsLike ? FeelsLike(ValueFormat.Degrees(report.ApparentTemperature, f)) : "";
-        AnimateIcon = st.WeatherAnimation && icon.Strip is not null;
+        AnimateIcon = icon.Strip is not null; // simge hareketi ayardan bağımsız: durdurmak için statik set seçilir
         WindKmh = st.WeatherAnimation ? report.WindKmh : 0;
         Animation = st.WeatherAnimation ? WeatherCodes.Animation(report.WeatherCode, report.IsDay) : WeatherAnimationKind.None;
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");

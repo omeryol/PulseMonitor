@@ -261,7 +261,7 @@
   "Style.Label.TemperatureUnit": "Temperature unit",
   "Style.Label.FeelsLike": "Show the feels-like temperature next to the degrees",
   "Style.Label.TemperatureColors": "Color by temperature (cold blue → hot red)",
-  "Style.Label.Animation": "Weather animation (in the icon or the card)",
+  "Style.Label.Animation": "Weather card animation (rain, snow, lightning…)",
   "Style.AnimationSystemOff": "Animation is not shown because animation effects are turned off in Windows.",
   "Style.Reset": "Reset appearance to defaults",
   "Common.Undo": "Undo",

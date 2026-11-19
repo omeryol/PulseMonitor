@@ -261,7 +261,7 @@
   "Style.Label.TemperatureUnit": "Sıcaklık birimi",
   "Style.Label.FeelsLike": "Derecenin yanında hissedilen sıcaklığı göster",
   "Style.Label.TemperatureColors": "Sıcaklığa göre renk (soğuk mavi → sıcak kırmızı)",
-  "Style.Label.Animation": "Hava durumu animasyonu (simgede ya da kartta)",
+  "Style.Label.Animation": "Hava durumu kartı animasyonu (yağmur, kar, şimşek…)",
   "Style.AnimationSystemOff": "Windows’ta animasyon efektleri kapalı olduğu için animasyon gösterilmiyor.",
   "Style.Reset": "Görünümü varsayılana döndür",
   "Common.Undo": "Geri al",
