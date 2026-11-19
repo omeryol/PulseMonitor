@@ -1,3 +1,5 @@
+using PulseMonitor.Settings;
+
 namespace PulseMonitor.ViewModels;
 
 /// <summary>
@@ -41,6 +43,12 @@ internal static class TaskbarLayout
             {
                 pending = entry;
             }
+            else if (IsNetwork(entry) && !IsNetwork(pending.Value))
+            {
+                // Yükleme + indirme aynı sütunda kalır: önündeki tek öğe (ör. Kota) ağ çiftini bölmesin, kendi sütununda dursun.
+                Flush();
+                pending = entry;
+            }
             else
             {
                 columns.Add(new TaskbarColumn(pending.Value.Item, entry.Item, null) { Cards = CardsOf(pending.Value, entry) });
@@ -57,6 +65,8 @@ internal static class TaskbarLayout
             pending = null;
         }
     }
+
+    private static bool IsNetwork((object Item, DetailCard? Card) e) => e.Card?.Id is TaskbarItemId.Upload or TaskbarItemId.Download;
 
     private static IReadOnlyList<DetailCard> CardsOf(params (object Item, DetailCard? Card)[] entries) =>
         entries.Select(e => e.Card).OfType<DetailCard>().ToList();
