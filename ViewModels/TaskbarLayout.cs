@@ -32,7 +32,10 @@ internal static class TaskbarLayout
         var columns = new List<TaskbarColumn>();
         (object Item, DetailCard? Card)? pending = null;
 
-        foreach (var entry in items)
+        var list = items.ToList();
+        bool keepNetworkPair = list.Any(e => e.Card?.Id == TaskbarItemId.Upload) && list.Any(e => e.Card?.Id == TaskbarItemId.Download);
+
+        foreach (var entry in list)
         {
             if (entry.Item is ITallItem)
             {
@@ -43,9 +46,9 @@ internal static class TaskbarLayout
             {
                 pending = entry;
             }
-            else if (IsNetwork(entry) && !IsNetwork(pending.Value))
+            else if (keepNetworkPair && IsNetwork(entry) && !IsNetwork(pending.Value))
             {
-                // Yükleme + indirme aynı sütunda kalır: önündeki tek öğe (ör. Kota) ağ çiftini bölmesin, kendi sütununda dursun.
+                // Yükleme + indirme (ikisi de görünürken) aynı sütunda kalır: önündeki tek öğe (ör. Kota) ağ çiftini bölmesin, kendi sütununda dursun.
                 Flush();
                 pending = entry;
             }

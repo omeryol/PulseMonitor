@@ -28,4 +28,16 @@ public sealed class TaskbarLayoutTests
     {
         Assert.Equal(["Upload+Download", "Cpu+Ram", "Gpu+"], Shape(TaskbarItemId.Upload, TaskbarItemId.Download, TaskbarItemId.Cpu, TaskbarItemId.Ram, TaskbarItemId.Gpu));
     }
+
+    [Fact]
+    public void HiddenUploadMeansDownloadPairsNormally()
+    {
+        Assert.Equal(["Quota+Download", "Cpu+Ram"], Shape(TaskbarItemId.Quota, TaskbarItemId.Download, TaskbarItemId.Cpu, TaskbarItemId.Ram));
+    }
+
+    [Fact]
+    public void HiddenDownloadMeansUploadPairsNormally()
+    {
+        Assert.Equal(["Quota+Upload", "Cpu+Ram"], Shape(TaskbarItemId.Quota, TaskbarItemId.Upload, TaskbarItemId.Cpu, TaskbarItemId.Ram));
+    }
 }
