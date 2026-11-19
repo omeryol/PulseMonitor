@@ -31,6 +31,38 @@ internal static class WeatherCodes
         _ => "Cloudy",
     };
 
+    /// <summary>Sinematik 3D setinin ayrıntılı simge adı (hava koduna göre 30 simge; Assets/WeatherAnim/Cinematic3D). Diğer setlerde <see cref="IconKey(int, bool)"/> kullanılır.</summary>
+    public static string DetailedIconKey(int code, bool isDay) => code switch
+    {
+        0 => isDay ? "ClearDay" : "ClearNight",
+        1 => isDay ? "MainlyClearDay" : "MainlyClearNight",
+        2 => isDay ? "PartlyDay" : "PartlyNight",
+        45 => "Fog",
+        48 => "RimeFog",
+        51 => "DrizzleLight",
+        53 => "Drizzle",
+        55 => "DrizzleDense",
+        56 or 57 => "FreezingDrizzle",
+        66 or 67 => "FreezingRain",
+        61 => "RainLight",
+        63 => "Rain",
+        65 => "RainHeavy",
+        71 => "SnowLight",
+        73 => "Snow",
+        75 => "SnowHeavy",
+        77 => "SnowGrains",
+        80 => "ShowersLight",
+        81 => "Showers",
+        82 => "ShowersHeavy",
+        85 or 86 => "SnowShowers",
+        96 or 99 => "ThunderstormHail",
+        _ => IconKey(code, isDay),
+    };
+
+    /// <summary>Seçili sete uygun simge adı: Sinematik 3D (animasyonlu) ayrıntılı, diğerleri 9 temel simge.</summary>
+    public static string IconKeyFor(string set, int code, bool isDay) =>
+        set == PulseMonitor.Settings.StyleOptions.IconCinematic ? DetailedIconKey(code, isDay) : IconKey(code, isDay);
+
     /// <summary>Hava kartındaki animasyon türü (Views/Controls/WeatherAnimation.cs).</summary>
     public static WeatherAnimationKind Animation(int code, bool isDay) => Group(code) switch
     {

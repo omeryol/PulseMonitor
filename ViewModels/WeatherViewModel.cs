@@ -132,7 +132,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         }
 
         IsCinematicIcon = st.WeatherIcons == StyleOptions.IconCinematicStatic;
-        WeatherIcon icon = WeatherIcons.Resolve(st.WeatherIcons, WeatherCodes.IconKey(report.WeatherCode, report.IsDay));
+        WeatherIcon icon = WeatherIcons.Resolve(st.WeatherIcons, WeatherCodes.IconKeyFor(st.WeatherIcons, report.WeatherCode, report.IsDay));
         (Icon, IconShape, IconStrip, IconStill) = (icon.Image, icon.Shape, icon.Strip, icon.Still);
         IconGlyph = st.WeatherIcons == StyleOptions.IconGlyph ? WeatherCodes.Glyph(report.WeatherCode, report.IsDay) : "";
         string description = WeatherCodes.Describe(report.WeatherCode);

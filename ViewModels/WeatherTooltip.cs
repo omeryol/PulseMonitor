@@ -110,7 +110,7 @@ internal static class WeatherTooltip
     /// Kart simgesi seçili simge setinden gelir: resim olduğu gibi, animasyonlu sette sabit kare, Çizgi/Dolu sette şekil kart
     /// yazı rengiyle. "Karakter" setinde (ya da simge yüklenemezse) renkli simge kullanılır.
     /// </summary>
-    private static ImageSource? Icon(string set, int code, bool isDay) => IconByKey(set, WeatherCodes.IconKey(code, isDay));
+    private static ImageSource? Icon(string set, int code, bool isDay) => IconByKey(set, WeatherCodes.IconKeyFor(set, code, isDay));
 
     private static ImageSource? IconByKey(string set, string key)
     {
