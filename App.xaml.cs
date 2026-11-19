@@ -95,6 +95,14 @@ public partial class App : Application
 
         var menu = new AppMenu(_settings, _windows.OpenSettings, _windows.OpenHistory, () => _weather.RefreshSoon(),
             _windows.OpenAbout, () => Shutdown());
+#if DEBUG
+        if (e.Args.Contains("--weather-demo")) _viewModel.Weather.Demo = WeatherDemoMenu.First;
+        menu.AddWeatherDemo(demo =>
+        {
+            _viewModel.Weather.Demo = demo;
+            UpdateWeather();
+        }, _viewModel.Weather.Demo);
+#endif
         _updates.Changed += () => Dispatcher.BeginInvoke(() => OnUpdateChecked(menu));
 
         _window = new TaskbarWindow { DataContext = _viewModel };

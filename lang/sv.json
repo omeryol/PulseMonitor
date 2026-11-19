@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "PulseMonitor plats",
   "Taskbar.MoveLeftQuestion": "Aktivitetsfältets ikoner flyttade till mitten. Vill du flytta PulseMonitor till vänster sida?",
   "Taskbar.MoveLeftYes": "Flytta åt vänster",
-  "Taskbar.MoveLeftNo": "Flytta åt höger"
+  "Taskbar.MoveLeftNo": "Flytta åt höger",
+  "Demo.Wind": "Blåsigt",
+  "Demo.Rime": "Rimfrost",
+  "Demo.Fine": "Lätt underkylt duggregn",
+  "Demo.DenseFine": "Tätt underkylt duggregn",
+  "Demo.Menu": "Testa vädret",
+  "Demo.Live": "Tillbaka till live-väder",
+  "Demo.Sky": "Himmel och dimma",
+  "Demo.Day": "Dag",
+  "Demo.Night": "Natt",
+  "Demo.Light": "Lätt",
+  "Demo.Heavy": "Kraftigt",
+  "Demo.Grains": "Snökorn",
+  "Demo.Tag": "Demo"
 }

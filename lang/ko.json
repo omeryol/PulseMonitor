@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "PulseMonitor 위치",
   "Taskbar.MoveLeftQuestion": "작업 표시줄 아이콘이 중앙으로 이동했습니다. PulseMonitor를 왼쪽으로 이동하시겠습니까?",
   "Taskbar.MoveLeftYes": "왼쪽으로 이동",
-  "Taskbar.MoveLeftNo": "오른쪽으로 이동"
+  "Taskbar.MoveLeftNo": "오른쪽으로 이동",
+  "Demo.Wind": "바람 강함",
+  "Demo.Rime": "상고대",
+  "Demo.Fine": "약한 어는 이슬비",
+  "Demo.DenseFine": "강한 어는 이슬비",
+  "Demo.Menu": "날씨 테스트",
+  "Demo.Live": "실시간 날씨로 돌아가기",
+  "Demo.Sky": "하늘과 안개",
+  "Demo.Day": "낮",
+  "Demo.Night": "밤",
+  "Demo.Light": "약함",
+  "Demo.Heavy": "강함",
+  "Demo.Grains": "싸락눈",
+  "Demo.Tag": "데모"
 }

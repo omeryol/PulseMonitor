@@ -455,5 +455,18 @@
   "Style.TrafficWarning.100": "100%",
   "Detail.Jitter": "抖动（1 分钟）",
   "History.Comparison": "与上一期间比较",
-  "History.NoComparison": "没有更早的数据可供比较"
+  "History.NoComparison": "没有更早的数据可供比较",
+  "Demo.Wind": "有风",
+  "Demo.Rime": "雾凇",
+  "Demo.Fine": "轻微冻毛毛雨",
+  "Demo.DenseFine": "浓冻毛毛雨",
+  "Demo.Menu": "测试天气",
+  "Demo.Live": "返回实时天气",
+  "Demo.Sky": "天空与雾",
+  "Demo.Day": "白天",
+  "Demo.Night": "夜间",
+  "Demo.Light": "小",
+  "Demo.Heavy": "大",
+  "Demo.Grains": "雪粒",
+  "Demo.Tag": "演示"
 }

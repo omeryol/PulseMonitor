@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Locația PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Pictogramele din bara de activități au fost mutate în centru. Doriți să mutați PulseMonitor în partea stângă?",
   "Taskbar.MoveLeftYes": "Mutați la stânga",
-  "Taskbar.MoveLeftNo": "Mutați la dreapta"
+  "Taskbar.MoveLeftNo": "Mutați la dreapta",
+  "Demo.Wind": "Vânt",
+  "Demo.Rime": "Chiciură",
+  "Demo.Fine": "Burniță înghețată slabă",
+  "Demo.DenseFine": "Burniță înghețată deasă",
+  "Demo.Menu": "Testează vremea",
+  "Demo.Live": "Înapoi la vremea reală",
+  "Demo.Sky": "Cer și ceață",
+  "Demo.Day": "Zi",
+  "Demo.Night": "Noapte",
+  "Demo.Light": "Slab",
+  "Demo.Heavy": "Puternic",
+  "Demo.Grains": "Zăpadă granulară",
+  "Demo.Tag": "Demo"
 }

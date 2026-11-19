@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Umístění PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Ikony na hlavním panelu přesunuty doprostřed. Chcete přesunout PulseMonitor na levou stranu?",
   "Taskbar.MoveLeftYes": "Posun doleva",
-  "Taskbar.MoveLeftNo": "Posun doprava"
+  "Taskbar.MoveLeftNo": "Posun doprava",
+  "Demo.Wind": "Větrno",
+  "Demo.Rime": "Námraza",
+  "Demo.Fine": "Slabé namrzající mrholení",
+  "Demo.DenseFine": "Husté namrzající mrholení",
+  "Demo.Menu": "Vyzkoušet počasí",
+  "Demo.Live": "Zpět na živé počasí",
+  "Demo.Sky": "Obloha a mlha",
+  "Demo.Day": "Den",
+  "Demo.Night": "Noc",
+  "Demo.Light": "Slabé",
+  "Demo.Heavy": "Silné",
+  "Demo.Grains": "Sněhová zrna",
+  "Demo.Tag": "Ukázka"
 }

@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Lokalizacja PulseMonitora",
   "Taskbar.MoveLeftQuestion": "Ikony paska zadań przesunięte na środek. Chcesz przesunąć PulseMonitor na lewą stronę?",
   "Taskbar.MoveLeftYes": "Przesuń w lewo",
-  "Taskbar.MoveLeftNo": "Przesuń w prawo"
+  "Taskbar.MoveLeftNo": "Przesuń w prawo",
+  "Demo.Wind": "Wietrznie",
+  "Demo.Rime": "Szron",
+  "Demo.Fine": "Słaba marznąca mżawka",
+  "Demo.DenseFine": "Gęsta marznąca mżawka",
+  "Demo.Menu": "Testuj pogodę",
+  "Demo.Live": "Wróć do pogody na żywo",
+  "Demo.Sky": "Niebo i mgła",
+  "Demo.Day": "Dzień",
+  "Demo.Night": "Noc",
+  "Demo.Light": "Słaby",
+  "Demo.Heavy": "Silny",
+  "Demo.Grains": "Ziarna śnieżne",
+  "Demo.Tag": "Demo"
 }

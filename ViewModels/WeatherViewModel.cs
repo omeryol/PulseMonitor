@@ -34,6 +34,8 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     private Func<WeatherTooltipModel>? _buildTooltip; // tema değişince şekil simgeleri ve renkler yeniden alınır
     private double _opacity = 1;
     private bool _isCinematicIcon;
+    private double _windKmh;
+    public double WindKmh { get => _windKmh; private set => Set(ref _windKmh, value); }
     private WeatherAnimationKind _animation;
     private WeatherLocation? _activeLocation;
 
@@ -84,14 +86,26 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
     public bool CanSwitch { get; private set; }
     internal WeatherLocation? ActiveLocation => _activeLocation;
 
+#if DEBUG
+    internal PulseMonitor.Tray.WeatherDemo? Demo { get; set; }
+#endif
+
     internal void Update(AppSettings s, Func<WeatherLocation, WeatherReport?> reportFor)
     {
         WeatherLocation? loc = s.Weather.Active;
-        _activeLocation = loc;
+#if DEBUG
+        if (Demo is not null) loc ??= new WeatherLocation();
+#endif
+        _activeLocation = s.Weather.Active;
         IsVisible = s.IsShown(TaskbarItemId.Weather) && loc is not null;
         CanSwitch = s.Weather.Locations.Count > 1;
         if (loc is null) return;
-        WeatherReport? report = reportFor(loc);
+        WeatherReport? report;
+#if DEBUG
+        if (Demo is not null) report = Demo.Report();
+        else
+#endif
+            report = reportFor(loc);
         var others = s.Weather.Locations.Where(l => !ReferenceEquals(l, loc)).Select(l => (l, reportFor(l))).ToList();
 
         StyleSettings st = s.Style;
@@ -108,6 +122,7 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
             IconGlyph = "";
             TemperatureText = "--°";
             FeelsLikeText = "";
+            WindKmh = 0;
             Animation = WeatherAnimationKind.None;
             SetTemperatureBrush("Brush.Text");
             Opacity = 1;
@@ -130,10 +145,20 @@ public sealed class WeatherViewModel : ObservableObject, ITallItem
         TemperatureText = ValueFormat.Degrees(report.Temperature, f);
         FeelsLikeText = st.ShowFeelsLike ? FeelsLike(ValueFormat.Degrees(report.ApparentTemperature, f)) : "";
         AnimateIcon = st.WeatherAnimation && icon.Strip is not null;
+        WindKmh = st.WeatherAnimation ? report.WindKmh : 0;
         Animation = st.WeatherAnimation ? WeatherCodes.Animation(report.WeatherCode, report.IsDay) : WeatherAnimationKind.None;
         SetTemperatureBrush(st.TemperatureColors ? TemperatureKey(report.Temperature) : "Brush.Text");
         bool stale = report.Age > StaleAfter;
         Opacity = stale ? 0.55 : 1;
+#if DEBUG
+        if (Demo is not null)
+        {
+            PlaceName = $"{Strings.Get("Demo.Tag")} · {Demo.Label}";
+            _buildTooltip = null;
+            Tooltip = null;
+            return;
+        }
+#endif
         _buildTooltip = () => WeatherTooltip.Build(loc, report, others, st, WarningLevels.From(s.Alerts.WeatherLevel), stale);
         Tooltip = _buildTooltip();
     }

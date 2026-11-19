@@ -112,7 +112,7 @@
                                 </StackPanel>
                             </Grid>
                             <!-- Hava animasyonu tüm sütun boyunca, içeriğin önünde (hava sütunu değilse Kind boş, çalışmaz) -->
-                            <controls:WeatherAnimation Kind="{Binding Weather.Animation}" CornerRadius="6" />
+                            <controls:WeatherAnimation Kind="{Binding Weather.Animation}" WindKmh="{Binding Weather.WindKmh}" CornerRadius="6" />
                         </Grid>
                     </Border>
                     <DataTemplate.Triggers>

@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "PulseMonitor helye",
   "Taskbar.MoveLeftQuestion": "A tálca ikonjai középre kerültek. A PulseMonitort bal oldalra szeretné helyezni?",
   "Taskbar.MoveLeftYes": "Mozgatás balra",
-  "Taskbar.MoveLeftNo": "Mozgás jobbra"
+  "Taskbar.MoveLeftNo": "Mozgás jobbra",
+  "Demo.Wind": "Szeles",
+  "Demo.Rime": "Dér",
+  "Demo.Fine": "Gyenge ónos szitálás",
+  "Demo.DenseFine": "Sűrű ónos szitálás",
+  "Demo.Menu": "Időjárás kipróbálása",
+  "Demo.Live": "Vissza az élő időjáráshoz",
+  "Demo.Sky": "Égbolt és köd",
+  "Demo.Day": "Nappal",
+  "Demo.Night": "Éjszaka",
+  "Demo.Light": "Gyenge",
+  "Demo.Heavy": "Erős",
+  "Demo.Grains": "Hószemcsék",
+  "Demo.Tag": "Demó"
 }

@@ -20,7 +20,7 @@ internal sealed class SkyLayer
     private readonly Random _random = new();
 
     public static bool IsSky(WeatherAnimationKind kind) =>
-        kind is WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast or WeatherAnimationKind.Sun or WeatherAnimationKind.Stars;
+        kind is WeatherAnimationKind.FewClouds or WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast or WeatherAnimationKind.Sun or WeatherAnimationKind.Stars;
 
     public void Clear() => _items.Clear();
 
@@ -33,7 +33,7 @@ internal sealed class SkyLayer
         for (int i = 0; i < _items.Count; i++)
         {
             Item it = _items[i];
-            if (kind is WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast)
+            if (kind is WeatherAnimationKind.FewClouds or WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast)
             {
                 it.X += it.Speed;
                 if (it.X > w) _items[i] = Spawn(kind, w, h, initial: false);
@@ -52,7 +52,7 @@ internal sealed class SkyLayer
         {
             switch (kind)
             {
-                case WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast:
+                case WeatherAnimationKind.FewClouds or WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast:
                     DrawCloud(dc, it, w, kind == WeatherAnimationKind.Overcast);
                     break;
                 case WeatherAnimationKind.Sun:
@@ -71,6 +71,7 @@ internal sealed class SkyLayer
         return kind switch
         {
             WeatherAnimationKind.Overcast => (int)Math.Round(3 * wide),
+            WeatherAnimationKind.FewClouds => 1,
             WeatherAnimationKind.Clouds => (int)Math.Round(2 * wide),
             WeatherAnimationKind.Sun => (int)Math.Round(4 * wide),
             _ => (int)Math.Round(6 * wide),
@@ -79,9 +80,10 @@ internal sealed class SkyLayer
 
     private Item Spawn(WeatherAnimationKind kind, double w, double h, bool initial)
     {
-        if (kind is WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast)
+        if (kind is WeatherAnimationKind.FewClouds or WeatherAnimationKind.Clouds or WeatherAnimationKind.Overcast)
         {
             double scale = kind == WeatherAnimationKind.Overcast ? 1.3 + _random.NextDouble() * 0.9 : 0.9 + _random.NextDouble() * 0.7;
+            if (kind == WeatherAnimationKind.FewClouds) scale *= 0.66;
             double cw = CloudWidth * scale;
             return new Item
             {

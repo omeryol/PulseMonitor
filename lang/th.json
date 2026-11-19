@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "ตำแหน่ง PulseMonitor",
   "Taskbar.MoveLeftQuestion": "ไอคอนแถบงานถูกย้ายไปที่กึ่งกลาง ต้องการย้าย PulseMonitor ไปทางซ้ายหรือไม่?",
   "Taskbar.MoveLeftYes": "ย้ายไปทางซ้าย",
-  "Taskbar.MoveLeftNo": "ย้ายไปทางขวา"
+  "Taskbar.MoveLeftNo": "ย้ายไปทางขวา",
+  "Demo.Wind": "ลมแรง",
+  "Demo.Rime": "น้ำค้างแข็ง",
+  "Demo.Fine": "ฝนปรอยเยือกแข็งเล็กน้อย",
+  "Demo.DenseFine": "ฝนปรอยเยือกแข็งหนาแน่น",
+  "Demo.Menu": "ทดสอบสภาพอากาศ",
+  "Demo.Live": "กลับไปสภาพอากาศจริง",
+  "Demo.Sky": "ท้องฟ้าและหมอก",
+  "Demo.Day": "กลางวัน",
+  "Demo.Night": "กลางคืน",
+  "Demo.Light": "เบา",
+  "Demo.Heavy": "หนัก",
+  "Demo.Grains": "เม็ดหิมะ",
+  "Demo.Tag": "สาธิต"
 }

@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Emplacement PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Icônes de la barre des tâches déplacées vers le centre. Vous souhaitez déplacer PulseMonitor vers la gauche ?",
   "Taskbar.MoveLeftYes": "Déplacer vers la gauche",
-  "Taskbar.MoveLeftNo": "Déplacer vers la droite"
+  "Taskbar.MoveLeftNo": "Déplacer vers la droite",
+  "Demo.Wind": "Venteux",
+  "Demo.Rime": "Givre",
+  "Demo.Fine": "Bruine verglaçante légère",
+  "Demo.DenseFine": "Bruine verglaçante dense",
+  "Demo.Menu": "Tester la météo",
+  "Demo.Live": "Revenir à la météo en direct",
+  "Demo.Sky": "Ciel et brouillard",
+  "Demo.Day": "Jour",
+  "Demo.Night": "Nuit",
+  "Demo.Light": "Léger",
+  "Demo.Heavy": "Fort",
+  "Demo.Grains": "Neige en grains",
+  "Demo.Tag": "Démo"
 }

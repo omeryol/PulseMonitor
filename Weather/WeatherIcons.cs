@@ -6,7 +6,7 @@ using PulseMonitor.Settings;
 
 namespace PulseMonitor.Weather;
 
-public enum WeatherAnimationKind { None, Rain, Snow, Fog, Thunder, Clouds, Overcast, Sun, Stars }
+public enum WeatherAnimationKind { None, Rain, Snow, Fog, Thunder, Clouds, Overcast, Sun, Stars, LightRain, HeavyRain, LightShowers, Showers, LightSnow, HeavySnow, SnowGrains, SnowShower, HeavySnowShower, Hail, HeavyHail, HeavyThunder, FewClouds, RimeFog, LightDrizzle, Drizzle, DenseDrizzle, FreezingDrizzle, DenseFreezingDrizzle, FreezingRain, HeavyFreezingRain, SteadyHeavyRain }
 
 /// <summary>Bir simge setinden bulunan simge: resim, şekil ya da animasyonlu film şeridi (+ sabit hâli).</summary>
 public readonly record struct WeatherIcon(ImageSource? Image, Geometry? Shape, BitmapSource? Strip, BitmapSource? Still);

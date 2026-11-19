@@ -12,25 +12,22 @@ namespace PulseMonitor.Views.Controls;
 public sealed class WeatherAnimation : FrameworkElement
 {
     private const int Fps = 15;
-    private static readonly Brush RainBrush = Frozen(Color.FromArgb(150, 132, 190, 250));
-    private static readonly Brush SnowBrush = Frozen(Color.FromArgb(210, 230, 244, 255));
-    private static readonly Brush FogBrush = Frozen(Color.FromArgb(38, 210, 220, 232));
-
-    private sealed class Particle
-    {
-        public Point Position;
-        public Vector Velocity;
-        public double Size;
-    }
-
     public static readonly DependencyProperty KindProperty = DependencyProperty.Register(
         nameof(Kind), typeof(WeatherAnimationKind), typeof(WeatherAnimation),
         new PropertyMetadata(WeatherAnimationKind.None, (d, _) => ((WeatherAnimation)d).UpdateTimer()));
 
+    public static readonly DependencyProperty WindKmhProperty = DependencyProperty.Register(
+        nameof(WindKmh), typeof(double), typeof(WeatherAnimation), new PropertyMetadata(0.0));
+    public double WindKmh { get => (double)GetValue(WindKmhProperty); set => SetValue(WindKmhProperty, value); }
+    private readonly WindLeaves _leaves = new();
+    private readonly FrostLayer _frost = new();
+    private readonly GlassRainLayer _rain = new();
     private readonly SkyLayer _sky = new();
     private readonly DispatcherTimer _timer;
     private readonly Random _random = new();
-    private readonly List<Particle> _particles = [];
+    private readonly WinterPrecipitation _winter = new();
+    private readonly MistLayer _mist = new();
+    private bool IsStorm => Kind is WeatherAnimationKind.Thunder or WeatherAnimationKind.HeavyThunder or WeatherAnimationKind.Hail or WeatherAnimationKind.HeavyHail;
     private int _frame, _nextLightningFrame, _lightningFrames, _lightningSeed;
 
     public WeatherAnimation()
@@ -55,17 +52,21 @@ public sealed class WeatherAnimation : FrameworkElement
     private void UpdateTimer()
     {
         bool run = Kind != WeatherAnimationKind.None && IsVisible && IsLoaded && SystemMotion.Allowed;
-        _particles.Clear();
+        _leaves.Clear();
+        _frost.Clear();
+        _winter.Clear();
+        _mist.Clear();
         _sky.Clear();
+        _rain.Clear();
         _frame = 0;
         _lightningFrames = 0;
-        _nextLightningFrame = NextLightningFrame();
+        _nextLightningFrame = Fps;
         if (run && !_timer.IsEnabled) _timer.Start();
         else if (!run && _timer.IsEnabled) _timer.Stop();
         InvalidateVisual();
     }
 
-    private int NextLightningFrame() => _frame + _random.Next(Fps * 5, Fps * 11);
+    private int NextLightningFrame() => _frame + (Kind == WeatherAnimationKind.HeavyThunder ? _random.Next(Fps * 3, Fps * 6) : _random.Next(Fps * 5, Fps * 10));
 
     private void Step()
     {
@@ -76,7 +77,16 @@ public sealed class WeatherAnimation : FrameworkElement
         {
             _sky.Step(Kind, w, h);
         }
-        else if (Kind == WeatherAnimationKind.Thunder)
+        else if (GlassRainLayer.IsRain(Kind))
+        {
+            _rain.Step(Kind, w, h);
+        }
+        else if (WinterPrecipitation.Supports(Kind)) _winter.Step(Kind, w, h);
+
+        _leaves.Step(WindKmh, w, h);
+        if (FrostLayer.Supports(Kind)) _frost.Step(Kind);
+        if (Kind is WeatherAnimationKind.Fog or WeatherAnimationKind.RimeFog || IsStorm) _mist.Step(w, h, IsStorm);
+        if (IsStorm)
         {
             if (_lightningFrames > 0) _lightningFrames--;
             else if (_frame >= _nextLightningFrame)
@@ -86,50 +96,8 @@ public sealed class WeatherAnimation : FrameworkElement
                 _nextLightningFrame = NextLightningFrame();
             }
         }
-        else
-        {
-            int wanted = (int)Math.Round(Math.Clamp(w / 90.0, 1, 2) * (Kind == WeatherAnimationKind.Fog ? 3 : Kind == WeatherAnimationKind.Snow ? 9 : 12));
-            while (_particles.Count < wanted) _particles.Add(Spawn(w, h, initial: true));
-            while (_particles.Count > wanted) _particles.RemoveAt(_particles.Count - 1);
-            foreach (Particle p in _particles)
-            {
-                p.Position += p.Velocity;
-                if (Kind == WeatherAnimationKind.Fog && p.Position.X > w + p.Size) Reset(p, w, h, false);
-                else if (Kind != WeatherAnimationKind.Fog && p.Position.Y > h + p.Size) Reset(p, w, h, false);
-            }
-        }
-
         _frame++;
         InvalidateVisual();
-    }
-
-    private Particle Spawn(double w, double h, bool initial)
-    {
-        var p = new Particle();
-        Reset(p, w, h, initial);
-        return p;
-    }
-
-    private void Reset(Particle p, double w, double h, bool initial)
-    {
-        switch (Kind)
-        {
-            case WeatherAnimationKind.Snow:
-                p.Size = 0.8 + _random.NextDouble() * 0.8;
-                p.Velocity = new Vector(-0.08 + _random.NextDouble() * 0.20, 0.45 + _random.NextDouble() * 0.45);
-                p.Position = initial ? new Point(_random.NextDouble() * w, _random.NextDouble() * h) : new Point(_random.NextDouble() * w, -p.Size);
-                break;
-            case WeatherAnimationKind.Fog:
-                p.Size = 24 + _random.NextDouble() * 22;
-                p.Velocity = new Vector(0.10 + _random.NextDouble() * 0.12, 0);
-                p.Position = initial ? new Point(_random.NextDouble() * w, _random.NextDouble() * h) : new Point(-p.Size, _random.NextDouble() * h);
-                break;
-            default:
-                p.Size = 4.5 + _random.NextDouble() * 3.5;
-                p.Velocity = new Vector(-0.35 - _random.NextDouble() * 0.35, 3.0 + _random.NextDouble() * 1.5);
-                p.Position = initial ? new Point(_random.NextDouble() * w, _random.NextDouble() * h) : new Point(_random.NextDouble() * w, -p.Size);
-                break;
-        }
     }
 
     protected override void OnRender(DrawingContext dc)
@@ -139,23 +107,12 @@ public sealed class WeatherAnimation : FrameworkElement
 
         dc.PushClip(new RectangleGeometry(new Rect(0, 0, w, h), CornerRadius, CornerRadius));
         if (SkyLayer.IsSky(Kind)) _sky.Render(dc, Kind, w);
-        foreach (Particle p in _particles)
-        {
-            switch (Kind)
-            {
-                case WeatherAnimationKind.Snow:
-                    dc.DrawEllipse(SnowBrush, null, p.Position, p.Size, p.Size);
-                    break;
-                case WeatherAnimationKind.Fog:
-                    dc.DrawRoundedRectangle(FogBrush, null, new Rect(p.Position.X - p.Size / 2, p.Position.Y, p.Size, 4), 2, 2);
-                    break;
-                default:
-                    dc.DrawLine(new Pen(RainBrush, 1.05) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round }, p.Position,
-                        new Point(p.Position.X - p.Velocity.X * 1.6, p.Position.Y + p.Size));
-                    break;
-            }
-        }
-        if (Kind == WeatherAnimationKind.Thunder && _lightningFrames > 0) DrawLightning(dc, w, h);
+        if (GlassRainLayer.IsRain(Kind)) _rain.Render(dc);
+        if (Kind is WeatherAnimationKind.Fog or WeatherAnimationKind.RimeFog || IsStorm) _mist.Render(dc, IsStorm);
+        if (WinterPrecipitation.Supports(Kind)) _winter.Render(dc, Kind);
+        _frost.Render(dc, w, h);
+        _leaves.Render(dc);
+        if (IsStorm && _lightningFrames > 0) DrawLightning(dc, w, h);
         dc.Pop();
     }
 
@@ -169,13 +126,23 @@ public sealed class WeatherAnimation : FrameworkElement
             c.BeginFigure(new Point(x, -2), false, false);
             for (double y = 0; y < h * 0.82; y += 6)
             {
-                x += -3 + random.NextDouble() * 6;
+                if (y > 0 && (y == 6 || random.NextDouble() < 0.25))
+                {
+                    var fork = new Point(x + (random.Next(2) == 0 ? -1 : 1) * (4 + random.NextDouble() * 7), y + 4);
+                    c.LineTo(fork, true, false);
+                    c.LineTo(new Point(fork.X + random.Next(-4, 5), fork.Y + 3), true, false);
+                    c.BeginFigure(new Point(x, y), false, false);
+                }
+                x += -5 + random.NextDouble() * 10;
                 c.LineTo(new Point(x, y + 6), true, false);
             }
         }
         geometry.Freeze();
-        dc.DrawGeometry(null, new Pen(Frozen(Color.FromArgb(55, 132, 190, 255)), 3), geometry);
-        dc.DrawGeometry(null, new Pen(Frozen(Color.FromArgb(225, 236, 247, 255)), 1), geometry);
+        dc.PushOpacity(_lightningFrames == 1 ? 0.42 : 1);
+        dc.DrawEllipse(Frozen(Color.FromArgb(32, 201, 214, 255)), null, new Point(x, 0), w * 0.32, h * 0.58);
+        dc.DrawGeometry(null, new Pen(Frozen(Color.FromArgb(85, 132, 190, 255)), 3), geometry);
+        dc.DrawGeometry(null, new Pen(Frozen(Color.FromArgb(225, 236, 247, 255)), 1.35), geometry);
+        dc.Pop();
     }
 
     private static Brush Frozen(Color c)

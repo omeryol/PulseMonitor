@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Lokasi PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Ikon bilah tugas dipindahkan ke tengah. Ingin memindahkan PulseMonitor ke sisi kiri?",
   "Taskbar.MoveLeftYes": "Pindah ke kiri",
-  "Taskbar.MoveLeftNo": "Pindah ke kanan"
+  "Taskbar.MoveLeftNo": "Pindah ke kanan",
+  "Demo.Wind": "Berangin",
+  "Demo.Rime": "Embun beku",
+  "Demo.Fine": "Gerimis beku ringan",
+  "Demo.DenseFine": "Gerimis beku lebat",
+  "Demo.Menu": "Uji cuaca",
+  "Demo.Live": "Kembali ke cuaca langsung",
+  "Demo.Sky": "Langit dan kabut",
+  "Demo.Day": "Siang",
+  "Demo.Night": "Malam",
+  "Demo.Light": "Ringan",
+  "Demo.Heavy": "Lebat",
+  "Demo.Grains": "Butiran salju",
+  "Demo.Tag": "Demo"
 }

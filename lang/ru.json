@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Расположение PulseMonitor.",
   "Taskbar.MoveLeftQuestion": "Значки на панели задач перемещены в центр. Хотите переместить PulseMonitor в левую сторону?",
   "Taskbar.MoveLeftYes": "Перемещение влево",
-  "Taskbar.MoveLeftNo": "Перемещение вправо"
+  "Taskbar.MoveLeftNo": "Перемещение вправо",
+  "Demo.Wind": "Ветрено",
+  "Demo.Rime": "Изморозь",
+  "Demo.Fine": "Слабая замерзающая морось",
+  "Demo.DenseFine": "Сильная замерзающая морось",
+  "Demo.Menu": "Проверить погоду",
+  "Demo.Live": "Вернуться к реальной погоде",
+  "Demo.Sky": "Небо и туман",
+  "Demo.Day": "День",
+  "Demo.Night": "Ночь",
+  "Demo.Light": "Слабый",
+  "Demo.Heavy": "Сильный",
+  "Demo.Grains": "Снежная крупа",
+  "Demo.Tag": "Демо"
 }

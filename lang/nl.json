@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "PulseMonitor-locatie",
   "Taskbar.MoveLeftQuestion": "Taakbalkpictogrammen zijn naar het midden verplaatst. Wilt u PulseMonitor naar de linkerkant verplaatsen?",
   "Taskbar.MoveLeftYes": "Verplaats naar links",
-  "Taskbar.MoveLeftNo": "Verplaats naar rechts"
+  "Taskbar.MoveLeftNo": "Verplaats naar rechts",
+  "Demo.Wind": "Winderig",
+  "Demo.Rime": "Rijp",
+  "Demo.Fine": "Lichte ijzel-motregen",
+  "Demo.DenseFine": "Dichte ijzel-motregen",
+  "Demo.Menu": "Weer testen",
+  "Demo.Live": "Terug naar live weer",
+  "Demo.Sky": "Lucht en mist",
+  "Demo.Day": "Dag",
+  "Demo.Night": "Nacht",
+  "Demo.Light": "Licht",
+  "Demo.Heavy": "Zwaar",
+  "Demo.Grains": "Korrelsneeuw",
+  "Demo.Tag": "Demo"
 }

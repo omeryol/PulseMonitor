@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Localização do PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Ícones da barra de tarefas movidos para o centro. Quer mover o PulseMonitor para o lado esquerdo?",
   "Taskbar.MoveLeftYes": "Mover para a esquerda",
-  "Taskbar.MoveLeftNo": "Mover para a direita"
+  "Taskbar.MoveLeftNo": "Mover para a direita",
+  "Demo.Wind": "Ventoso",
+  "Demo.Rime": "Geada",
+  "Demo.Fine": "Garoa gelada fraca",
+  "Demo.DenseFine": "Garoa gelada densa",
+  "Demo.Menu": "Testar o tempo",
+  "Demo.Live": "Voltar ao tempo ao vivo",
+  "Demo.Sky": "Céu e nevoeiro",
+  "Demo.Day": "Dia",
+  "Demo.Night": "Noite",
+  "Demo.Light": "Fraco",
+  "Demo.Heavy": "Forte",
+  "Demo.Grains": "Grãos de neve",
+  "Demo.Tag": "Demo"
 }

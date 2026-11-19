@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Vị trí PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Các biểu tượng trên thanh tác vụ đã được di chuyển đến giữa. Bạn muốn di chuyển PulseMonitor sang bên trái?",
   "Taskbar.MoveLeftYes": "Di chuyển sang trái",
-  "Taskbar.MoveLeftNo": "Di chuyển sang phải"
+  "Taskbar.MoveLeftNo": "Di chuyển sang phải",
+  "Demo.Wind": "Có gió",
+  "Demo.Rime": "Sương muối",
+  "Demo.Fine": "Mưa phùn đóng băng nhẹ",
+  "Demo.DenseFine": "Mưa phùn đóng băng dày",
+  "Demo.Menu": "Thử thời tiết",
+  "Demo.Live": "Quay lại thời tiết trực tiếp",
+  "Demo.Sky": "Bầu trời và sương mù",
+  "Demo.Day": "Ngày",
+  "Demo.Night": "Đêm",
+  "Demo.Light": "Nhẹ",
+  "Demo.Heavy": "Nặng",
+  "Demo.Grains": "Tuyết hạt",
+  "Demo.Tag": "Demo"
 }

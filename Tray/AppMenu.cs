@@ -51,6 +51,11 @@ internal sealed class AppMenu
         _menu.Opened += OnOpened;
     }
 
+#if DEBUG
+    public void AddWeatherDemo(Action<WeatherDemo?> select, WeatherDemo? initial) =>
+        _menu.Items.Insert(_menu.Items.IndexOf(_startup) - 1, WeatherDemoMenu.Create(select, initial));
+#endif
+
     private readonly MenuItem _language = new();
     private readonly MenuItem _update = new();
     private readonly Separator _updateSeparator = new();

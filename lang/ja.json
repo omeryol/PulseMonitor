@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "PulseMonitor の場所",
   "Taskbar.MoveLeftQuestion": "タスクバー アイコンが中央に移動しました。 PulseMonitor を左側に移動したいですか?",
   "Taskbar.MoveLeftYes": "左に移動",
-  "Taskbar.MoveLeftNo": "右に移動"
+  "Taskbar.MoveLeftNo": "右に移動",
+  "Demo.Wind": "強風",
+  "Demo.Rime": "霧氷",
+  "Demo.Fine": "弱い着氷性の霧雨",
+  "Demo.DenseFine": "強い着氷性の霧雨",
+  "Demo.Menu": "天気をテスト",
+  "Demo.Live": "ライブの天気に戻る",
+  "Demo.Sky": "空と霧",
+  "Demo.Day": "昼",
+  "Demo.Night": "夜",
+  "Demo.Light": "弱",
+  "Demo.Heavy": "強",
+  "Demo.Grains": "雪あられ",
+  "Demo.Tag": "デモ"
 }

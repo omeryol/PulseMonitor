@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "Τοποθεσία PulseMonitor",
   "Taskbar.MoveLeftQuestion": "Τα εικονίδια της γραμμής εργασιών μετακινήθηκαν στο κέντρο. Θέλετε να μετακινήσετε το PulseMonitor στην αριστερή πλευρά;",
   "Taskbar.MoveLeftYes": "Μετακίνηση προς τα αριστερά",
-  "Taskbar.MoveLeftNo": "Μετακίνηση προς τα δεξιά"
+  "Taskbar.MoveLeftNo": "Μετακίνηση προς τα δεξιά",
+  "Demo.Wind": "Θυελλώδες",
+  "Demo.Rime": "Πάχνη",
+  "Demo.Fine": "Ελαφριά παγωμένη ψιλόβροχη",
+  "Demo.DenseFine": "Πυκνή παγωμένη ψιλόβροχη",
+  "Demo.Menu": "Δοκιμή καιρού",
+  "Demo.Live": "Επιστροφή στον ζωντανό καιρό",
+  "Demo.Sky": "Ουρανός και ομίχλη",
+  "Demo.Day": "Ημέρα",
+  "Demo.Night": "Νύχτα",
+  "Demo.Light": "Ελαφρύ",
+  "Demo.Heavy": "Ισχυρό",
+  "Demo.Grains": "Κόκκοι χιονιού",
+  "Demo.Tag": "Επίδειξη"
 }

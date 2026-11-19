@@ -455,5 +455,18 @@
   "Taskbar.MoveLeftTitle": "PulseMonitor-Standort",
   "Taskbar.MoveLeftQuestion": "Taskleistensymbole in die Mitte verschoben. Möchten Sie PulseMonitor auf die linke Seite verschieben?",
   "Taskbar.MoveLeftYes": "Nach links bewegen",
-  "Taskbar.MoveLeftNo": "Nach rechts bewegen"
+  "Taskbar.MoveLeftNo": "Nach rechts bewegen",
+  "Demo.Wind": "Windig",
+  "Demo.Rime": "Raureif",
+  "Demo.Fine": "Leichter gefrierender Nieselregen",
+  "Demo.DenseFine": "Dichter gefrierender Nieselregen",
+  "Demo.Menu": "Wetter testen",
+  "Demo.Live": "Zurück zum Live-Wetter",
+  "Demo.Sky": "Himmel und Nebel",
+  "Demo.Day": "Tag",
+  "Demo.Night": "Nacht",
+  "Demo.Light": "Leicht",
+  "Demo.Heavy": "Stark",
+  "Demo.Grains": "Schneegriesel",
+  "Demo.Tag": "Demo"
 }
