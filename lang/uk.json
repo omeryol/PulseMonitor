@@ -298,7 +298,7 @@
   "Style.WeatherIcons.MakinThings": "Makin-Things (анімовані)",
   "Style.WeatherIcons.Color": "Кольоровий малюнок",
   "Style.WeatherIcons.CinematicStatic": "Кінематографічне 3D (статичне)",
-  "Style.WeatherIcons.Cinematic": "Кінематографічне 3D (анімоване)",
+  "Style.WeatherIcons.Cinematic3D": "Кінематографічне 3D (анімоване)",
   "Style.WeatherIcons.Realistic": "Реалістичні 3D (Microsoft Fluent Emoji)",
   "Style.WeatherIcons.Line": "Прості лінійні (Microsoft Fluent)",
   "Style.WeatherIcons.Mono": "Монохромні заповнені (Microsoft Fluent)",
