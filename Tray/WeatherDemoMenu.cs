@@ -21,6 +21,17 @@ internal static class WeatherDemoMenu
 {
     internal static readonly WeatherDemo First = new(97, 17, "Heavy", Wind: 48);
 
+    /// <summary>Komut satırından örnek hava: "kod,sıcaklık,rüzgâr km/sa,gündüz (1/0)"; ekran görüntüsü/GIF üretimi için.</summary>
+    public static WeatherDemo? Parse(string text)
+    {
+        string[] p = text.Split(',');
+        var c = System.Globalization.CultureInfo.InvariantCulture;
+        if (p.Length < 2 || !int.TryParse(p[0], c, out int code) || !double.TryParse(p[1], c, out double temp)) return null;
+        double wind = p.Length > 2 && double.TryParse(p[2], c, out double w) ? w : 0;
+        bool day = p.Length < 4 || p[3] != "0";
+        return new WeatherDemo(code, temp, Wind: wind, Day: day);
+    }
+
     public static MenuItem Create(Action<WeatherDemo?> select, WeatherDemo? initial)
     {
         var root = new MenuItem { Header = Strings.Get("Demo.Menu") };

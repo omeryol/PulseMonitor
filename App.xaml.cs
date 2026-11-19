@@ -97,6 +97,8 @@ public partial class App : Application
             _windows.OpenAbout, () => Shutdown());
 #if DEBUG
         if (e.Args.Contains("--weather-demo")) _viewModel.Weather.Demo = WeatherDemoMenu.First;
+        else if (e.Args.FirstOrDefault(a => a.StartsWith("--weather-demo=", StringComparison.Ordinal)) is { } demoArg)
+            _viewModel.Weather.Demo = WeatherDemoMenu.Parse(demoArg["--weather-demo=".Length..]); // "kod,sıcaklık,rüzgâr,gündüz(1/0)"
         menu.AddWeatherDemo(demo =>
         {
             _viewModel.Weather.Demo = demo;
