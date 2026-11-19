@@ -34,8 +34,11 @@ public sealed class AlertsSettingsViewModel : ObservableObject
     public bool WeatherQuietHours { get => A.WeatherQuietHours; set => Update(() => A.WeatherQuietHours = value); }
 
     public bool TrafficEnabled { get => A.TrafficEnabled; set => Update(() => A.TrafficEnabled = value); }
-    public int TrafficLimitGb { get => A.TrafficLimitGb; set => Update(() => A.TrafficLimitGb = value); }
-    public int TrafficUploadLimitGb { get => A.TrafficUploadLimitGb; set => Update(() => A.TrafficUploadLimitGb = value); }
+    public int TrafficLimitGb { get => A.TrafficLimitGb; set => Update(() => { A.TrafficLimitGb = value; Raise(nameof(TrafficSliderMax)); }); }
+    /// <summary>Kaydırıcı en az 1000 GB; elle girilen değer daha büyükse kaydırıcı onu kapsar (aksi halde değer kırpılırdı).</summary>
+    public int TrafficSliderMax => Math.Max(1000, A.TrafficLimitGb);
+    public int TrafficUploadLimitGb { get => A.TrafficUploadLimitGb; set => Update(() => { A.TrafficUploadLimitGb = value; Raise(nameof(TrafficUploadSliderMax)); }); }
+    public int TrafficUploadSliderMax => Math.Max(1000, A.TrafficUploadLimitGb);
     public int TrafficCycleStartDay { get => A.TrafficCycleStartDay; set => Update(() => A.TrafficCycleStartDay = value); }
     public bool CpuEnabled { get => A.CpuEnabled; set => Update(() => A.CpuEnabled = value); }
     public int CpuPercent { get => A.CpuPercent; set => Update(() => A.CpuPercent = value); }

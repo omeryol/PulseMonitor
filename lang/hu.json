@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Keretszámítás",
   "Alerts.TrafficLimitDown": "Letöltési korlát",
   "Alerts.TrafficLimitUp": "Feltöltési korlát",
+  "Alerts.TrafficLimitHint": "Az érték kézzel is megadható (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Letöltés + feltöltés (együtt)",
   "Style.TrafficQuotaMode.Down": "Csak letöltés",
   "Style.TrafficQuotaMode.Up": "Csak feltöltés",

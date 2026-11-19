@@ -455,6 +455,7 @@
   "Alerts.TrafficMode": "流量额度计算方式",
   "Alerts.TrafficLimitDown": "下载上限",
   "Alerts.TrafficLimitUp": "上传上限",
+  "Alerts.TrafficLimitHint": "可直接输入数值（1–10000 GB）",
   "Style.TrafficQuotaMode.Total": "下载 + 上传（合计）",
   "Style.TrafficQuotaMode.Down": "仅下载",
   "Style.TrafficQuotaMode.Up": "仅上传",

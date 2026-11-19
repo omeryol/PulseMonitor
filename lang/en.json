@@ -167,6 +167,7 @@
   "Alerts.TrafficMode": "Quota counting",
   "Alerts.TrafficLimitDown": "Download limit",
   "Alerts.TrafficLimitUp": "Upload limit",
+  "Alerts.TrafficLimitHint": "You can type a value (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Download + upload (combined)",
   "Style.TrafficQuotaMode.Down": "Download only",
   "Style.TrafficQuotaMode.Up": "Upload only",

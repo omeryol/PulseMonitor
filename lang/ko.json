@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "할당량 계산 방식",
   "Alerts.TrafficLimitDown": "다운로드 한도",
   "Alerts.TrafficLimitUp": "업로드 한도",
+  "Alerts.TrafficLimitHint": "값을 직접 입력할 수 있습니다 (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "다운로드 + 업로드 (합산)",
   "Style.TrafficQuotaMode.Down": "다운로드만",
   "Style.TrafficQuotaMode.Up": "업로드만",

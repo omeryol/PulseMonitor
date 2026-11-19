@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Calculul cotei",
   "Alerts.TrafficLimitDown": "Limită de descărcare",
   "Alerts.TrafficLimitUp": "Limită de încărcare",
+  "Alerts.TrafficLimitHint": "Poți scrie valoarea (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Descărcare + încărcare (împreună)",
   "Style.TrafficQuotaMode.Down": "Doar descărcare",
   "Style.TrafficQuotaMode.Up": "Doar încărcare",

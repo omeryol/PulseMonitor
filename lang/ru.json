@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Подсчёт квоты",
   "Alerts.TrafficLimitDown": "Лимит загрузки",
   "Alerts.TrafficLimitUp": "Лимит отдачи",
+  "Alerts.TrafficLimitHint": "Значение можно ввести вручную (1–10000 ГБ)",
   "Style.TrafficQuotaMode.Total": "Загрузка + отдача (вместе)",
   "Style.TrafficQuotaMode.Down": "Только загрузка",
   "Style.TrafficQuotaMode.Up": "Только отдача",

@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Kvotberäkning",
   "Alerts.TrafficLimitDown": "Nedladdningsgräns",
   "Alerts.TrafficLimitUp": "Uppladdningsgräns",
+  "Alerts.TrafficLimitHint": "Du kan skriva in värdet (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Nedladdning + uppladdning (tillsammans)",
   "Style.TrafficQuotaMode.Down": "Endast nedladdning",
   "Style.TrafficQuotaMode.Up": "Endast uppladdning",

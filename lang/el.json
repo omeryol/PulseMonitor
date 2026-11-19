@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Υπολογισμός ποσόστωσης",
   "Alerts.TrafficLimitDown": "Όριο λήψης",
   "Alerts.TrafficLimitUp": "Όριο αποστολής",
+  "Alerts.TrafficLimitHint": "Μπορείτε να πληκτρολογήσετε τιμή (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Λήψη + αποστολή (μαζί)",
   "Style.TrafficQuotaMode.Down": "Μόνο λήψη",
   "Style.TrafficQuotaMode.Up": "Μόνο αποστολή",

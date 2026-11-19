@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Cálculo de la cuota",
   "Alerts.TrafficLimitDown": "Límite de descarga",
   "Alerts.TrafficLimitUp": "Límite de subida",
+  "Alerts.TrafficLimitHint": "Puedes escribir el valor (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Descarga + subida (juntas)",
   "Style.TrafficQuotaMode.Down": "Solo descarga",
   "Style.TrafficQuotaMode.Up": "Solo subida",

@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Quotaberekening",
   "Alerts.TrafficLimitDown": "Downloadlimiet",
   "Alerts.TrafficLimitUp": "Uploadlimiet",
+  "Alerts.TrafficLimitHint": "Je kunt de waarde intypen (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Download + upload (samen)",
   "Style.TrafficQuotaMode.Down": "Alleen download",
   "Style.TrafficQuotaMode.Up": "Alleen upload",

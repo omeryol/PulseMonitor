@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Cách tính hạn mức",
   "Alerts.TrafficLimitDown": "Giới hạn tải xuống",
   "Alerts.TrafficLimitUp": "Giới hạn tải lên",
+  "Alerts.TrafficLimitHint": "Có thể nhập giá trị trực tiếp (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Tải xuống + tải lên (gộp)",
   "Style.TrafficQuotaMode.Down": "Chỉ tải xuống",
   "Style.TrafficQuotaMode.Up": "Chỉ tải lên",

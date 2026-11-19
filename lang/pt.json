@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Cálculo da cota",
   "Alerts.TrafficLimitDown": "Limite de download",
   "Alerts.TrafficLimitUp": "Limite de upload",
+  "Alerts.TrafficLimitHint": "Você pode digitar o valor (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Download + upload (juntos)",
   "Style.TrafficQuotaMode.Down": "Somente download",
   "Style.TrafficQuotaMode.Up": "Somente upload",

@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Liczenie limitu",
   "Alerts.TrafficLimitDown": "Limit pobierania",
   "Alerts.TrafficLimitUp": "Limit wysyłania",
+  "Alerts.TrafficLimitHint": "Wartość można wpisać ręcznie (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Pobieranie + wysyłanie (razem)",
   "Style.TrafficQuotaMode.Down": "Tylko pobieranie",
   "Style.TrafficQuotaMode.Up": "Tylko wysyłanie",

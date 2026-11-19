@@ -167,6 +167,7 @@
   "Alerts.TrafficMode": "Kota hesabı",
   "Alerts.TrafficLimitDown": "İndirme sınırı",
   "Alerts.TrafficLimitUp": "Yükleme sınırı",
+  "Alerts.TrafficLimitHint": "Elle yazabilirsin (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "İndirme + yükleme (birlikte)",
   "Style.TrafficQuotaMode.Down": "Yalnızca indirme",
   "Style.TrafficQuotaMode.Up": "Yalnızca yükleme",

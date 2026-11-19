@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Penghitungan kuota",
   "Alerts.TrafficLimitDown": "Batas unduhan",
   "Alerts.TrafficLimitUp": "Batas unggahan",
+  "Alerts.TrafficLimitHint": "Nilai dapat diketik langsung (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Unduhan + unggahan (gabungan)",
   "Style.TrafficQuotaMode.Down": "Hanya unduhan",
   "Style.TrafficQuotaMode.Up": "Hanya unggahan",

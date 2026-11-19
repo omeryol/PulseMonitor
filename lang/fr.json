@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Calcul du quota",
   "Alerts.TrafficLimitDown": "Limite de téléchargement",
   "Alerts.TrafficLimitUp": "Limite d'envoi",
+  "Alerts.TrafficLimitHint": "Vous pouvez saisir la valeur (1–10000 Go)",
   "Style.TrafficQuotaMode.Total": "Téléchargement + envoi (ensemble)",
   "Style.TrafficQuotaMode.Down": "Téléchargement seul",
   "Style.TrafficQuotaMode.Up": "Envoi seul",

@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "การนับโควตา",
   "Alerts.TrafficLimitDown": "ขีดจำกัดดาวน์โหลด",
   "Alerts.TrafficLimitUp": "ขีดจำกัดอัปโหลด",
+  "Alerts.TrafficLimitHint": "พิมพ์ค่าเองได้ (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "ดาวน์โหลด + อัปโหลด (รวมกัน)",
   "Style.TrafficQuotaMode.Down": "เฉพาะดาวน์โหลด",
   "Style.TrafficQuotaMode.Up": "เฉพาะอัปโหลด",

@@ -15,18 +15,24 @@
         </DockPanel>
         <DockPanel Visibility="{Binding TrafficSingle, Converter={StaticResource BoolToVis}}">
             <TextBlock Text="{DynamicResource Alerts.TrafficLimit}" Style="{StaticResource Ui.FormLabel}" Width="190" />
-            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding TrafficLimitGb, StringFormat={}{0} GB}" />
-            <Slider Minimum="1" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" />
+            <TextBlock DockPanel.Dock="Right" Text="GB" VerticalAlignment="Center" Margin="4,0,0,0" />
+            <TextBox DockPanel.Dock="Right" Width="64" TextAlignment="Right" VerticalAlignment="Center" Margin="8,0,0,0"
+                     Text="{Binding TrafficLimitGb, UpdateSourceTrigger=LostFocus}" ToolTip="{DynamicResource Alerts.TrafficLimitHint}" />
+            <Slider Minimum="1" Maximum="{Binding TrafficSliderMax}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" />
         </DockPanel>
         <DockPanel Visibility="{Binding TrafficSplit, Converter={StaticResource BoolToVis}}">
             <TextBlock Text="{DynamicResource Alerts.TrafficLimitDown}" Style="{StaticResource Ui.FormLabel}" Width="190" />
-            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding TrafficLimitGb, StringFormat={}{0} GB}" />
-            <Slider Minimum="1" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" />
+            <TextBlock DockPanel.Dock="Right" Text="GB" VerticalAlignment="Center" Margin="4,0,0,0" />
+            <TextBox DockPanel.Dock="Right" Width="64" TextAlignment="Right" VerticalAlignment="Center" Margin="8,0,0,0"
+                     Text="{Binding TrafficLimitGb, UpdateSourceTrigger=LostFocus}" ToolTip="{DynamicResource Alerts.TrafficLimitHint}" />
+            <Slider Minimum="1" Maximum="{Binding TrafficSliderMax}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficLimitGb}" />
         </DockPanel>
         <DockPanel Visibility="{Binding TrafficSplit, Converter={StaticResource BoolToVis}}">
             <TextBlock Text="{DynamicResource Alerts.TrafficLimitUp}" Style="{StaticResource Ui.FormLabel}" Width="190" />
-            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Value}" Text="{Binding TrafficUploadLimitGb, StringFormat={}{0} GB}" />
-            <Slider Minimum="1" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficUploadLimitGb}" />
+            <TextBlock DockPanel.Dock="Right" Text="GB" VerticalAlignment="Center" Margin="4,0,0,0" />
+            <TextBox DockPanel.Dock="Right" Width="64" TextAlignment="Right" VerticalAlignment="Center" Margin="8,0,0,0"
+                     Text="{Binding TrafficUploadLimitGb, UpdateSourceTrigger=LostFocus}" ToolTip="{DynamicResource Alerts.TrafficLimitHint}" />
+            <Slider Minimum="1" Maximum="{Binding TrafficUploadSliderMax}" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding TrafficUploadLimitGb}" />
         </DockPanel>
         <DockPanel>
             <TextBlock Text="{DynamicResource Alerts.TrafficCycleDay}" Style="{StaticResource Ui.FormLabel}" Width="190" />

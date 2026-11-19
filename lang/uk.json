@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Підрахунок квоти",
   "Alerts.TrafficLimitDown": "Ліміт завантаження",
   "Alerts.TrafficLimitUp": "Ліміт відправлення",
+  "Alerts.TrafficLimitHint": "Значення можна ввести вручну (1–10000 ГБ)",
   "Style.TrafficQuotaMode.Total": "Завантаження + відправлення (разом)",
   "Style.TrafficQuotaMode.Down": "Лише завантаження",
   "Style.TrafficQuotaMode.Up": "Лише відправлення",

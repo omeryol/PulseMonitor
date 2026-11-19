@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "Počítání kvóty",
   "Alerts.TrafficLimitDown": "Limit stahování",
   "Alerts.TrafficLimitUp": "Limit odesílání",
+  "Alerts.TrafficLimitHint": "Hodnotu můžete zadat ručně (1–10000 GB)",
   "Style.TrafficQuotaMode.Total": "Stahování + odesílání (společně)",
   "Style.TrafficQuotaMode.Down": "Pouze stahování",
   "Style.TrafficQuotaMode.Up": "Pouze odesílání",

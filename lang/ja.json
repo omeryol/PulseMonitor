@@ -154,6 +154,7 @@
   "Alerts.TrafficMode": "クォータの計算方法",
   "Alerts.TrafficLimitDown": "ダウンロード上限",
   "Alerts.TrafficLimitUp": "アップロード上限",
+  "Alerts.TrafficLimitHint": "値を直接入力できます（1～10000 GB）",
   "Style.TrafficQuotaMode.Total": "ダウンロード＋アップロード（合算）",
   "Style.TrafficQuotaMode.Down": "ダウンロードのみ",
   "Style.TrafficQuotaMode.Up": "アップロードのみ",
