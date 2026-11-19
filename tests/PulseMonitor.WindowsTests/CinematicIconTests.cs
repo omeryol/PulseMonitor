@@ -73,4 +73,23 @@ public sealed class CinematicIconTests
         Assert.Contains(StyleOptions.IconCinematic, StyleOptions.AnimatedIconSets);
         Assert.DoesNotContain(StyleOptions.IconCinematicStatic, StyleOptions.AnimatedIconSets);
     }
+
+    [Theory]
+    [InlineData(3, 10, "Cloudy")]
+    [InlineData(3, 25, "Windy")]
+    [InlineData(2, 40, "Windy")]
+    [InlineData(2, 10, "PartlyDay")]
+    [InlineData(0, 60, "ClearDay")]
+    [InlineData(65, 60, "RainHeavy")]
+    public void WindySymbolFollowsWindOnlyForCloudyCodes(int code, double wind, string expected)
+    {
+        Assert.Equal(expected, WeatherCodes.DetailedIconKey(code, true, wind));
+        Assert.Equal(WeatherCodes.IconKey(code, true), WeatherCodes.IconKeyFor(StyleOptions.IconMakinThings, code, true, wind)); // diğer setler rüzgârdan etkilenmez
+    }
+
+    [Fact]
+    public void WindyStripExists()
+    {
+        Assert.Equal(40, Open("Windy.png").PixelWidth / Open("Windy.png").PixelHeight);
+    }
 }

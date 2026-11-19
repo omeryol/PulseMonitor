@@ -81,7 +81,7 @@ internal static class WeatherTooltip
                          "   ·   " + WeatherSources.SourceLabel(r.Model);
 
         (string warning, Brush warningBrush, ImageSource? warningIcon) = Warning(r, warningLevel, fahrenheit, set);
-        return new WeatherTooltipModel(loc.ShownName, loc.Context, Icon(set, r.WeatherCode, r.IsDay), WeatherCodes.Describe(r.WeatherCode),
+        return new WeatherTooltipModel(loc.ShownName, loc.Context, Icon(set, r.WeatherCode, r.IsDay, r.WindKmh), WeatherCodes.Describe(r.WeatherCode),
             Deg(r.Temperature), TemperatureBrush(r.Temperature), details, hours, days, updated, stale, false, Places(others, st),
             warning, warningBrush, warningIcon);
     }
@@ -101,7 +101,7 @@ internal static class WeatherTooltip
 
     private static List<PlaceRow> Places(IReadOnlyList<(WeatherLocation Loc, WeatherReport? Report)> others, StyleSettings st) =>
         others.Select(o => o.Report is { } r && r.Age < TimeSpan.FromHours(12)
-                ? new PlaceRow(o.Loc.ShownName, Icon(st.WeatherIcons, r.WeatherCode, r.IsDay),
+                ? new PlaceRow(o.Loc.ShownName, Icon(st.WeatherIcons, r.WeatherCode, r.IsDay, r.WindKmh),
                     ValueFormat.Degrees(r.Temperature, st.TemperatureUnit == StyleOptions.Fahrenheit), TemperatureBrush(r.Temperature))
                 : new PlaceRow(o.Loc.ShownName, null, "--°", ThemeBrushes.Get("Brush.Muted")))
             .ToList();
@@ -110,7 +110,7 @@ internal static class WeatherTooltip
     /// Kart simgesi seçili simge setinden gelir: resim olduğu gibi, animasyonlu sette sabit kare, Çizgi/Dolu sette şekil kart
     /// yazı rengiyle. "Karakter" setinde (ya da simge yüklenemezse) renkli simge kullanılır.
     /// </summary>
-    private static ImageSource? Icon(string set, int code, bool isDay) => IconByKey(set, WeatherCodes.IconKeyFor(set, code, isDay));
+    private static ImageSource? Icon(string set, int code, bool isDay, double windKmh = 0) => IconByKey(set, WeatherCodes.IconKeyFor(set, code, isDay, windKmh));
 
     private static ImageSource? IconByKey(string set, string key)
     {

@@ -5,7 +5,7 @@ namespace PulseMonitor.Views.Controls;
 
 internal sealed class WindLeaves
 {
-    internal const double StartKmh = 25;
+    internal const double StartKmh = Weather.WeatherCodes.WindyKmh;
     private static readonly Geometry Shape = LeafShape();
     private static readonly Brush[] Colours = [Brushes.OliveDrab, Brushes.Peru, Brushes.DarkGoldenrod];
     private sealed class Leaf

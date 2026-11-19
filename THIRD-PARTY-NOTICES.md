@@ -21,9 +21,10 @@ Kullanım hacmi: dış IP 15 dakikada bir ve ağ değişince; hava durumu 15 dak
 | [Microsoft Fluent UI System Icons](https://github.com/microsoft/fluentui-system-icons) | `Resources/WeatherIconsFluent.xaml` — "Düz çizgi" (regular) ve "Monokrom" (filled) hava simgeleri, SVG yolları XAML'e çevrildi | MIT, Copyright (c) 2020 Microsoft Corporation |
 | [Meteocons](https://github.com/basmilius/meteocons) (@meteocons/svg ve svg-static 0.1.0; fill, flat, line) | `Assets/WeatherAnim/Meteocons*/` — animasyonlu SVG'lerden üretilmiş film şeridi PNG'leri ve sabit PNG'ler | MIT, Copyright (c) 2020-present Bas Milius |
 | [Makin-Things weather-icons](https://github.com/Makin-Things/weather-icons) (animated, static) | `Assets/WeatherAnim/MakinThings/` — aynı yöntemle | MIT, Copyright (c) 2019 Custom cards for Home Assistant |
+| Sinematik 3D hava simgeleri (üretken yapay zekâ: Google Gemini) | `Assets/Weather/Cinematic3D/` (statik) ve `Assets/WeatherAnim/Cinematic3D/` (hareketli film şeridi; 80 px'e küçültüldü) | Yapay zekâ ile üretilmiş özgün görseller; üçüncü taraf telif metni yoktur. Kullanım Gemini hizmet koşullarına tabidir, projeyle birlikte aynı lisansla dağıtılır |
 | [ScottPlot](https://github.com/ScottPlot/ScottPlot) | Trafik geçmişi grafik yüzeyi (`ScottPlot.WPF` 5.1.59) | MIT, Copyright (c) Scott Harden / Harden Technologies, LLC |
 
-Fluent dosyaları `tools/fetch_icons.ps1`, Meteocons ve Makin-Things dosyaları `tools/render_icons.ps1` ile yeniden üretilebilir.
+Fluent dosyaları `tools/fetch_icons.ps1`, Meteocons ve Makin-Things dosyaları `tools/render_icons.ps1` ile yeniden üretilebilir; Sinematik 3D şeritleri `tools/import_cinematic.py` ile alınır.
 Telif satırları ilgili depoların LICENSE dosyalarındaki gibidir.
 
 MIT Lisansı (beş proje için aynı metin):
