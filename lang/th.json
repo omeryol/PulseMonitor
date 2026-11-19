@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "หน่วยอุณหภูมิ",
   "Style.Label.FeelsLike": "แสดงอุณหภูมิความรู้สึกถัดจากเลของศา",
   "Style.Label.TemperatureColors": "สีตามอุณหภูมิ (ฟ้าเย็น → แดงร้อน)",
-  "Style.Label.Animation": "แอนิเมชันสภาพอากาศ (ในไอคอนหรือการ์ด)",
+  "Style.Label.Animation": "แอนิเมชันสภาพอากาศบนการ์ด (ฝน หิมะ ฟ้าแลบ…)",
   "Style.AnimationSystemOff": "ไม่แสดงภาพเคลื่อนไหวเนื่องจากปิดเอฟเฟกต์ภาพเคลื่อนไหวใน Windows",
   "Style.Reset": "รีเซ็ตรูปลักษณ์เป็นค่าเริ่มต้น",
   "Common.Undo": "เลิกทำ",

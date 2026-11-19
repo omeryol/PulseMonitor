@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Unità di temperatura",
   "Style.Label.FeelsLike": "Mostra la temperatura percepita accanto ai gradi",
   "Style.Label.TemperatureColors": "Colora in base alla temperatura (blu freddo → rosso caldo)",
-  "Style.Label.Animation": "Animazione meteo (nell’icona o nella scheda)",
+  "Style.Label.Animation": "Animazione meteo della scheda (pioggia, neve, fulmini…)",
   "Style.AnimationSystemOff": "L’animazione non viene mostrata perché gli effetti di animazione sono disattivati in Windows.",
   "Style.Reset": "Ripristina aspetto predefinito",
   "Common.Undo": "Annulla",

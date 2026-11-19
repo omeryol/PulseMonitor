@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Đơn vị nhiệt độ",
   "Style.Label.FeelsLike": "Hiển thị nhiệt độ cảm giác bên cạnh độ C/F",
   "Style.Label.TemperatureColors": "Màu theo nhiệt độ (lạnh xanh → nóng đỏ)",
-  "Style.Label.Animation": "Hiệu ứng thời tiết (trong biểu tượng hoặc thẻ)",
+  "Style.Label.Animation": "Hiệu ứng thời tiết trên thẻ (mưa, tuyết, sét…)",
   "Style.AnimationSystemOff": "Không hiển thị hoạt ảnh vì hiệu ứng hoạt ảnh đang tắt trong Windows.",
   "Style.Reset": "Đặt lại giao diện về mặc định",
   "Common.Undo": "Hoàn tác",

@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Jednotka teploty",
   "Style.Label.FeelsLike": "Zobrazovat pocitovou teplotu vedle stupňů",
   "Style.Label.TemperatureColors": "Obarvit podle teploty (studená modrá → horká červená)",
-  "Style.Label.Animation": "Animace počasí (v ikoně nebo kartě)",
+  "Style.Label.Animation": "Animace počasí na kartě (déšť, sníh, blesky…)",
   "Style.AnimationSystemOff": "Animace se nezobrazuje, protože animační efekty jsou ve Windows vypnuté.",
   "Style.Reset": "Obnovit výchozí vzhled",
   "Common.Undo": "Zpět",

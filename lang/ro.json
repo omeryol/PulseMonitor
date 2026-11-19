@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Unitate temperatură",
   "Style.Label.FeelsLike": "Arată temperatura resimțită lângă grade",
   "Style.Label.TemperatureColors": "Culoare după temperatură (albastru rece → roșu cald)",
-  "Style.Label.Animation": "Animație meteo (în pictogramă sau card)",
+  "Style.Label.Animation": "Animația vremii pe card (ploaie, ninsoare, fulgere…)",
   "Style.AnimationSystemOff": "Animația nu este afișată deoarece efectele de animație sunt dezactivate în Windows.",
   "Style.Reset": "Resetează aspectul la valorile implicite",
   "Common.Undo": "Anulează",

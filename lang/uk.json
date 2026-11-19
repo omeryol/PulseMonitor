@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Одиниця температури",
   "Style.Label.FeelsLike": "Показувати температуру за відчуттями поруч із градусами",
   "Style.Label.TemperatureColors": "Колір за температурою (холодний синій → гарячий червоний)",
-  "Style.Label.Animation": "Анімація погоди (на значку або картці)",
+  "Style.Label.Animation": "Анімація погоди на картці (дощ, сніг, блискавки…)",
   "Style.AnimationSystemOff": "Анімація не показується, бо ефекти анімації вимкнено у Windows.",
   "Style.Reset": "Скинути вигляд до початкового",
   "Common.Undo": "Скасувати",

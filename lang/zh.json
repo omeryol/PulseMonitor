@@ -200,7 +200,7 @@
   "Style.Label.TemperatureUnit": "温度单位",
   "Style.Label.FeelsLike": "在温度旁显示体感温度",
   "Style.Label.TemperatureColors": "按温度着色 (冷蓝 → 热红)",
-  "Style.Label.Animation": "天气动画 (在图标或卡片中)",
+  "Style.Label.Animation": "卡片天气动画（雨、雪、闪电…）",
   "Style.AnimationSystemOff": "由于 Windows 中已关闭动画效果，因此不显示动画。",
   "Style.Reset": "重置外观为默认值",
   "Common.Undo": "撤消",

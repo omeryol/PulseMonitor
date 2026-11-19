@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Unité de température",
   "Style.Label.FeelsLike": "Afficher le ressenti à côté des degrés",
   "Style.Label.TemperatureColors": "Colorer par température (froid bleu → chaud rouge)",
-  "Style.Label.Animation": "Animation météo (dans l’icône ou la carte)",
+  "Style.Label.Animation": "Animation météo de la carte (pluie, neige, éclairs…)",
   "Style.AnimationSystemOff": "L’animation n’est pas affichée car les effets d’animation sont désactivés dans Windows.",
   "Style.Reset": "Réinitialiser l’apparence par défaut",
   "Common.Undo": "Annuler",

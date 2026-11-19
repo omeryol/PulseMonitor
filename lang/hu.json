@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Hőmérséklet mértékegysége",
   "Style.Label.FeelsLike": "Hőérzet megjelenítése a fokok mellett",
   "Style.Label.TemperatureColors": "Színezés hőmérséklet szerint (hideg kék → forró piros)",
-  "Style.Label.Animation": "Időjárás animáció (az ikonban vagy a kártyán)",
+  "Style.Label.Animation": "Időjárás-animáció a kártyán (eső, hó, villám…)",
   "Style.AnimationSystemOff": "Az animáció nem jelenik meg, mert a Windowsban ki vannak kapcsolva az animációs effektusok.",
   "Style.Reset": "Megjelenés alaphelyzetbe állítása",
   "Common.Undo": "Visszavonás",

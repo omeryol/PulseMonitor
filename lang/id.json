@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Unit suhu",
   "Style.Label.FeelsLike": "Tampilkan suhu “terasa seperti” di samping derajat",
   "Style.Label.TemperatureColors": "Warna berdasarkan suhu (biru dingin → merah panas)",
-  "Style.Label.Animation": "Animasi cuaca (pada ikon atau kartu)",
+  "Style.Label.Animation": "Animasi cuaca pada kartu (hujan, salju, petir…)",
   "Style.AnimationSystemOff": "Animasi tidak ditampilkan karena efek animasi dimatikan di Windows.",
   "Style.Reset": "Atur ulang tampilan ke default",
   "Common.Undo": "Urungkan",

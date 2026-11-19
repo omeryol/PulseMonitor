@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Temperaturenhet",
   "Style.Label.FeelsLike": "Visa upplevd temperatur bredvid graderna",
   "Style.Label.TemperatureColors": "Färga efter temperatur (kall blå → varm röd)",
-  "Style.Label.Animation": "Väderanimering (i ikonen eller kortet)",
+  "Style.Label.Animation": "Väderanimation på kortet (regn, snö, blixtar…)",
   "Style.AnimationSystemOff": "Animeringen visas inte eftersom animeringseffekter är avstängda i Windows.",
   "Style.Reset": "Återställ utseende till standardvärden",
   "Common.Undo": "Ångra",

@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Unidad de temperatura",
   "Style.Label.FeelsLike": "Mostrar sensación térmica junto a los grados",
   "Style.Label.TemperatureColors": "Color según temperatura (azul frío → rojo calor)",
-  "Style.Label.Animation": "Animación del tiempo (en el icono o tarjeta)",
+  "Style.Label.Animation": "Animación del tiempo en la tarjeta (lluvia, nieve, rayos…)",
   "Style.AnimationSystemOff": "La animación no se muestra porque los efectos de animación están desactivados en Windows.",
   "Style.Reset": "Restablecer apariencia predeterminada",
   "Common.Undo": "Deshacer",

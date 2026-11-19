@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Temperatuureenheid",
   "Style.Label.FeelsLike": "Gevoelstemperatuur naast de graden weergeven",
   "Style.Label.TemperatureColors": "Kleur op basis van temperatuur (koud blauw → warm rood)",
-  "Style.Label.Animation": "Weeranimatie (in het icoon of de kaart)",
+  "Style.Label.Animation": "Weeranimatie op de kaart (regen, sneeuw, bliksem…)",
   "Style.AnimationSystemOff": "Geen animatie omdat animatie-effecten in Windows zijn uitgeschakeld.",
   "Style.Reset": "Vormgeving herstellen naar standaardwaarden",
   "Common.Undo": "Ongedaan maken",

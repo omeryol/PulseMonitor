@@ -248,7 +248,7 @@
   "Style.Label.TemperatureUnit": "Jednostka temperatury",
   "Style.Label.FeelsLike": "Pokazuj temperaturę odczuwalną obok stopni",
   "Style.Label.TemperatureColors": "Koloruj według temperatury (zimny niebieski → gorący czerwony)",
-  "Style.Label.Animation": "Animacja pogody (w ikonie lub na karcie)",
+  "Style.Label.Animation": "Animacja pogody na karcie (deszcz, śnieg, błyskawice…)",
   "Style.AnimationSystemOff": "Animacja nie jest wyświetlana, ponieważ efekty animacji są wyłączone w systemie Windows.",
   "Style.Reset": "Przywróć wygląd domyślny",
   "Common.Undo": "Cofnij",
